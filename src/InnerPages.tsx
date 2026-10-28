@@ -403,6 +403,71 @@ type TourDetails = {
   excludes?: string[]
 }
 
+type SampleItineraryDay = {
+  day: number
+  title: string
+  description: string
+}
+
+function createSampleItinerary(details: TourDetails): SampleItineraryDay[] {
+  const publishedDays = details.duration.match(/(\d+)\s+days?/i)
+  const dayCount = publishedDays
+    ? Number(publishedDays[1])
+    : Math.max(details.route.length, 5)
+  const destinations = details.route
+
+  return Array.from({ length: dayCount }, (_, index) => {
+    const destinationIndex = Math.min(
+      Math.floor((index * destinations.length) / dayCount),
+      destinations.length - 1,
+    )
+    const destination = destinations[destinationIndex]
+    const nextDestination =
+      index < dayCount - 1
+        ? destinations[
+            Math.min(
+              Math.floor(((index + 1) * destinations.length) / dayCount),
+              destinations.length - 1,
+            )
+          ]
+        : destination
+
+    if (index === 0) {
+      return {
+        day: 1,
+        title: `Arrival in ${destination}`,
+        description:
+          "Arrival, welcome and time to settle in. The final program will confirm transfers, accommodation and any planned activities.",
+      }
+    }
+
+    if (index === dayCount - 1) {
+      return {
+        day: dayCount,
+        title: `Departure from ${destination}`,
+        description:
+          "Breakfast and onward departure arrangements according to the confirmed travel schedule.",
+      }
+    }
+
+    if (nextDestination !== destination) {
+      return {
+        day: index + 1,
+        title: `${destination} to ${nextDestination}`,
+        description:
+          "Continue to the next destination with stops and experiences tailored to the final route and journey pace.",
+      }
+    }
+
+    return {
+      day: index + 1,
+      title: `Discover ${destination}`,
+      description:
+        "A day for locally relevant visits and experiences. Exact activities, guiding and meal arrangements will be detailed in the confirmed program.",
+    }
+  })
+}
+
 const defaultIncludes = [
   "Accommodation in the properties confirmed in the final program or similar",
   "Private transport and local assistance as confirmed in the proposal",
@@ -1153,7 +1218,7 @@ function ToursPage() {
   )
 }
 
-function TourGallery({ gallery, title }: { gallery: string[]; title: string }) {
+function TourGallery({ gallery, title }: { gallery: string[] title: string }) {
   const [active, setActive] = useState(0)
   return (
     <section className="tour-gallery" aria-label={`${title} image gallery`}>
@@ -1362,6 +1427,7 @@ function TourPage({ tour }: { tour: Tour }) {
   ]
   const includes = details.includes ?? defaultIncludes
   const excludes = details.excludes ?? defaultExcludes
+  const sampleItinerary = createSampleItinerary(details)
   const relatedTours = tours
     .filter(
       (item) =>
@@ -1408,7 +1474,11 @@ function TourPage({ tour }: { tour: Tour }) {
             available may change, so they are only confirmed in a specific
             proposal from the travel team.
           </p>
-          <h2>Published itinerary overview</h2>
+          <h2>Destinations on this journey</h2>
+          <p>
+            Follow the published route through these destinations. The sequence
+            may be refined in your confirmed proposal.
+          </p>
           <ol className="tour-route">
             {details.route.map((stop, index) => (
               <li key={`${stop}-${index}`}>
@@ -1427,6 +1497,36 @@ function TourPage({ tour }: { tour: Tour }) {
           </div>
         </article>
       </main>
+      <section className="tour-itinerary">
+        <div className="tour-itinerary-heading">
+          <div>
+            <p className="inner-eyebrow">Tour itinerary</p>
+            <h2>Day by day.</h2>
+          </div>
+          <p>
+            Sample placeholder content based on the published route. Request
+            the current detailed program before arranging travel.
+          </p>
+        </div>
+        <ol className="tour-itinerary-days">
+          {sampleItinerary.map((item) => (
+            <li key={item.day}>
+              <div className="tour-day-number">
+                <span>Day</span>
+                <b>{String(item.day).padStart(2, "0")}</b>
+              </div>
+              <div>
+                <h3>{item.title}</h3>
+                <p>{item.description}</p>
+              </div>
+            </li>
+          ))}
+        </ol>
+        <p className="tour-itinerary-disclaimer">
+          Placeholder itinerary — not a confirmed or published day-by-day
+          program.
+        </p>
+      </section>
       <TourGallery gallery={gallery} title={tour.title} />
       <section className="tour-logistics">
         <div className="tour-inclusions">
@@ -1464,6 +1564,11 @@ function TourPage({ tour }: { tour: Tour }) {
             Use this published route image as an overview only. The final route
             is confirmed in your proposal.
           </p>
+          <ul className="tour-map-destinations" aria-label="Tour destinations">
+            {details.route.map((stop, index) => (
+              <li key={`${stop}-map-${index}`}>{stop}</li>
+            ))}
+          </ul>
         </div>
         {details.map ? (
           <figure>

@@ -1464,6 +1464,94 @@ button { color: inherit; }
   line-height: 1.7;
 }
 
+.tour-itinerary {
+  padding: 100px max(48px, calc((100vw - 1184px) / 2));
+  background: var(--sand);
+}
+
+.tour-itinerary-heading {
+  margin-bottom: 52px;
+  display: grid;
+  grid-template-columns: 1fr .85fr;
+  gap: 8vw;
+  align-items: end;
+}
+
+.tour-itinerary-heading h2 {
+  margin: 0;
+  font: 500 clamp(42px, 5vw, 62px)/.95 var(--display);
+}
+
+.tour-itinerary-heading > p {
+  margin: 0;
+  color: var(--olive);
+  font-size: 12px;
+  line-height: 1.75;
+}
+
+.tour-itinerary-days {
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  list-style: none;
+  border-top: 1px solid #c9bead;
+}
+
+.tour-itinerary-days > li {
+  min-height: 180px;
+  padding: 30px;
+  display: grid;
+  grid-template-columns: 58px 1fr;
+  gap: 24px;
+  border-bottom: 1px solid #c9bead;
+}
+
+.tour-itinerary-days > li:nth-child(odd) {
+  padding-left: 0;
+  border-right: 1px solid #c9bead;
+}
+
+.tour-day-number {
+  padding-top: 4px;
+  color: var(--maroon);
+}
+
+.tour-day-number span {
+  display: block;
+  font-size: 8px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: .14em;
+}
+
+.tour-day-number b {
+  display: block;
+  margin-top: 5px;
+  font: 500 25px var(--display);
+}
+
+.tour-itinerary-days h3 {
+  margin: 0;
+  font: 500 24px/1.2 var(--display);
+}
+
+.tour-itinerary-days p {
+  margin: 13px 0 0;
+  color: var(--olive);
+  font-size: 11px;
+  line-height: 1.75;
+}
+
+.tour-itinerary-disclaimer {
+  margin: 28px 0 0;
+  color: var(--maroon);
+  font-size: 8px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: .12em;
+}
+
 .related-tours {
   padding: 85px max(48px, calc((100vw - 1024px) / 2));
   display: grid;
@@ -1792,11 +1880,30 @@ button { color: inherit; }
   font: 500 clamp(42px, 5vw, 62px)/.95 var(--display);
 }
 
-.tour-map > div:first-child > p:last-child {
+.tour-map > div:first-child > p:not(.inner-eyebrow) {
   margin-top: 25px;
   color: var(--olive);
   font-size: 12px;
   line-height: 1.7;
+}
+
+.tour-map-destinations {
+  margin: 30px 0 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  list-style: none;
+}
+
+.tour-map-destinations li {
+  padding: 9px 11px;
+  border: 1px solid #cfc7ba;
+  color: var(--green);
+  font-size: 8px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: .08em;
 }
 
 .tour-map figure {
@@ -2012,6 +2119,10 @@ button { color: inherit; }
 }
 
 @media (max-width: 900px) {
+  .tour-itinerary {
+    padding: 80px 23px;
+  }
+
   .tour-gallery {
     padding: 0 23px 80px;
   }
@@ -2044,6 +2155,23 @@ button { color: inherit; }
 }
 
 @media (max-width: 600px) {
+  .tour-itinerary-heading {
+    margin-bottom: 35px;
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .tour-itinerary-days {
+    grid-template-columns: 1fr;
+  }
+
+  .tour-itinerary-days > li,
+  .tour-itinerary-days > li:nth-child(odd) {
+    min-height: auto;
+    padding: 27px 0;
+    border-right: 0;
+  }
+
   .tour-route {
     grid-template-columns: 1fr;
   }

@@ -1,6 +1,6 @@
-# Maragia Express redesign
+# Maragià Express redesign
 
-Premium editorial travel website concept for Maragia Express, built with React 19, Vite 8, TypeScript, and Tailwind CSS v4.
+Premium editorial travel website concept for Maragià Express, built in the repository's supported React 19, Vite 8, TypeScript, and Tailwind CSS v4 stack.
 
 ## Local setup
 
@@ -8,6 +8,8 @@ Premium editorial travel website concept for Maragia Express, built with React 1
 pnpm install
 pnpm dev
 ```
+
+Inside Figma Make, the development server is already managed by the environment and should not be started manually.
 
 Production bundle:
 
@@ -21,6 +23,7 @@ pnpm build
 - `src/index.css` — design tokens, responsive layout, and visual system
 - `src/lib/site-config.ts` — centralized verified business details
 - `src/lib/schema.ts` — Organization, TravelAgency, and WebSite JSON-LD builders
+- `.figma/make/site.json` — preview metadata and social image configuration
 - `SITE_AUDIT.md` — public-site audit, established URLs, and launch requirements
 - `.env.example` — placeholder server-integration configuration
 
@@ -52,7 +55,7 @@ Before production launch, connect the form to a server-side email or CRM integra
 - [ ] Validate final markup in Schema.org Validator and Rich Results Test
 - [ ] Complete a one-to-one redirect map from the WordPress sitemap
 
-Enable indexing only after content, redirects, forms, policies, and canonical production hosting have been reviewed.
+The Figma Make preview remains `noindex` intentionally. Enable indexing only after content, redirects, forms, policies, and canonical production hosting have been reviewed.
 
 ## Performance and accessibility checklist
 

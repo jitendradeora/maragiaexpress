@@ -59,7 +59,7 @@ The live Yoast sitemap index references post, page, category, and author sitemap
 
 ## Production migration notes
 
-This repository is a React + Vite scaffold, not a Next.js repository. The implementation therefore keeps the existing supported architecture rather than replacing the toolchain. A production migration still needs:
+This repository is a React + Vite Figma Make scaffold, not a Next.js repository. The implementation therefore keeps the existing supported architecture rather than replacing the toolchain. A production migration still needs:
 
 1. Owner review of English translations and current bookability.
 2. A complete sitemap export and redirect map.
