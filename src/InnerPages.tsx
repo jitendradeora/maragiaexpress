@@ -406,8 +406,11 @@ type TourDetails = {
 
 type SampleItineraryDay = {
   day: number
+  place: string
   title: string
   description: string
+  overnight: string
+  meals: string
 }
 
 function createSampleItinerary(details: TourDetails): SampleItineraryDay[] {
@@ -416,6 +419,11 @@ function createSampleItinerary(details: TourDetails): SampleItineraryDay[] {
     ? Number(publishedDays[1])
     : Math.max(details.route.length, 5)
   const destinations = details.route
+  const stayNotes = [
+    "Morning with a local guide, then a quieter afternoon in the neighbourhood.",
+    "Time in the surrounding landscape, with the evening free at your hotel.",
+    "A walk through the old quarter, a market or craft visit, and dinner in town.",
+  ]
 
   return Array.from({ length: dayCount }, (_, index) => {
     const destinationIndex = Math.min(
@@ -436,37 +444,59 @@ function createSampleItinerary(details: TourDetails): SampleItineraryDay[] {
     if (index === 0) {
       return {
         day: 1,
+        place: destination,
         title: `Arrival in ${destination}`,
         description:
-          "Arrival, welcome and time to settle in. The final program will confirm transfers, accommodation and any planned activities.",
+          "Private arrival transfer and time to settle in. An evening briefing covers how the next days will move. This is sample content until the program is confirmed.",
+        overnight: destination,
+        meals: "Dinner",
       }
     }
 
     if (index === dayCount - 1) {
       return {
         day: dayCount,
+        place: destination,
         title: `Departure from ${destination}`,
         description:
-          "Breakfast and onward departure arrangements according to the confirmed travel schedule.",
+          "Breakfast, then a private transfer to the airport or station. Departure time follows your confirmed flights.",
+        overnight: "—",
+        meals: "Breakfast",
       }
     }
 
     if (nextDestination !== destination) {
       return {
         day: index + 1,
-        title: `${destination} to ${nextDestination}`,
-        description:
-          "Continue to the next destination with stops and experiences tailored to the final route and journey pace.",
+        place: `${destination} to ${nextDestination}`,
+        title: `Travel to ${nextDestination}`,
+        description: `Leave ${destination} after breakfast and travel at an unhurried pace, with a pause along the way before check-in at ${nextDestination}.`,
+        overnight: nextDestination,
+        meals: "Breakfast, lunch, dinner",
       }
     }
 
     return {
       day: index + 1,
-      title: `Discover ${destination}`,
-      description:
-        "A day for locally relevant visits and experiences. Exact activities, guiding and meal arrangements will be detailed in the confirmed program.",
+      place: destination,
+      title: `A day in ${destination}`,
+      description: stayNotes[index % stayNotes.length],
+      overnight: destination,
+      meals: "Breakfast, dinner",
     }
   })
+}
+
+function groupItinerary(days: SampleItineraryDay[]) {
+  const chapters: { place: string; days: SampleItineraryDay[] }[] = []
+  for (const day of days) {
+    const current = chapters[chapters.length - 1]
+    const place =
+      day.overnight !== "—" ? day.overnight : (current?.place ?? day.place)
+    if (!current || current.place !== place) chapters.push({ place, days: [day] })
+    else current.days.push(day)
+  }
+  return chapters
 }
 
 const defaultIncludes = [
@@ -1439,6 +1469,7 @@ function TourPage({ tour }: { tour: Tour }) {
   const includes = details.includes ?? defaultIncludes
   const excludes = details.excludes ?? defaultExcludes
   const sampleItinerary = createSampleItinerary(details)
+  const chapters = groupItinerary(sampleItinerary)
   const relatedTours = tours
     .filter(
       (item) =>
@@ -1454,12 +1485,11 @@ function TourPage({ tour }: { tour: Tour }) {
         image={tour.image}
         parent={["Tours", "/tours"]}
       />
-      <main className="tour-detail">
-        <aside>
-          <p className="inner-eyebrow">Tour information</p>
+      <section className="tour-sheet">
+        <div className="tour-facts">
           <dl>
             <div>
-              <dt>Published price</dt>
+              <dt>Price</dt>
               <dd className="tour-price">{details.price}</dd>
             </div>
             <div>
@@ -1467,76 +1497,112 @@ function TourPage({ tour }: { tour: Tour }) {
               <dd>{details.duration}</dd>
             </div>
             <div>
-              <dt>Collection</dt>
-              <dd>{tour.category}</dd>
+              <dt>Places</dt>
+              <dd>
+                {details.route.length}{" "}
+                {details.route.length === 1 ? "stop" : "stops"}
+              </dd>
+            </div>
+            <div>
+              <dt>Route</dt>
+              <dd>
+                {details.route[0]}
+                {details.route.length > 1
+                  ? ` to ${details.route[details.route.length - 1]}`
+                  : ""}
+              </dd>
             </div>
           </dl>
-          <p className="tour-price-note">
-            Published source price where available. Reconfirm the current price,
-            currency basis, dates and availability before booking.
-          </p>
-          <a href="#tour-enquiry">Enquire about this tour</a>
-        </aside>
-        <article>
-          <p className="detail-lead">{tour.summary}</p>
-          <p>
-            This tour is part of the established Maragià Express collection. The
-            exact route, accommodation, transport, inclusions and support
-            available may change, so they are only confirmed in a specific
-            proposal from the travel team.
-          </p>
-          <h2>Destinations on this journey</h2>
-          <p>
-            Follow the published route through these destinations. The sequence
-            may be refined in your confirmed proposal.
-          </p>
-          <ol className="tour-route">
+          <a href="#tour-enquiry">Enquire</a>
+        </div>
+        <p className="tour-facts-note">
+          Planning overview. Your proposal confirms the current route, price,
+          and availability before you book flights.
+        </p>
+        <div className="tour-atlas">
+          {details.map ? (
+            <figure className="tour-sheet-map">
+              <img
+                src={details.map}
+                alt={`Route map for ${tour.title}`}
+                loading="lazy"
+              />
+            </figure>
+          ) : (
+            <div className="tour-map-pending">
+              <span aria-hidden="true">M</span>
+              <p>The route map is included with the confirmed itinerary.</p>
+            </div>
+          )}
+          <ol className="tour-rail" aria-label="Places in order">
             {details.route.map((stop, index) => (
               <li key={`${stop}-${index}`}>
-                <span>{String(index + 1).padStart(2, "0")}</span>
-                <b>{stop}</b>
+                <span>{index + 1}</span>
+                {stop}
               </li>
             ))}
           </ol>
-          <div className="tour-caution">
-            <b>Itinerary note</b>
+        </div>
+        <div className="tour-program" id="itinerary">
+          <div className="tour-program-heading">
+            <div>
+              <p className="inner-eyebrow">Day by day</p>
+              <h2>Where you stay.</h2>
+            </div>
             <p>
-              This is the route summary published by Maragià Express, not a
-              promise of current operation. Request the current day-by-day
-              program before arranging flights.
+              Days are grouped by the place you sleep. These are sample days
+              for this page, not a confirmed program.
             </p>
           </div>
-        </article>
-      </main>
-      <section className="tour-itinerary">
-        <div className="tour-itinerary-heading">
-          <div>
-            <p className="inner-eyebrow">Tour itinerary</p>
-            <h2>Day by day.</h2>
-          </div>
-          <p>
-            Sample placeholder content based on the published route. Request
-            the current detailed program before arranging travel.
-          </p>
+          {chapters.map((chapter, chapterIndex) => {
+            const nights = chapter.days.filter(
+              (day) => day.overnight === chapter.place,
+            ).length
+            const stay =
+              nights === 0
+                ? "Departure"
+                : nights === 1
+                  ? "1 night"
+                  : `${nights} nights`
+            return (
+              <article
+                className="tour-chapter"
+                key={`${chapter.place}-${chapterIndex}`}
+              >
+                <header>
+                  <h3>{chapter.place}</h3>
+                  <span>{stay}</span>
+                </header>
+                <ol>
+                  {chapter.days.map((item) => (
+                    <li key={item.day}>
+                      <div className="tour-day-number">
+                        <span className="tour-day-label">Day</span>
+                        <b>{String(item.day).padStart(2, "0")}</b>
+                      </div>
+                      <div>
+                        <h4>{item.title}</h4>
+                        <p>{item.description}</p>
+                        <dl className="tour-day-meta">
+                          {item.overnight !== "—" && (
+                            <div>
+                              <dt>Overnight</dt>
+                              <dd>{item.overnight}</dd>
+                            </div>
+                          )}
+                          <div>
+                            <dt>Meals</dt>
+                            <dd>{item.meals}</dd>
+                          </div>
+                        </dl>
+                      </div>
+                    </li>
+                  ))}
+                </ol>
+              </article>
+            )
+          })}
         </div>
-        <ol className="tour-itinerary-days">
-          {sampleItinerary.map((item) => (
-            <li key={item.day}>
-              <div className="tour-day-number">
-                <span>Day</span>
-                <b>{String(item.day).padStart(2, "0")}</b>
-              </div>
-              <div>
-                <h3>{item.title}</h3>
-                <p>{item.description}</p>
-              </div>
-            </li>
-          ))}
-        </ol>
-        <p className="tour-itinerary-disclaimer">
-          Placeholder itinerary — not a confirmed or published day-by-day
-          program.
-        </p>
       </section>
       <TourGallery gallery={gallery} title={tour.title} />
       <section className="tour-logistics">
@@ -1566,40 +1632,6 @@ function TourPage({ tour }: { tour: Tour }) {
           The signed proposal and booking documents always take precedence over
           this website summary.
         </p>
-      </section>
-      <section className="tour-map">
-        <div>
-          <p className="inner-eyebrow">The route</p>
-          <h2>Journey map.</h2>
-          <p>
-            Use this published route image as an overview only. The final route
-            is confirmed in your proposal.
-          </p>
-          <ul className="tour-map-destinations" aria-label="Tour destinations">
-            {details.route.map((stop, index) => (
-              <li key={`${stop}-map-${index}`}>{stop}</li>
-            ))}
-          </ul>
-        </div>
-        {details.map ? (
-          <figure>
-            <img
-              src={details.map}
-              alt={`Published route map for ${tour.title}`}
-              loading="lazy"
-            />
-            <figcaption>
-              Published by Maragià Express on the existing tour page.
-            </figcaption>
-          </figure>
-        ) : (
-          <div className="tour-map-pending">
-            <span aria-hidden="true">M</span>
-            <p>
-              The current route map is supplied with the confirmed itinerary.
-            </p>
-          </div>
-        )}
       </section>
       <nav className="tour-policy-links" aria-label="Tour policies">
         <a href="/terms">
