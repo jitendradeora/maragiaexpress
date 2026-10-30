@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react"
+import { EnquiryReady, FormGuide } from "./EnquiryReady"
 import { siteConfig } from "./lib/site-config"
 
 const images = {
@@ -1275,7 +1276,9 @@ function TourGallery({ gallery, title }: { gallery: string[]; title: string }) {
 }
 
 function TourEnquiryForm({ tour }: { tour: Tour }) {
-  const [status, setStatus] = useState("")
+  const [ready, setReady] = useState<{ subject: string; body: string } | null>(
+    null,
+  )
   function submit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault()
     const data = new FormData(event.currentTarget)
@@ -1293,10 +1296,18 @@ function TourEnquiryForm({ tour }: { tour: Tour }) {
     const body = fields
       .map(([label, value]) => `${label}: ${value || ""}`)
       .join("\n")
-    setStatus(
-      "Your email app is opening. Review and send the prepared message to complete your enquiry.",
+    setReady({ subject: `Tour enquiry: ${tour.title}`, body })
+  }
+  if (ready) {
+    return (
+      <div id="tour-enquiry">
+        <EnquiryReady
+          subject={ready.subject}
+          body={ready.body}
+          onEdit={() => setReady(null)}
+        />
+      </div>
     )
-    window.location.href = `mailto:${siteConfig.email}?subject=${encodeURIComponent(`Tour enquiry: ${tour.title}`)}&body=${encodeURIComponent(body)}`
   }
   return (
     <form className="tour-enquiry-form" onSubmit={submit} id="tour-enquiry">
@@ -1304,17 +1315,18 @@ function TourEnquiryForm({ tour }: { tour: Tour }) {
         <p className="inner-eyebrow">Ask about this journey</p>
         <h2>Enquire about {tour.title}</h2>
         <p>
-          Share a few practical details so the team can respond with the current
-          itinerary, price and availability.
+          Tell us your dates and how you like to travel. We will reply with the
+          current itinerary, price and availability. This does not book the tour.
         </p>
       </div>
+      <FormGuide />
       <label className="tour-field-wide">
         Selected tour
         <input value={tour.title} readOnly aria-readonly="true" />
       </label>
       <div className="tour-form-row">
         <label>
-          Full name
+          Full name *
           <input
             name="name"
             required
@@ -1323,7 +1335,7 @@ function TourEnquiryForm({ tour }: { tour: Tour }) {
           />
         </label>
         <label>
-          Email address
+          Email address *
           <input
             name="email"
             required
@@ -1354,11 +1366,12 @@ function TourEnquiryForm({ tour }: { tour: Tour }) {
       </div>
       <div className="tour-form-row tour-form-three">
         <label>
-          Preferred dates
+          Preferred dates *
           <input name="dates" required placeholder="Month or dates" />
+          <span className="field-hint">A month is enough if your dates are not fixed.</span>
         </label>
         <label>
-          Travelers
+          Travelers *
           <input
             name="travelers"
             required
@@ -1381,35 +1394,33 @@ function TourEnquiryForm({ tour }: { tour: Tour }) {
         </label>
       </div>
       <label className="tour-field-wide">
-        What would make this journey right for you?
+        What should we know about this trip? *
         <textarea
           name="message"
           rows={5}
           required
-          placeholder="Tell us about your interests, preferred pace, accessibility or dietary needs, and any questions."
+          placeholder="Pace, interests, who is travelling, and any questions."
         />
+        <span className="field-hint">
+          Mention accessibility, dietary needs, or the kind of stay you prefer.
+        </span>
       </label>
       <label className="tour-consent">
         <input type="checkbox" required />
         <span>
-          I understand this prepares an email and does not create a booking or
-          confirm availability.
+          I understand I still need to send the email, and that this does not
+          book the tour.
         </span>
       </label>
       <div className="tour-form-submit">
         <button type="submit">
-          Prepare my enquiry <span aria-hidden="true">↗</span>
+          Continue to email <span aria-hidden="true">↗</span>
         </button>
         <small>
           Prefer to speak directly?{" "}
           <a href={siteConfig.phoneHref}>{siteConfig.phoneDisplay}</a>
         </small>
       </div>
-      {status && (
-        <p className="tour-form-status" role="status">
-          {status}
-        </p>
-      )}
     </form>
   )
 }
@@ -1646,60 +1657,77 @@ function RelatedCallout({ title }: { title: string }) {
 }
 
 function EnquiryForm() {
-  const [status, setStatus] = useState("")
+  const [ready, setReady] = useState<{ subject: string; body: string } | null>(
+    null,
+  )
   function submit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault()
     const data = new FormData(event.currentTarget)
     const lines = [
-      "name",
-      "email",
-      "country",
-      "destination",
-      "dates",
-      "travelers",
-      "interests",
-      "message",
+      ["Name", data.get("name")],
+      ["Email", data.get("email")],
+      ["Country", data.get("country")],
+      ["Destination", data.get("destination")],
+      ["Dates", data.get("dates")],
+      ["Travelers", data.get("travelers")],
+      ["Interests", data.get("interests")],
+      ["Message", data.get("message")],
     ]
-      .map(
-        (key) =>
-          `${key[0].toUpperCase() + key.slice(1)}: ${data.get(key) || ""}`,
-      )
+      .map(([label, value]) => `${label}: ${value || ""}`)
       .join("\n")
-    setStatus(
-      "Your email app is opening. Send the prepared message to complete your enquiry.",
+    const name = String(data.get("name") || "a traveller")
+    setReady({ subject: `Journey enquiry from ${name}`, body: lines })
+  }
+  if (ready) {
+    return (
+      <div id="enquiry">
+        <EnquiryReady
+          subject={ready.subject}
+          body={ready.body}
+          onEdit={() => setReady(null)}
+        />
+      </div>
     )
-    window.location.href = `mailto:${siteConfig.email}?subject=${encodeURIComponent("Tailor-made journey enquiry")}&body=${encodeURIComponent(lines)}`
   }
   return (
     <form className="inner-form" onSubmit={submit} id="enquiry">
+      <FormGuide />
       <div className="inner-field-row">
         <label>
-          Full name
-          <input name="name" required autoComplete="name" />
+          Full name *
+          <input name="name" required autoComplete="name" placeholder="Your full name" />
         </label>
         <label>
-          Email address
-          <input name="email" required type="email" autoComplete="email" />
+          Email address *
+          <input
+            name="email"
+            required
+            type="email"
+            autoComplete="email"
+            placeholder="you@example.com"
+          />
+          <span className="field-hint">We reply to this address.</span>
         </label>
       </div>
       <div className="inner-field-row">
         <label>
           Country of residence
-          <input name="country" autoComplete="country-name" />
+          <input name="country" autoComplete="country-name" placeholder="Your country" />
         </label>
         <label>
           Preferred destination
-          <input name="destination" />
+          <input name="destination" placeholder="Rajasthan, Ladakh, or not sure yet" />
         </label>
       </div>
       <div className="inner-field-row">
         <label>
           Approximate dates
           <input name="dates" placeholder="Month or dates" />
+          <span className="field-hint">A month is enough if your dates are not fixed.</span>
         </label>
         <label>
           Number of travelers
-          <input name="travelers" type="number" min="1" />
+          <input name="travelers" type="number" min="1" placeholder="2" />
         </label>
       </div>
       <label>
@@ -1710,17 +1738,21 @@ function EnquiryForm() {
         />
       </label>
       <label>
-        Additional message
-        <textarea name="message" rows={5} required />
+        What should we know? *
+        <textarea
+          name="message"
+          rows={5}
+          required
+          placeholder="Pace, who is travelling, and any questions."
+        />
       </label>
       <button type="submit">
-        Prepare enquiry <span aria-hidden="true">↗</span>
+        Continue to email <span aria-hidden="true">↗</span>
       </button>
       <small>
-        This form opens your email application. No information is stored or
-        claimed as delivered by this website.
+        You review the message next. Sending the email is what reaches the
+        team. Nothing is stored or booked on this page.
       </small>
-      {status && <p role="status">{status}</p>}
     </form>
   )
 }
@@ -1741,7 +1773,7 @@ function TailorMadePage() {
           <p>
             Use the form to share a starting point. The team can then discuss
             current options and refine a route around your dates, interests and
-            preferences.
+            preferences. Filling in the form does not reserve a trip.
           </p>
         </section>
         <div className="inner-steps">
@@ -1775,8 +1807,8 @@ function TailorMadePage() {
             <p className="inner-eyebrow">Begin a conversation</p>
             <h2>Tell us what inspires you.</h2>
             <p>
-              There is no obligation and no simulated booking. Your message is
-              prepared for delivery through your own email application.
+              Share your dates and interests. On the next step you open an
+              email and press Send. That message is what the team receives.
             </p>
           </div>
           <EnquiryForm />
@@ -2185,8 +2217,14 @@ export default function InnerPages({ pathname }: { pathname: string }) {
 
   useEffect(() => {
     document.title = `${title} | Maragià Express`
+    const hash = window.location.hash.slice(1)
+    const target = hash ? document.getElementById(hash) : null
+    if (target) {
+      target.scrollIntoView()
+      return
+    }
     window.scrollTo(0, 0)
-  }, [title])
+  }, [pathname, title])
 
   return (
     <div className="inner-site">

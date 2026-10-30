@@ -177,6 +177,93 @@ button { color: inherit; }
 .form-foot p { margin: 0; color: var(--olive); font-size: 13px; line-height: 1.5; }
 .form-status { padding: 12px; background: var(--sand); font-size: 15px; line-height: 1.5; }
 
+.form-guide {
+  margin: 0 0 22px;
+  padding: 0 0 0 18px;
+  color: var(--olive);
+  font-size: 15px;
+  font-weight: 400;
+  letter-spacing: 0;
+  text-transform: none;
+  line-height: 1.55;
+}
+
+.form-guide li + li { margin-top: 6px; }
+
+.field-hint {
+  display: block;
+  margin-top: 6px;
+  color: var(--olive);
+  font-size: 14px;
+  font-weight: 400;
+  letter-spacing: 0;
+  text-transform: none;
+  line-height: 1.45;
+}
+
+.enquiry-ready {
+  padding: 32px;
+  background: var(--ivory);
+  color: var(--charcoal);
+}
+
+.planner .enquiry-ready { background: var(--ivory); }
+
+.enquiry-ready h3 {
+  margin: 8px 0 12px;
+  font: 500 34px/1.15 var(--display);
+}
+
+.enquiry-ready p {
+  margin: 0;
+  color: var(--olive);
+  font-size: 16px;
+  font-weight: 400;
+  letter-spacing: 0;
+  text-transform: none;
+  line-height: 1.6;
+}
+
+.enquiry-ready pre {
+  margin: 18px 0;
+  padding: 16px;
+  white-space: pre-wrap;
+  background: var(--sand);
+  color: var(--charcoal);
+  font: 400 15px/1.55 var(--body);
+}
+
+.enquiry-ready-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 8px;
+}
+
+.enquiry-ready-actions a,
+.enquiry-ready-actions button {
+  min-height: 48px;
+  padding: 0 16px;
+  border: 1px solid var(--green);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--green);
+  color: var(--white);
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+.enquiry-ready-actions .secondary {
+  background: transparent;
+  color: var(--green);
+}
+
+.enquiry-ready > p:last-child { margin-top: 14px; }
+
 .footer { padding: 80px max(48px, calc((100vw - 1280px)/2)) 28px; background: #0e2c24; color: rgba(255,255,255,.73); }
 .footer .brand { color: var(--white); }
 .footer-main { display: grid; grid-template-columns: 1.6fr repeat(3,1fr); gap: 70px; }

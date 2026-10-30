@@ -1,7 +1,9 @@
 import { FormEvent, useMemo, useState } from "react"
+import { EnquiryReady, FormGuide } from "./EnquiryReady"
 import InnerPages from "./InnerPages"
 import { organizationSchema, websiteSchema } from "./lib/schema"
 import { siteConfig } from "./lib/site-config"
+import { usePathname } from "./lib/use-pathname"
 
 const images = {
   hero: "https://images.unsplash.com/photo-1575994532957-773da2f83eb1?auto=format&fit=crop&w=2200&q=84",
@@ -538,7 +540,9 @@ function Faq() {
 }
 
 function Planner() {
-  const [status, setStatus] = useState("")
+  const [ready, setReady] = useState<{ subject: string; body: string } | null>(
+    null,
+  )
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     const data = new FormData(event.currentTarget)
@@ -550,14 +554,10 @@ function Planner() {
     const travelers = String(data.get("travelers") || "")
     const interests = String(data.get("interests") || "")
     const message = String(data.get("message") || "")
-    const subject = encodeURIComponent(`Journey enquiry from ${name}`)
-    const body = encodeURIComponent(
-      `Name: ${name}\nEmail: ${email}\nCountry: ${country}\nDestination: ${destination}\nApproximate dates: ${dates}\nTravellers: ${travelers}\nInterests: ${interests}\n\nJourney ideas:\n${message}`,
-    )
-    setStatus(
-      "Your email app is opening. Please send the prepared message to complete your enquiry.",
-    )
-    window.location.href = `mailto:${siteConfig.email}?subject=${subject}&body=${body}`
+    setReady({
+      subject: `Journey enquiry from ${name}`,
+      body: `Name: ${name}\nEmail: ${email}\nCountry: ${country}\nDestination: ${destination}\nApproximate dates: ${dates}\nTravellers: ${travelers}\nInterests: ${interests}\n\nJourney ideas:\n${message}`,
+    })
   }
 
   return (
@@ -569,18 +569,27 @@ function Planner() {
           <em>starts here.</em>
         </h2>
         <p>
-          Tell us what inspires you, and let us help you explore the
-          possibilities.
+          Tell us where you want to go, when you can travel, and what kind of
+          trip you want. This does not reserve anything. We reply by email
+          after reading your answers.
         </p>
         <div className="planner-contact">
           <a href={siteConfig.phoneHref}>{siteConfig.phoneDisplay}</a>
           <a href={`mailto:${siteConfig.email}`}>{siteConfig.email}</a>
         </div>
       </div>
+      {ready ? (
+        <EnquiryReady
+          subject={ready.subject}
+          body={ready.body}
+          onEdit={() => setReady(null)}
+        />
+      ) : (
       <form onSubmit={handleSubmit}>
+        <FormGuide />
         <div className="field-row">
           <label>
-            Full name
+            Full name *
             <input
               name="name"
               type="text"
@@ -590,7 +599,7 @@ function Planner() {
             />
           </label>
           <label>
-            Email address
+            Email address *
             <input
               name="email"
               type="email"
@@ -629,6 +638,7 @@ function Planner() {
           <label>
             Approximate dates
             <input name="dates" type="text" placeholder="Month or dates" />
+            <span className="field-hint">A month is enough if your dates are not fixed.</span>
           </label>
           <label>
             Number of travellers
@@ -650,29 +660,28 @@ function Planner() {
           />
         </label>
         <label>
-          Additional message
+          Additional message *
           <textarea
             name="message"
             required
             rows={4}
-            placeholder="Interests, number of travellers, pace and accommodation preferences..."
+            placeholder="Who is travelling, the pace you prefer, and any questions."
           />
+          <span className="field-hint">
+            Include pace, interests, and anything the team should know before suggesting a route.
+          </span>
         </label>
         <div className="form-foot">
           <button className="button button-gold" type="submit">
-            Send enquiry
+            Continue to email
           </button>
           <p>
-            This opens a prepared email in your mail app. No information is
-            stored on this website.
+            You will review the message before it is sent. Nothing is stored on
+            this website.
           </p>
         </div>
-        {status && (
-          <p className="form-status" role="status">
-            {status}
-          </p>
-        )}
       </form>
+      )}
     </section>
   )
 }
@@ -696,18 +705,12 @@ function Footer() {
         </div>
         <div>
           <h3>Established links</h3>
-          <a href="https://maragiaexpress.com/tour-dellindia/">
-            Tours of India
-          </a>
-          <a href="https://maragiaexpress.com/tour-dei-festival-indiani/">
-            Festival tours
-          </a>
+          <a href="/tours">Tours of India</a>
+          <a href="/experiences/festivals">Festival tours</a>
           <a href="/terms">Terms & conditions</a>
           <a href="/payment-policy">Payment policy</a>
           <a href="/cancellation-policy">Cancellation & refund</a>
-          <a href="https://maragiaexpress.com/informazione/">
-            Travel information
-          </a>
+          <a href="/travel-information">Travel information</a>
         </div>
         <div>
           <h3>Talk to us</h3>
@@ -729,9 +732,10 @@ function Footer() {
 }
 
 export default function App() {
+  const path = usePathname()
   const schema = useMemo(() => [organizationSchema(), websiteSchema()], [])
-  if (window.location.pathname !== "/") {
-    return <InnerPages pathname={window.location.pathname} />
+  if (path !== "/") {
+    return <InnerPages pathname={path} />
   }
   return (
     <>
