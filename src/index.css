@@ -23,6 +23,48 @@ img { display: block; width: 100%; }
 a { color: inherit; text-decoration: none; }
 button { color: inherit; }
 ::selection { background: var(--gold); color: var(--green); }
+.back-to-top {
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+  z-index: 40;
+  width: 48px;
+  height: 48px;
+  border: 0;
+  background: var(--green);
+  color: var(--white);
+  cursor: pointer;
+  font-size: 20px;
+  line-height: 1;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(8px);
+  transition: opacity .2s ease, transform .2s ease, background .2s ease;
+}
+
+.back-to-top.is-visible {
+  opacity: 1;
+  pointer-events: auto;
+  transform: none;
+}
+
+.back-to-top:hover {
+  background: var(--green-light);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .back-to-top {
+    transition: none;
+  }
+}
+
+@media (max-width: 600px) {
+  .back-to-top {
+    right: 16px;
+    bottom: 16px;
+  }
+}
 :focus-visible { outline: 2px solid var(--gold); outline-offset: 4px; }
 
 .site-header {
@@ -176,19 +218,6 @@ button { color: inherit; }
 .form-foot { display: flex; align-items: center; gap: 22px; margin-top: 8px; }
 .form-foot p { margin: 0; color: var(--olive); font-size: 13px; line-height: 1.5; }
 .form-status { padding: 12px; background: var(--sand); font-size: 15px; line-height: 1.5; }
-
-.form-guide {
-  margin: 0 0 22px;
-  padding: 0 0 0 18px;
-  color: var(--olive);
-  font-size: 15px;
-  font-weight: 400;
-  letter-spacing: 0;
-  text-transform: none;
-  line-height: 1.55;
-}
-
-.form-guide li + li { margin-top: 6px; }
 
 .field-hint {
   display: block;
@@ -353,8 +382,8 @@ button { color: inherit; }
 .inner-header {
   position: relative;
   z-index: 20;
-  height: 88px;
-  padding: 0 max(40px, calc((100vw - 1280px) / 2));
+  height: 92px;
+  padding: 0 max(4vw, calc((100vw - 1440px) / 2 + 4vw));
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -366,7 +395,7 @@ button { color: inherit; }
 .inner-brand {
   display: inline-flex;
   align-items: center;
-  gap: 12px;
+  gap: 13px;
 }
 
 .inner-brand > span {
@@ -375,26 +404,26 @@ button { color: inherit; }
   border: 1px solid currentColor;
   display: grid;
   place-items: center;
-  font: italic 500 24px var(--display);
+  font: italic 500 25px var(--display);
 }
 
 .inner-brand b {
-  font: 600 18px/1 var(--display);
-  letter-spacing: .11em;
+  font: 600 20px/1 var(--display);
+  letter-spacing: .12em;
 }
 
 .inner-brand small {
   display: block;
   margin-top: 5px;
   font: 500 12px var(--body);
-  letter-spacing: .14em;
+  letter-spacing: .16em;
 }
 
 .inner-nav {
   display: flex;
   align-items: center;
-  gap: clamp(15px, 1.8vw, 28px);
-  font-size: 15px;
+  gap: clamp(16px, 2vw, 32px);
+  font-size: 16px;
 }
 
 .inner-nav > a {
@@ -406,7 +435,7 @@ button { color: inherit; }
 }
 
 .inner-nav .inner-nav-cta {
-  padding: 13px 17px;
+  padding: 14px 18px;
   border: 1px solid var(--green);
   text-transform: uppercase;
   letter-spacing: .12em;
@@ -1112,7 +1141,7 @@ button { color: inherit; }
 @media (max-width: 900px) {
   .inner-header {
     height: 76px;
-    padding-inline: 23px;
+    padding-inline: 22px;
   }
 
   .inner-menu {
@@ -1136,7 +1165,7 @@ button { color: inherit; }
   }
 
   .inner-nav > a {
-    font: 500 27px var(--display);
+    font: 500 28px var(--display);
   }
 
   .inner-nav .inner-nav-cta {
@@ -1618,7 +1647,7 @@ button { color: inherit; }
 }
 
 .tour-atlas {
-  margin-top: 28px;
+  margin-top: 72px;
   border: 1px solid #d2cabc;
   background: var(--white);
 }
@@ -1673,7 +1702,7 @@ button { color: inherit; }
 }
 
 .tour-program {
-  margin-top: 72px;
+  margin-top: 40px;
   scroll-margin-top: 96px;
 }
 

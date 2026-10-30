@@ -1,5 +1,6 @@
 import { FormEvent, useMemo, useState } from "react"
-import { EnquiryReady, FormGuide } from "./EnquiryReady"
+import { EnquiryReady } from "./EnquiryReady"
+import BackToTop from "./BackToTop"
 import InnerPages from "./InnerPages"
 import { organizationSchema, websiteSchema } from "./lib/schema"
 import { siteConfig } from "./lib/site-config"
@@ -586,7 +587,6 @@ function Planner() {
         />
       ) : (
       <form onSubmit={handleSubmit}>
-        <FormGuide />
         <div className="field-row">
           <label>
             Full name *
@@ -754,6 +754,7 @@ export default function App() {
         <Planner />
       </main>
       <Footer />
+      <BackToTop />
     </>
   )
 }

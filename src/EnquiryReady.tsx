@@ -54,13 +54,3 @@ export function EnquiryReady({
     </div>
   )
 }
-
-export function FormGuide() {
-  return (
-    <ol className="form-guide">
-      <li>Fill in the form. Fields with * are required.</li>
-      <li>Choose “Continue to email” to prepare the message.</li>
-      <li>Press Send in your email app. That is what reaches the team.</li>
-    </ol>
-  )
-}

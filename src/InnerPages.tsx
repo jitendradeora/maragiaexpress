@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react"
-import { EnquiryReady, FormGuide } from "./EnquiryReady"
+import BackToTop from "./BackToTop"
+import { EnquiryReady } from "./EnquiryReady"
 import { siteConfig } from "./lib/site-config"
 
 const images = {
@@ -1349,7 +1350,6 @@ function TourEnquiryForm({ tour }: { tour: Tour }) {
           current itinerary, price and availability. This does not book the tour.
         </p>
       </div>
-      <FormGuide />
       <label className="tour-field-wide">
         Selected tour
         <input value={tour.title} readOnly aria-readonly="true" />
@@ -1519,30 +1519,6 @@ function TourPage({ tour }: { tour: Tour }) {
           Planning overview. Your proposal confirms the current route, price,
           and availability before you book flights.
         </p>
-        <div className="tour-atlas">
-          {details.map ? (
-            <figure className="tour-sheet-map">
-              <img
-                src={details.map}
-                alt={`Route map for ${tour.title}`}
-                loading="lazy"
-              />
-            </figure>
-          ) : (
-            <div className="tour-map-pending">
-              <span aria-hidden="true">M</span>
-              <p>The route map is included with the confirmed itinerary.</p>
-            </div>
-          )}
-          <ol className="tour-rail" aria-label="Places in order">
-            {details.route.map((stop, index) => (
-              <li key={`${stop}-${index}`}>
-                <span>{index + 1}</span>
-                {stop}
-              </li>
-            ))}
-          </ol>
-        </div>
         <div className="tour-program" id="itinerary">
           <div className="tour-program-heading">
             <div>
@@ -1602,6 +1578,30 @@ function TourPage({ tour }: { tour: Tour }) {
               </article>
             )
           })}
+        </div>
+        <div className="tour-atlas">
+          {details.map ? (
+            <figure className="tour-sheet-map">
+              <img
+                src={details.map}
+                alt={`Route map for ${tour.title}`}
+                loading="lazy"
+              />
+            </figure>
+          ) : (
+            <div className="tour-map-pending">
+              <span aria-hidden="true">M</span>
+              <p>The route map is included with the confirmed itinerary.</p>
+            </div>
+          )}
+          <ol className="tour-rail" aria-label="Places in order">
+            {details.route.map((stop, index) => (
+              <li key={`${stop}-${index}`}>
+                <span>{index + 1}</span>
+                {stop}
+              </li>
+            ))}
+          </ol>
         </div>
       </section>
       <TourGallery gallery={gallery} title={tour.title} />
@@ -1723,7 +1723,6 @@ function EnquiryForm() {
   }
   return (
     <form className="inner-form" onSubmit={submit} id="enquiry">
-      <FormGuide />
       <div className="inner-field-row">
         <label>
           Full name *
@@ -2263,6 +2262,7 @@ export default function InnerPages({ pathname }: { pathname: string }) {
       <PageHeader />
       {content}
       {path !== "/404" && <PageFooter />}
+      <BackToTop />
     </div>
   )
 }
