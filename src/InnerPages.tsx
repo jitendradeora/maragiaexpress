@@ -1218,7 +1218,7 @@ function ToursPage() {
   )
 }
 
-function TourGallery({ gallery, title }: { gallery: string[] title: string }) {
+function TourGallery({ gallery, title }: { gallery: string[]; title: string }) {
   const [active, setActive] = useState(0)
   return (
     <section className="tour-gallery" aria-label={`${title} image gallery`}>
