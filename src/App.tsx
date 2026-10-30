@@ -1,6 +1,7 @@
 import { FormEvent, useMemo, useState } from "react"
-import { EnquiryReady } from "./EnquiryReady"
 import BackToTop from "./BackToTop"
+import { EnquiryReady } from "./EnquiryReady"
+import ProfileLinks from "./ProfileLinks"
 import InnerPages from "./InnerPages"
 import { organizationSchema, websiteSchema } from "./lib/schema"
 import { siteConfig } from "./lib/site-config"
@@ -694,6 +695,7 @@ function Footer() {
           <Brand />
           <p>Maragià Express — discover India, your way.</p>
           <span>{siteConfig.location}</span>
+          <ProfileLinks />
         </div>
         <div>
           <h3>Explore</h3>
@@ -716,11 +718,6 @@ function Footer() {
           <h3>Talk to us</h3>
           <a href={siteConfig.phoneHref}>{siteConfig.phoneDisplay}</a>
           <a href={`mailto:${siteConfig.email}`}>{siteConfig.email}</a>
-          <div className="socials">
-            <a href={siteConfig.socials.instagram}>Instagram</a>
-            <a href={siteConfig.socials.facebook}>Facebook</a>
-            <a href={siteConfig.socials.youtube}>YouTube</a>
-          </div>
         </div>
       </div>
       <div className="footer-bottom">

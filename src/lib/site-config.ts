@@ -12,5 +12,7 @@ export const siteConfig = {
     facebook: "https://www.facebook.com/maragiaexpress/",
     instagram: "https://www.instagram.com/maragia_express",
     youtube: "https://www.youtube.com/@maragiaexpress",
+    trustpilot: "https://www.trustpilot.com/review/maragiaexpress.com",
+    google: "https://share.google/DU2mwJ6VaeM4vz7Pc",
   },
 } as const

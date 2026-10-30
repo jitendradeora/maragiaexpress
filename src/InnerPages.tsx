@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
 import BackToTop from "./BackToTop"
 import { EnquiryReady } from "./EnquiryReady"
+import ProfileLinks from "./ProfileLinks"
 import { siteConfig } from "./lib/site-config"
 
 const images = {
@@ -916,6 +917,7 @@ function PageFooter() {
           </b>
         </a>
         <p>Discover India, your way.</p>
+        <ProfileLinks />
       </div>
       <div>
         <b>Explore</b>
@@ -939,11 +941,6 @@ function PageFooter() {
         <a href={siteConfig.phoneHref}>{siteConfig.phoneDisplay}</a>
         <a href={`mailto:${siteConfig.email}`}>{siteConfig.email}</a>
         <span>{siteConfig.location}</span>
-        <div className="inner-socials">
-          <a href="https://www.facebook.com/maragiaexpress/">Facebook</a>
-          <a href="https://www.youtube.com/@maragiaexpress">YouTube</a>
-          <a href="https://www.instagram.com/maragia_express">Instagram</a>
-        </div>
       </div>
     </footer>
   )
