@@ -855,6 +855,17 @@ export function PageHeader() {
         className={open ? "inner-nav inner-nav-open" : "inner-nav"}
         aria-label="Main navigation"
       >
+        <a
+          className="mobile-nav-brand inner-brand"
+          href="/"
+          aria-label="Maragià Express home"
+          onClick={() => setOpen(false)}
+        >
+          <span aria-hidden="true">M</span>
+          <b>
+            MARAGIÀ <small>EXPRESS · INDIA</small>
+          </b>
+        </a>
         <a href="/destinations">Destinations</a>
         <a href="/tours">Tours</a>
         <a href="/experiences">Experiences</a>
@@ -1880,7 +1891,7 @@ export function JournalPage() {
             />
           ))}
         </div>
-        <div className="legacy-journal">
+        {/* <div className="legacy-journal">
           <p>
             The existing Italian-language Maragià Express journal remains
             available during the content migration.
@@ -1888,7 +1899,7 @@ export function JournalPage() {
           <a href="https://maragiaexpress.com/blog/">
             Visit the original journal ↗
           </a>
-        </div>
+        </div> */}
       </main>
     </>
   )
@@ -1978,8 +1989,7 @@ export function PolicyPage({
   const content = {
     privacy: {
       title: "Privacy notice",
-      intro:
-        "How this preview handles information and what must be confirmed before production launch.",
+      //intro: "How this preview handles information and what must be confirmed before production launch.",
       sections: [
         [
           "Current form behavior",
@@ -1997,8 +2007,8 @@ export function PolicyPage({
     },
     terms: {
       title: "Terms and conditions",
-      intro:
-        "Published booking principles that must be read with your specific written proposal.",
+      //intro:
+      //  "Published booking principles that must be read with your specific written proposal.",
       sections: [
         [
           "Quotes, prices and exchange rates",
@@ -2084,10 +2094,10 @@ export function PolicyPage({
         intro={content.intro}
       />
       <main className="policy-page">
-        <p className="policy-notice">
+        {/* <p className="policy-notice">
           Draft website information · Requires business and legal review before
           production launch
-        </p>
+        </p> */}
         {content.sections.map(([title, copy]) => (
           <section key={title}>
             <h2>{title}</h2>

@@ -163,6 +163,20 @@ function Header() {
           id="mobile-navigation"
           aria-label="Main navigation"
         >
+          <a
+            className="mobile-nav-brand brand"
+            href="/"
+            aria-label="Maragià Express home"
+            onClick={() => setOpen(false)}
+          >
+            <span className="brand-mark" aria-hidden="true">
+              M
+            </span>
+            <span>
+              <b>MARAGIÀ</b>
+              <small>EXPRESS · INDIA</small>
+            </span>
+          </a>
           {links.map(([label, href]) => (
             <a href={href} key={label} onClick={() => setOpen(false)}>
               {label}
