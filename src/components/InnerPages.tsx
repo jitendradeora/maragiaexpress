@@ -1989,7 +1989,8 @@ export function PolicyPage({
   const content = {
     privacy: {
       title: "Privacy notice",
-      //intro: "How this preview handles information and what must be confirmed before production launch.",
+      intro:
+        "How this preview handles information and what must be confirmed before production launch.",
       sections: [
         [
           "Current form behavior",
@@ -2007,8 +2008,8 @@ export function PolicyPage({
     },
     terms: {
       title: "Terms and conditions",
-      //intro:
-      //  "Published booking principles that must be read with your specific written proposal.",
+      intro:
+        "Published booking principles that must be read with your specific written proposal.",
       sections: [
         [
           "Quotes, prices and exchange rates",
