@@ -88,7 +88,7 @@ button { color: inherit; }
 .nav > a:not(.nav-cta):hover { border-color: var(--gold); }
 .nav-cta { border: 1px solid rgba(255,255,255,.75); padding: 14px 18px; text-transform: uppercase; letter-spacing: .12em; font-size: 13px; }
 .nav-cta:hover { background: var(--white); color: var(--green); }
-.mobile-nav-brand {
+a.mobile-nav-brand {
   display: none;
 }
 
