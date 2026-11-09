@@ -1,6 +1,7 @@
 "use client"
 
 import { useEffect, useState } from "react"
+import { ArrowUpIcon } from "./icons"
 
 export default function BackToTop() {
   const [visible, setVisible] = useState(false)
@@ -32,7 +33,7 @@ export default function BackToTop() {
       tabIndex={visible ? 0 : -1}
       aria-hidden={visible ? undefined : true}
     >
-      <span aria-hidden="true">↑</span>
+      <ArrowUpIcon width={20} height={20} />
     </button>
   )
 }

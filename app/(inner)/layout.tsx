@@ -10,7 +10,7 @@ export default function InnerLayout({
   return (
     <div className="inner-site">
       <PageHeader />
-      {children}
+      <div id="main-content">{children}</div>
       <PageFooter />
       <BackToTop />
       <HashScroll />

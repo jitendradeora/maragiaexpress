@@ -1,10 +1,37 @@
 import type { Metadata } from "next"
 import { JournalPage } from "@/components/InnerPages"
+import JsonLd from "@/components/seo/JsonLd"
+import { getStaticPage } from "@/data/pages"
+import { createPageMetadata } from "@/lib/seo/metadata"
+import { breadcrumbSchema, webPageSchema } from "@/lib/seo/schema"
 
-export const metadata: Metadata = {
-  title: "Travel journal",
-}
+const page = getStaticPage("/travel-journal")!
+
+export const metadata: Metadata = createPageMetadata({
+  title: page.title,
+  description: page.description,
+  path: page.path,
+  image: page.image,
+})
 
 export default function Page() {
-  return <JournalPage />
+  return (
+    <>
+      <JsonLd
+        data={[
+          webPageSchema({
+            title: page.title,
+            description: page.description,
+            path: page.path,
+            type: "CollectionPage",
+          }),
+          breadcrumbSchema([
+            { name: "Home", path: "/" },
+            { name: "Travel journal", path: "/travel-journal" },
+          ]),
+        ]}
+      />
+      <JournalPage />
+    </>
+  )
 }

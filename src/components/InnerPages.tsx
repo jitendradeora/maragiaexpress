@@ -1,401 +1,21 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { EnquiryReady } from "./EnquiryReady"
 import ProfileLinks from "./ProfileLinks"
+import SiteImage from "./SiteImage"
+import { ArrowOutIcon } from "./icons"
 import { siteConfig } from "@/lib/site-config"
-
-const images = {
-  rajasthan:
-    "https://images.unsplash.com/photo-1545321945-7edd9bf1331a?auto=format&fit=crop&w=1800&q=84",
-  udaipur:
-    "https://images.unsplash.com/photo-1591264247469-d072a1018915?auto=format&fit=crop&w=1800&q=84",
-  ladakh:
-    "https://images.unsplash.com/photo-1632648366997-a091f7075445?auto=format&fit=crop&w=1800&q=84",
-  wildlife:
-    "https://images.unsplash.com/photo-1598510343363-244a5ea24814?auto=format&fit=crop&w=1800&q=84",
-  desert:
-    "https://images.unsplash.com/photo-1668689723080-c50f6e823de5?auto=format&fit=crop&w=1800&q=84",
-  craft:
-    "https://images.unsplash.com/photo-1702742970125-d57f8ee68e89?auto=format&fit=crop&w=1600&q=84",
-  palace:
-    "https://images.unsplash.com/photo-1634316127530-4289556bad26?auto=format&fit=crop&w=1800&q=84",
-  cycle:
-    "https://images.unsplash.com/photo-1762696782497-2b39df0f4523?auto=format&fit=crop&w=1800&q=84",
-  bhutan:
-    "https://images.unsplash.com/photo-1584095434749-d1b975e1ca9c?auto=format&fit=crop&w=1800&q=84",
-  nepal:
-    "https://images.unsplash.com/photo-1648298470994-7065f521375c?auto=format&fit=crop&w=1800&q=84",
-  sriLanka:
-    "https://images.unsplash.com/photo-1544015759-237f87d55ef3?auto=format&fit=crop&w=1800&q=84",
-}
-
-type Destination = {
-  slug: string
-  name: string
-  eyebrow: string
-  intro: string
-  image: string
-  highlights: string[]
-  paragraphs: string[]
-}
-
-const destinations: Destination[] = [
-  {
-    slug: "rajasthan",
-    name: "Rajasthan",
-    eyebrow: "Palaces · desert · living heritage",
-    intro:
-      "A journey through lake cities, desert strongholds, painted towns and the living traditions of India’s most storied state.",
-    image: images.rajasthan,
-    highlights: ["Udaipur & Mewar", "Jaipur", "Jodhpur", "The Thar Desert"],
-    paragraphs: [
-      "Rajasthan brings together monumental architecture and intimate daily life. Forts rise above old cities, stepwells reveal a sophisticated relationship with water, and craft traditions remain part of the region’s visual language.",
-      "Maragià Express is based in Udaipur, making Rajasthan a natural starting point for a personalized journey. Routes can be discussed around heritage, architecture, rural landscapes, festivals, cycling, or a slower exploration of selected cities.",
-    ],
-  },
-  {
-    slug: "ladakh",
-    name: "Ladakh & the Himalaya",
-    eyebrow: "Mountain roads · monasteries · open skies",
-    intro:
-      "High-altitude landscapes and Buddhist cultural traditions shape a very different experience of India.",
-    image: images.ladakh,
-    highlights: [
-      "Leh",
-      "Buddhist monasteries",
-      "Mountain routes",
-      "Active travel",
-    ],
-    paragraphs: [
-      "Ladakh’s scale asks travelers to slow down. Valleys, mountain passes and monasteries create journeys where acclimatization and thoughtful pacing matter as much as the route itself.",
-      "The official Maragià Express website features Himalayan adventure, trekking and festival travel. Current access, route conditions and suitable activity levels should always be confirmed directly with the team.",
-    ],
-  },
-  {
-    slug: "wildlife-india",
-    name: "Wild India",
-    eyebrow: "Forests · reserves · wildlife",
-    intro:
-      "Add a carefully planned wildlife chapter to a wider cultural journey through India.",
-    image: images.wildlife,
-    highlights: [
-      "Wildlife reserves",
-      "Safari planning",
-      "Natural landscapes",
-      "Seasonal travel",
-    ],
-    paragraphs: [
-      "India’s wildlife regions add a compelling contrast to its cities and heritage landscapes. The experience depends on season, reserve rules, permits and the natural unpredictability of wildlife.",
-      "Maragià Express references safari experiences on its official website. Specific reserves, accommodation and availability must be confirmed while planning; wildlife sightings can never be guaranteed.",
-    ],
-  },
-]
-
-const beyondIndiaDestinations: Destination[] = [
-  {
-    slug: "bhutan",
-    name: "Bhutan",
-    eyebrow: "Himalayan kingdom · monasteries · valleys",
-    intro:
-      "A carefully paced journey through Bhutan’s mountain landscapes and Buddhist cultural heritage.",
-    image: images.bhutan,
-    highlights: [
-      "Himalayan landscapes",
-      "Buddhist heritage",
-      "Mountain valleys",
-      "Seasonal travel",
-    ],
-    paragraphs: [
-      "Bhutan is presented as a destination on the official Maragià Express website. Its mountain geography, monasteries and distinctive approach to tourism call for an itinerary planned around current entry rules and local arrangements.",
-      "Specific routes, permits, accommodation and services should be confirmed directly with the team before travel is booked.",
-    ],
-  },
-  {
-    slug: "nepal",
-    name: "Nepal",
-    eyebrow: "Heritage cities · Himalaya · living traditions",
-    intro:
-      "Explore Nepal through its cultural landmarks, mountain setting and historic communities.",
-    image: images.nepal,
-    highlights: [
-      "Kathmandu Valley",
-      "Himalayan landscapes",
-      "Cultural heritage",
-      "Active travel",
-    ],
-    paragraphs: [
-      "Nepal is one of the destinations listed beyond India by Maragià Express. Cultural sites and Himalayan landscapes can form part of a journey adapted to season, altitude and individual interests.",
-      "The exact destinations, activity level and arrangements currently offered require confirmation with the travel team.",
-    ],
-  },
-  {
-    slug: "sri-lanka",
-    name: "Sri Lanka",
-    eyebrow: "Heritage · highlands · tropical landscapes",
-    intro:
-      "A journey through Sri Lanka’s cultural landscapes, green highlands and varied natural settings.",
-    image: images.sriLanka,
-    highlights: [
-      "Cultural heritage",
-      "Central highlands",
-      "Tea landscapes",
-      "Coastal regions",
-    ],
-    paragraphs: [
-      "Sri Lanka appears among the destinations offered beyond India on the official Maragià Express website. Its compact geography brings together cultural sites, highland scenery and tropical landscapes.",
-      "Current routes, accommodation and practical arrangements should be discussed directly with Maragià Express before making plans.",
-    ],
-  },
-]
-
-type Experience = {
-  slug: string
-  name: string
-  eyebrow: string
-  intro: string
-  image: string
-  bestFor: string
-  body: string[]
-}
-
-const experiences: Experience[] = [
-  {
-    slug: "tailor-made-journeys",
-    name: "Tailor-made journeys",
-    eyebrow: "Travel designed through conversation",
-    intro:
-      "Begin with your interests, dates and preferred pace, then shape a coherent route with the Maragià Express team.",
-    image: images.udaipur,
-    bestFor:
-      "Travelers who value flexibility and a journey shaped around personal interests.",
-    body: [
-      "Tailor-made travel is not about adding more to an itinerary. It is about choosing well: the regions that fit the season, the pace that leaves room to experience them, and arrangements that reflect how you want to travel.",
-      "Share your approximate dates, group size, interests, accommodation preferences and budget context. The team can then discuss what is currently possible and refine a proposed journey with you.",
-    ],
-  },
-  {
-    slug: "culture-heritage",
-    name: "Culture & heritage",
-    eyebrow: "Architecture · sacred places · living traditions",
-    intro:
-      "Explore India through the places, histories, crafts and daily rituals that make each region distinctive.",
-    image: images.palace,
-    bestFor:
-      "Curious travelers drawn to architecture, history, local traditions and regional identity.",
-    body: [
-      "Cultural travel is most rewarding when monuments are placed in context. A fort, temple, market or workshop becomes more meaningful when there is time to understand the community and landscape around it.",
-      "The official site features cultural routes across North India and Rajasthan. Exact visits and guiding arrangements should be confirmed for each itinerary.",
-    ],
-  },
-  {
-    slug: "adventure-cycling",
-    name: "Adventure & cycling",
-    eyebrow: "Active journeys across India",
-    intro:
-      "See the landscape at a different pace through cycling, trekking and selected mountain journeys.",
-    image: images.cycle,
-    bestFor:
-      "Active travelers prepared to discuss fitness, terrain and comfort expectations in detail.",
-    body: [
-      "Maragià Express publicly features Rajasthan cycling and Himalayan adventure. Active travel requires careful matching of terrain, distance, season and individual experience.",
-      "Before confirming a route, discuss your activity level, equipment requirements and preferred balance between active days and cultural exploration.",
-    ],
-  },
-  {
-    slug: "festivals",
-    name: "Festivals & gatherings",
-    eyebrow: "Seasonal journeys with cultural context",
-    intro:
-      "Plan around the energy of Holi, Pushkar and other festivals currently featured by Maragià Express.",
-    image: images.craft,
-    bestFor:
-      "Travelers comfortable with crowds, fixed dates and the dynamic nature of public events.",
-    body: [
-      "Festivals can offer a vivid perspective on local traditions, but they also require responsible preparation. Dates, locations and conditions vary, and respectful participation matters.",
-      "The official website features Holi, the Pushkar Fair and the Hemis Festival. Confirm current programs and arrangements directly before making travel plans.",
-    ],
-  },
-  {
-    slug: "luxury-travel",
-    name: "Heritage & refined stays",
-    eyebrow: "Considered comfort · remarkable settings",
-    intro:
-      "Combine India’s cultural depth with thoughtfully selected accommodation and a well-paced private journey.",
-    image: images.desert,
-    bestFor:
-      "Travelers seeking a higher level of comfort without losing a sense of place.",
-    body: [
-      "The official website presents luxury-oriented travel in India, including heritage settings and personalized arrangements. The meaning of luxury should be established around your own priorities—space, privacy, service, location or historical character.",
-      "No individual hotels or partnerships are promised on this site. Current options and standards are confirmed as part of a specific proposal.",
-    ],
-  },
-]
-
-type Tour = {
-  slug: string
-  title: string
-  category: string
-  categorySlug: string
-  image: string
-  summary: string
-}
-
-const tours: Tour[] = [
-  {
-    slug: "tour-of-india",
-    title: "Tour of India",
-    category: "Tour of India",
-    categorySlug: "tour-of-india",
-    image: images.udaipur,
-    summary:
-      "A starting point for discussing a personalized journey through India’s cultural and geographic diversity.",
-  },
-  {
-    slug: "maharajas-tour",
-    title: "The Maharaja’s Tour",
-    category: "Luxury and Splendor",
-    categorySlug: "luxury-and-splendor",
-    image: images.palace,
-    summary:
-      "A refined India journey presented within Maragià Express’s Luxury and Splendor collection.",
-  },
-  {
-    slug: "natural-kerala",
-    title: "Natural Kerala",
-    category: "Luxury and Splendor",
-    categorySlug: "luxury-and-splendor",
-    image: images.sriLanka,
-    summary:
-      "A southern India journey centered on the landscapes and character of Kerala.",
-  },
-  {
-    slug: "three-cats-of-india",
-    title: "The Three Cats of India",
-    category: "Luxury and Splendor",
-    categorySlug: "luxury-and-splendor",
-    image: images.wildlife,
-    summary:
-      "A wildlife-focused journey listed in the Luxury and Splendor collection.",
-  },
-  {
-    slug: "indian-festival-of-colors",
-    title: "Indian Festival of Colors",
-    category: "Indian Festivals Tour",
-    categorySlug: "indian-festivals-tour",
-    image: images.craft,
-    summary:
-      "A seasonal journey inspired by India’s Festival of Colors and its cultural setting.",
-  },
-  {
-    slug: "camel-fair",
-    title: "Camel Fair",
-    category: "Indian Festivals Tour",
-    categorySlug: "indian-festivals-tour",
-    image: images.desert,
-    summary:
-      "A Rajasthan festival journey associated with the celebrated Pushkar Camel Fair.",
-  },
-  {
-    slug: "hemis-feast-festival",
-    title: "Hemis’s Feast",
-    category: "Indian Festivals Tour",
-    categorySlug: "indian-festivals-tour",
-    image: images.ladakh,
-    summary:
-      "A festival-focused Ladakh journey presented around the Hemis celebration.",
-  },
-  {
-    slug: "overland-himalaya-tour",
-    title: "An Overland Himalaya Tour",
-    category: "Adventures in the World India",
-    categorySlug: "adventures-in-the-world-india",
-    image: images.ladakh,
-    summary:
-      "An overland mountain journey presented within the India adventure collection.",
-  },
-  {
-    slug: "rajasthan-on-bicycle",
-    title: "Rajasthan on Bicycle",
-    category: "Adventures in the World India",
-    categorySlug: "adventures-in-the-world-india",
-    image: images.cycle,
-    summary:
-      "An active journey through Rajasthan designed around travel by bicycle.",
-  },
-  {
-    slug: "hemis-feast-adventure",
-    title: "Hemis’s Feast",
-    category: "Adventures in the World India",
-    categorySlug: "adventures-in-the-world-india",
-    image: images.bhutan,
-    summary:
-      "A Ladakh festival journey included in the India adventure collection.",
-  },
-  {
-    slug: "classic-south-india",
-    title: "Classic Trip to South India",
-    category: "Cultural Tours of India",
-    categorySlug: "cultural-tours-of-india",
-    image: images.sriLanka,
-    summary:
-      "A cultural introduction to selected landscapes and heritage destinations in South India.",
-  },
-  {
-    slug: "introduction-to-india",
-    title: "Introduction to India",
-    category: "Cultural Tours of India",
-    categorySlug: "cultural-tours-of-india",
-    image: images.rajasthan,
-    summary:
-      "An introductory cultural journey for travelers beginning their exploration of India.",
-  },
-  {
-    slug: "karnataka-and-goa",
-    title: "Trip to Karnataka and Goa",
-    category: "Cultural Tours of India",
-    categorySlug: "cultural-tours-of-india",
-    image: images.palace,
-    summary:
-      "A cultural journey bringing together selected destinations in Karnataka and Goa.",
-  },
-  {
-    slug: "bengal-and-sikkim",
-    title: "Trip to Bengal and Sikkim",
-    category: "Cultural Tours of India",
-    categorySlug: "cultural-tours-of-india",
-    image: images.nepal,
-    summary:
-      "A journey linking the cultural character of Bengal with the Himalayan setting of Sikkim.",
-  },
-  {
-    slug: "temples-and-tribes-of-orissa",
-    title: "Temples and Tribes of Orissa",
-    category: "Cultural Tours of India",
-    categorySlug: "cultural-tours-of-india",
-    image: images.craft,
-    summary:
-      "A cultural route in Odisha, listed by Maragià Express under its established tour title.",
-  },
-  {
-    slug: "gujarat-trip",
-    title: "Gujarat Trip",
-    category: "Cultural Tours of India",
-    categorySlug: "cultural-tours-of-india",
-    image: images.desert,
-    summary:
-      "A cultural journey through selected heritage and landscape experiences in Gujarat.",
-  },
-  {
-    slug: "rural-rajasthan",
-    title: "Rural Trip Rajasthan",
-    category: "Cultural Tours of India",
-    categorySlug: "cultural-tours-of-india",
-    image: images.udaipur,
-    summary:
-      "A Rajasthan journey with an emphasis on rural landscapes and local context.",
-  },
-]
+import { siteImages as images } from "@/data/site-images"
+import {
+  Destination,
+  destinations,
+  beyondIndiaDestinations,
+  getDestination,
+} from "@/data/destinations"
+import { Experience, experiences, getExperience } from "@/data/experiences"
+import { Tour, tours, getTour } from "@/data/tours"
+import { articles, getArticle } from "@/data/articles"
 
 type TourDetails = {
   price: string
@@ -814,33 +434,6 @@ const tourDetails: Record<string, TourDetails> = {
   },
 }
 
-const articles = [
-  {
-    slug: "planning-first-visit-india",
-    category: "Planning",
-    title: "Planning a first journey through India",
-    excerpt:
-      "Start with season, geography and pace before deciding how many places belong in your itinerary.",
-    image: images.udaipur,
-  },
-  {
-    slug: "rajasthan-heritage-cities",
-    category: "Culture",
-    title: "Reading Rajasthan through its heritage cities",
-    excerpt:
-      "Udaipur, Jodhpur and Jaipur each tell a different story through landscape, architecture and color.",
-    image: images.palace,
-  },
-  {
-    slug: "travel-at-a-slower-pace",
-    category: "Travel well",
-    title: "Why a slower journey often reveals more",
-    excerpt:
-      "Fewer transitions can create more space for context, conversation and a genuine sense of place.",
-    image: images.desert,
-  },
-]
-
 export function PageHeader() {
   const [open, setOpen] = useState(false)
   return (
@@ -968,7 +561,22 @@ function InnerHero({
 }) {
   return (
     <section className={`inner-hero ${image ? "inner-hero-image" : ""}`}>
-      {image && <img src={image} alt="" />}
+      {image && (
+        <SiteImage
+          src={image}
+          alt={title}
+          width={1800}
+          height={1200}
+          priority
+          style={{
+            position: "absolute",
+            inset: 0,
+            width: "100%",
+            height: "100%",
+            objectFit: "cover",
+          }}
+        />
+      )}
       {image && <span className="inner-hero-shade" />}
       <div>
         <Breadcrumbs current={title} parent={parent} />
@@ -996,14 +604,14 @@ function ListingCard({
   return (
     <a className="listing-card" href={href}>
       <div>
-        <img src={image} alt="" loading="lazy" />
+        <img src={image} alt={title} loading="lazy" />
         <span />
       </div>
       <p>{eyebrow}</p>
       <h2>{title}</h2>
       <span>{copy}</span>
       <b>
-        Explore <i aria-hidden="true">↗</i>
+        Explore <i aria-hidden="true"><ArrowOutIcon /></i>
       </b>
     </a>
   )
@@ -1213,7 +821,7 @@ export function ToursPage() {
                     key={tour.slug}
                   >
                     <div>
-                      <img src={tour.image} alt="" loading="lazy" />
+                      <img src={tour.image} alt={tour.title} loading="lazy" />
                       <span />
                     </div>
                     <small>{tour.category}</small>
@@ -2106,12 +1714,12 @@ export function PolicyPage({
           </section>
         ))}
         {type === "cancellation" && (
-          <a href="https://maragiaexpress.com/cancellazione-e-rimborso/">
+          <a href="/cancellation-policy">
             View the existing published policy ↗
           </a>
         )}
         {type === "terms" && (
-          <a href="https://maragiaexpress.com/terms-and-conditions/">
+          <a href="/terms">
             View the existing published terms ↗
           </a>
         )}
@@ -2138,33 +1746,13 @@ export function NotFoundPage() {
   )
 }
 
-export function getDestination(slug: string) {
-  return [...destinations, ...beyondIndiaDestinations].find(
-    (destination) => destination.slug === slug,
-  )
-}
-
-export function getTour(slug: string) {
-  return tours.find((tour) => tour.slug === slug)
-}
-
-export function getExperience(slug: string) {
-  return experiences.find((experience) => experience.slug === slug)
-}
-
-export function getArticle(slug: string) {
-  return articles.find((article) => article.slug === slug)
-}
-
-function useDocumentTitle(title: string) {
-  useEffect(() => {
-    document.title = `${title} | Maragià Express`
-  }, [title])
-}
+export { getDestination } from "@/data/destinations"
+export { getTour } from "@/data/tours"
+export { getExperience } from "@/data/experiences"
+export { getArticle } from "@/data/articles"
 
 export function DestinationBySlug({ slug }: { slug: string }) {
   const destination = getDestination(slug)
-  useDocumentTitle(destination?.name || "Page not found")
   return destination ? (
     <DestinationPage destination={destination} />
   ) : (
@@ -2174,13 +1762,11 @@ export function DestinationBySlug({ slug }: { slug: string }) {
 
 export function TourBySlug({ slug }: { slug: string }) {
   const tour = getTour(slug)
-  useDocumentTitle(tour?.title || "Page not found")
   return tour ? <TourPage tour={tour} /> : <NotFoundPage />
 }
 
 export function ExperienceBySlug({ slug }: { slug: string }) {
   const experience = getExperience(slug)
-  useDocumentTitle(experience?.name || "Page not found")
   return experience ? (
     <ExperiencePage experience={experience} />
   ) : (
@@ -2190,6 +1776,5 @@ export function ExperienceBySlug({ slug }: { slug: string }) {
 
 export function ArticleBySlug({ slug }: { slug: string }) {
   const article = getArticle(slug)
-  useDocumentTitle(article?.title || "Page not found")
   return article ? <ArticlePage article={article} /> : <NotFoundPage />
 }

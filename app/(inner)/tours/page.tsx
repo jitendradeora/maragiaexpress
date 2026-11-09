@@ -1,10 +1,37 @@
 import type { Metadata } from "next"
 import { ToursPage } from "@/components/InnerPages"
+import JsonLd from "@/components/seo/JsonLd"
+import { getStaticPage } from "@/data/pages"
+import { createPageMetadata } from "@/lib/seo/metadata"
+import { breadcrumbSchema, webPageSchema } from "@/lib/seo/schema"
 
-export const metadata: Metadata = {
-  title: "Tours of India",
-}
+const page = getStaticPage("/tours")!
+
+export const metadata: Metadata = createPageMetadata({
+  title: page.title,
+  description: page.description,
+  path: page.path,
+  image: page.image,
+})
 
 export default function Page() {
-  return <ToursPage />
+  return (
+    <>
+      <JsonLd
+        data={[
+          webPageSchema({
+            title: page.title,
+            description: page.description,
+            path: page.path,
+            type: "CollectionPage",
+          }),
+          breadcrumbSchema([
+            { name: "Home", path: "/" },
+            { name: "Tours", path: "/tours" },
+          ]),
+        ]}
+      />
+      <ToursPage />
+    </>
+  )
 }

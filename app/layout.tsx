@@ -1,18 +1,31 @@
-import type { Metadata } from "next"
-import { organizationSchema, websiteSchema } from "@/lib/schema"
-import { siteConfig } from "@/lib/site-config"
+import type { Metadata, Viewport } from "next"
+import { Cormorant_Garamond, Inter } from "next/font/google"
+import JsonLd from "@/components/seo/JsonLd"
+import { rootMetadata } from "@/lib/seo/metadata"
+import { organizationSchema, websiteSchema } from "@/lib/seo/schema"
 import "./globals.css"
 
-export const metadata: Metadata = {
-  title: {
-    default: `${siteConfig.name} | Tailor-Made Journeys Through India`,
-    template: `%s | ${siteConfig.name}`,
-  },
-  description:
-    "Discover tailor-made journeys through India's culture, heritage, landscapes and wildlife with Maragià Express in Udaipur, Rajasthan.",
-  icons: {
-    icon: "/favicon.svg",
-  },
+const displayFont = Cormorant_Garamond({
+  subsets: ["latin"],
+  weight: ["400", "500", "600"],
+  style: ["normal", "italic"],
+  variable: "--font-display",
+  display: "swap",
+})
+
+const bodyFont = Inter({
+  subsets: ["latin"],
+  weight: ["400", "500", "600"],
+  variable: "--font-body",
+  display: "swap",
+})
+
+export const metadata: Metadata = rootMetadata
+
+export const viewport: Viewport = {
+  themeColor: "#183b32",
+  width: "device-width",
+  initialScale: 1,
 }
 
 export default function RootLayout({
@@ -20,15 +33,13 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode
 }>) {
-  const schema = [organizationSchema(), websiteSchema()]
-
   return (
-    <html lang="en">
+    <html lang="en" className={`${displayFont.variable} ${bodyFont.variable}`}>
       <body>
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
-        />
+        <a className="skip-link" href="#main-content">
+          Skip to main content
+        </a>
+        <JsonLd data={[organizationSchema(), websiteSchema()]} />
         {children}
       </body>
     </html>

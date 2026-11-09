@@ -4,24 +4,10 @@ import { FormEvent, useState } from "react"
 import BackToTop from "./BackToTop"
 import { EnquiryReady } from "./EnquiryReady"
 import ProfileLinks from "./ProfileLinks"
+import SiteImage from "./SiteImage"
+import { homepageFaqs as faqs } from "@/data/faqs"
+import { siteImages as images } from "@/data/site-images"
 import { siteConfig } from "@/lib/site-config"
-
-const images = {
-  hero: "https://images.unsplash.com/photo-1575994532957-773da2f83eb1?auto=format&fit=crop&w=2200&q=84",
-  udaipur:
-    "https://images.unsplash.com/photo-1591264247469-d072a1018915?auto=format&fit=crop&w=1400&q=82",
-  jodhpur:
-    "https://images.unsplash.com/photo-1545321945-7edd9bf1331a?auto=format&fit=crop&w=1400&q=82",
-  desert:
-    "https://images.unsplash.com/photo-1668689723080-c50f6e823de5?auto=format&fit=crop&w=1400&q=82",
-  ladakh:
-    "https://images.unsplash.com/photo-1632648366997-a091f7075445?auto=format&fit=crop&w=1400&q=82",
-  wildlife:
-    "https://images.unsplash.com/photo-1598510343363-244a5ea24814?auto=format&fit=crop&w=1400&q=82",
-  craft:
-    "https://images.unsplash.com/photo-1702742970125-d57f8ee68e89?auto=format&fit=crop&w=1200&q=82",
-  city: "https://images.unsplash.com/photo-1634316127530-4289556bad26?auto=format&fit=crop&w=1400&q=82",
-}
 
 const destinations = [
   {
@@ -67,29 +53,6 @@ const experiences = [
     number: "04",
     title: "Festivals & gatherings",
     copy: "Travel inspired by Holi, the Pushkar Fair and other festivals featured by Maragià Express.",
-  },
-]
-
-const faqs = [
-  {
-    question: "Can I request a customized itinerary?",
-    answer:
-      "Yes. Tailor-made planning is a core service. Share your dates, interests, preferred pace and accommodation style so the team can discuss suitable possibilities with you.",
-  },
-  {
-    question: "Does Maragià Express organize group travel?",
-    answer:
-      "The official website presents organized and cultural tours. Contact the team with your group size and travel dates to confirm the options currently available.",
-  },
-  {
-    question: "Which destinations are currently featured?",
-    answer:
-      "The official website currently features travel across India, including Rajasthan, North India and Ladakh, as well as selected journeys in Bhutan, Nepal and Sri Lanka.",
-  },
-  {
-    question: "How do I request a quotation?",
-    answer:
-      "Use the journey planner below, email mail@maragiaexpress.com, or call +91 97840 02880. A quotation is only provided after the team confirms your travel requirements.",
   },
 ]
 
@@ -209,10 +172,20 @@ function Header() {
 function Hero() {
   return (
     <section className="hero" id="top">
-      <img
+      <SiteImage
         src={images.hero}
         alt="Historic palace architecture reflected in water in Udaipur, Rajasthan"
-        fetchPriority="high"
+        width={2200}
+        height={1400}
+        priority
+        sizes="100vw"
+        style={{
+          position: "absolute",
+          inset: 0,
+          width: "100%",
+          height: "100%",
+          objectFit: "cover",
+        }}
       />
       <div className="hero-overlay" />
       <div className="hero-content">
@@ -306,7 +279,11 @@ function Destinations() {
             }
             key={destination.name}
           >
-            <img src={destination.image} alt="" loading="lazy" />
+            <img
+              src={destination.image}
+              alt={`${destination.name} — ${destination.kicker}`}
+              loading="lazy"
+            />
             <span className="image-shade" />
             <span className="destination-content">
               <small>{destination.kicker}</small>
@@ -486,34 +463,37 @@ function Journal() {
         <ArrowLink href="/travel-journal">Explore the travel journal</ArrowLink>
       </div>
       <div className="journal-grid">
-        <article className="journal-feature">
+        <a
+          className="journal-feature"
+          href="/travel-journal/rajasthan-heritage-cities"
+        >
           <img
             src={images.city}
             alt="Intricate balconies and windows on a Rajasthan palace facade"
             loading="lazy"
           />
           <p className="eyebrow">Architecture & heritage</p>
-          <h3>Reading Rajasthan through its forts, palaces and old cities</h3>
+          <h3>Reading Rajasthan through its heritage cities</h3>
           <p>
             Look beyond the facade and discover how architecture carries
             centuries of memory.
           </p>
-        </article>
-        <article>
+        </a>
+        <a href="/travel-journal/planning-first-visit-india">
           <span className="journal-number">FIELD NOTE · 01</span>
-          <h3>Preparing for your first journey through India</h3>
+          <h3>Planning a first journey through India</h3>
           <p>
             A thoughtful starting point for pace, season, regions and
             expectations.
           </p>
-        </article>
-        <article>
+        </a>
+        <a href="/travel-journal/travel-at-a-slower-pace">
           <span className="journal-number">FIELD NOTE · 02</span>
-          <h3>Why Udaipur rewards a slower kind of travel</h3>
+          <h3>Why a slower journey often reveals more</h3>
           <p>
             Lakes, havelis and everyday rituals in Maragià Express’s home city.
           </p>
-        </article>
+        </a>
       </div>
     </section>
   )
@@ -745,7 +725,7 @@ export default function HomePage() {
   return (
     <>
       <Header />
-      <main>
+      <main id="main-content">
         <Hero />
         <Introduction />
         <Destinations />
