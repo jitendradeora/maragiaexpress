@@ -1,41 +1,38 @@
-# figma-make-app
+# maragia-express
 
-React + Vite + Tailwind CSS project running inside Figma Make.
+Next.js App Router + React + Tailwind CSS project for Maragià Express.
 
 ## Development Server
 
-A Vite development server is **already running** on `$PORT` (default 8443). You don't need to start it manually.
+```bash
+npm run dev
+```
 
-- Preview URL: The user can access the running app through the preview panel
-- Hot reload: Changes to source files are reflected immediately
+The app runs on port `8443` by default.
 
 ## Project Structure
 
-This is the canonical project structure. Start with task-relevant files below. Only follow imports or inspect other files when required, when a documented path is missing, or when the repository contradicts this guide.
-
-- `src/main.tsx` - React entrypoint; imports `src/index.css` and mounts `src/App.tsx` into the `#root` element
-- `src/App.tsx` - Primary application component and the usual starting point for UI work
-- `src/index.css` - Global CSS entrypoint and Tailwind CSS v4 import
-- `index.html` - Vite HTML shell containing the `#root` element and loading `src/main.tsx`
-- `package.json` - Project dependencies and the Vite build, development, preview, and formatting scripts
-- `vite.config.ts` - Vite configuration with React, Tailwind CSS v4, and Figma Make plugins plus the `@` alias for `src`
-- `.mise.toml` - Toolchain versions for Node.js and pnpm
+- `app/layout.tsx` - Root layout, global metadata, and JSON-LD
+- `app/page.tsx` - Homepage
+- `app/(inner)/` - Inner pages with shared header and footer
+- `app/globals.css` - Global CSS and Tailwind CSS v4 import
+- `src/components/` - Shared UI and page components
+- `src/lib/` - Site config and schema helpers
+- `package.json` - Dependencies and Next.js scripts
+- `next.config.ts` - Next.js config, image hosts, and legacy redirects
 
 ## Dependencies
 
-- Runtime: React 19 and React DOM 19
-- Styling: Tailwind CSS v4 with the `@tailwindcss/vite` plugin
-- Build tooling: Vite 8, TypeScript 5.7, and `@vitejs/plugin-react`
+- Runtime: Next.js 15, React 19, React DOM 19
+- Styling: Tailwind CSS v4 with `@tailwindcss/postcss`
 - Formatting: oxfmt
 
 ## Styling
 
-This project uses **Tailwind CSS v4** through the `@tailwindcss/vite` plugin configured in `vite.config.ts`. `src/index.css` imports Tailwind with `@import 'tailwindcss';`. Use Tailwind utility classes directly in JSX and put global CSS or Tailwind v4 theme customization in `src/index.css`. This scaffold does not need a Tailwind config file or PostCSS config.
-
-`src/main.tsx` imports `src/index.css`, so global font wiring belongs in `src/index.css`. Keep CSS `@import` statements first, then add any `@font-face` rules and font-family defaults there.
+This project uses **Tailwind CSS v4** through `@tailwindcss/postcss`. `app/globals.css` imports Tailwind with `@import 'tailwindcss';`. Use Tailwind utility classes directly in JSX and put global CSS or theme customization in `app/globals.css`.
 
 ## Code quality
 
-- Use double quotes for strings containing apostrophes (`"We're here to help"`), or escape them in single-quoted strings. An unescaped apostrophe in a single-quoted string breaks the build.
+- Use double quotes for strings containing apostrophes (`"We're here to help"`), or escape them in single-quoted strings.
 - Ensure JSX tags are closed and braces are balanced.
-- Export components as default exports.
+- Export route pages and shared components as default exports where the file is a route entry.

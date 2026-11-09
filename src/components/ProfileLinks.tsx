@@ -1,4 +1,6 @@
-import { siteConfig } from "./lib/site-config"
+"use client"
+
+import { siteConfig } from "@/lib/site-config"
 
 function InstagramIcon() {
   return (

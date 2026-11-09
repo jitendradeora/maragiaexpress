@@ -1,5 +1,7 @@
+"use client"
+
 import { useState } from "react"
-import { siteConfig } from "./lib/site-config"
+import { siteConfig } from "@/lib/site-config"
 
 export function enquiryMailto(subject: string, body: string) {
   return `mailto:${siteConfig.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`

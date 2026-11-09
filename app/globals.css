@@ -1596,12 +1596,20 @@ button { color: inherit; }
 }
 
 .tour-facts {
-  padding: 22px 0 18px;
+  margin-top: 28px;
+  padding: 28px 32px 24px;
+  border: 1px solid rgba(201, 190, 173, .7);
+  background: var(--white);
+  box-shadow:
+    0 22px 48px rgba(24, 59, 50, .12),
+    0 8px 18px rgba(38, 39, 34, .06);
+}
+
+.tour-facts-main {
   display: grid;
   grid-template-columns: minmax(210px, 1.8fr) minmax(0, 1.05fr) max-content minmax(0, 1.1fr) auto;
-  align-items: start;
-  gap: 12px 28px;
-  border-bottom: 1px solid #c9bead;
+  align-items: center;
+  gap: 18px 28px;
 }
 
 .tour-facts dl {
@@ -1610,11 +1618,23 @@ button { color: inherit; }
 }
 
 .tour-facts dl > div {
+  position: relative;
   min-width: 0;
+  padding-right: 20px;
+}
+
+.tour-facts dl > div:not(:first-child)::before {
+  content: "";
+  position: absolute;
+  left: -14px;
+  top: 4px;
+  bottom: 4px;
+  width: 1px;
+  background: #d8cdb9;
 }
 
 .tour-facts dt {
-  margin-bottom: 4px;
+  margin-bottom: 6px;
   color: var(--olive);
   font-size: 12px;
   font-weight: 600;
@@ -1627,9 +1647,9 @@ button { color: inherit; }
   font: 500 22px/1.2 var(--display);
 }
 
-.tour-facts > a {
+.tour-facts-main > a {
   min-height: 48px;
-  padding: 0 18px;
+  padding: 0 20px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1640,73 +1660,24 @@ button { color: inherit; }
   letter-spacing: .12em;
   text-transform: uppercase;
   white-space: nowrap;
+  box-shadow: 0 10px 22px rgba(24, 59, 50, .18);
+  transition: background .2s ease, transform .2s ease;
 }
 
-.tour-facts > a:hover {
+.tour-facts-main > a:hover {
   background: var(--green-light);
+  transform: translateY(-1px);
 }
 
 .tour-facts-note {
-  margin: 14px 0 0;
+  margin: 20px 0 0;
+  padding-top: 16px;
+  border-top: 1px solid #e4d9c8;
   color: var(--olive);
   font-size: 15px;
   line-height: 1.6;
 }
 
-.tour-atlas {
-  margin-top: 72px;
-  border: 1px solid #d2cabc;
-  background: var(--white);
-}
-
-.tour-sheet-map {
-  margin: 0;
-  padding: 12px 12px 0;
-}
-
-.tour-sheet-map img {
-  width: 100%;
-  height: auto;
-  max-height: 480px;
-  object-fit: contain;
-  object-position: center;
-}
-
-.tour-atlas .tour-map-pending {
-  min-height: 220px;
-  border: 0;
-}
-
-.tour-rail {
-  margin: 0;
-  padding: 4px 18px 8px;
-  display: flex;
-  flex-wrap: wrap;
-  list-style: none;
-  border-top: 1px solid #e4d9c8;
-}
-
-.tour-rail li {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 12px 0;
-  font: 500 22px/1 var(--display);
-}
-
-.tour-rail li > span {
-  color: var(--maroon);
-  font: 600 12px/1 var(--body);
-  letter-spacing: .04em;
-}
-
-.tour-rail li:not(:last-child)::after {
-  content: "";
-  width: 22px;
-  height: 1px;
-  margin: 0 12px;
-  background: var(--gold);
-}
 
 .tour-program {
   margin-top: 40px;
@@ -2156,7 +2127,8 @@ button { color: inherit; }
 
 .tour-price {
   color: var(--maroon);
-  font-size: 24px !important;
+  font-size: 26px !important;
+  letter-spacing: -.01em;
 }
 
 .tour-price-note {
@@ -2431,7 +2403,7 @@ button { color: inherit; }
 }
 
 .tour-policy-links {
-  padding: 0 max(48px, calc((100vw - 1184px) / 2)) 100px;
+  padding: 80px max(48px, calc((100vw - 1184px) / 2)) 80px;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
 }
@@ -2625,6 +2597,10 @@ button { color: inherit; }
   }
 
   .tour-facts {
+    padding: 22px 20px 18px;
+  }
+
+  .tour-facts-main {
     grid-template-columns: 1fr 1fr;
     align-items: stretch;
     gap: 18px 24px;
@@ -2637,11 +2613,19 @@ button { color: inherit; }
     gap: 16px 24px;
   }
 
+  .tour-facts dl > div {
+    padding-right: 0;
+  }
+
+  .tour-facts dl > div:not(:first-child)::before {
+    display: none;
+  }
+
   .tour-facts dd {
     white-space: normal;
   }
 
-  .tour-facts > a {
+  .tour-facts-main > a {
     grid-column: 1 / -1;
     justify-content: center;
   }
@@ -2674,14 +2658,6 @@ button { color: inherit; }
   .tour-chapter li {
     grid-template-columns: 42px 1fr;
     gap: 12px;
-  }
-
-  .tour-sheet-map {
-    padding: 8px 8px 0;
-  }
-
-  .tour-sheet-map img {
-    max-height: 280px;
   }
 
   .tour-itinerary-days {

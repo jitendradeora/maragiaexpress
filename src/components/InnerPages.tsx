@@ -1,8 +1,9 @@
+"use client"
+
 import { useEffect, useState } from "react"
-import BackToTop from "./BackToTop"
 import { EnquiryReady } from "./EnquiryReady"
 import ProfileLinks from "./ProfileLinks"
-import { siteConfig } from "./lib/site-config"
+import { siteConfig } from "@/lib/site-config"
 
 const images = {
   rajasthan:
@@ -840,34 +841,7 @@ const articles = [
   },
 ]
 
-const routeAliases: Record<string, string> = {
-  "/tour-dellindia": "/tours",
-  "/viaggi-di-lusso-in-india": "/tours",
-  "/tour-culturali-dell-india": "/tours",
-  "/avventure-nel-mondo-india": "/tours",
-  "/tour-dei-festival-indiani": "/tours",
-  "/festa-dei-colori-india": "/tours/indian-festival-of-colors",
-  "/fiera-di-pushkar": "/tours/camel-fair",
-  "/viaggio-in-bicicletta-in-rajasthan": "/tours/rajasthan-on-bicycle",
-  "/viaggio-organizzato-in-bhutan": "/destinations/bhutan",
-  "/viaggio-organizzato-in-nepal": "/destinations/nepal",
-  "/viaggio-organizzato-in-sri-lanka": "/destinations/sri-lanka",
-  "/oltre-lindia": "/destinations",
-  "/viaggio-di-lusso-in-india-2": "/tours/maharajas-tour",
-  "/holi-colorato-2023-fd": "/tours/indian-festival-of-colors",
-  "/agenzia-turismo-india": "/contact",
-  "/blog": "/travel-journal",
-  "/cancellazione-e-rimborso": "/cancellation-policy",
-  "/terms-and-conditions": "/terms",
-  "/informazione": "/travel-information",
-}
-
-function normalizePath(path: string) {
-  const trimmed = path.length > 1 ? path.replace(/\/$/, "") : path
-  return routeAliases[trimmed] || trimmed
-}
-
-function PageHeader() {
+export function PageHeader() {
   const [open, setOpen] = useState(false)
   return (
     <header className="inner-header">
@@ -906,7 +880,7 @@ function PageHeader() {
   )
 }
 
-function PageFooter() {
+export function PageFooter() {
   return (
     <footer className="inner-footer">
       <div>
@@ -1024,7 +998,7 @@ function ListingCard({
   )
 }
 
-function DestinationsPage() {
+export function DestinationsPage() {
   return (
     <>
       <InnerHero
@@ -1087,7 +1061,7 @@ function BeyondIndia() {
   )
 }
 
-function DestinationPage({ destination }: { destination: Destination }) {
+export function DestinationPage({ destination }: { destination: Destination }) {
   return (
     <>
       <InnerHero
@@ -1125,7 +1099,7 @@ function DestinationPage({ destination }: { destination: Destination }) {
   )
 }
 
-function ExperiencesPage() {
+export function ExperiencesPage() {
   return (
     <>
       <InnerHero
@@ -1152,7 +1126,7 @@ function ExperiencesPage() {
   )
 }
 
-function ExperiencePage({ experience }: { experience: Experience }) {
+export function ExperiencePage({ experience }: { experience: Experience }) {
   return (
     <>
       <InnerHero
@@ -1186,7 +1160,7 @@ function ExperiencePage({ experience }: { experience: Experience }) {
   )
 }
 
-function ToursPage() {
+export function ToursPage() {
   const categories = Array.from(
     new Map(tours.map((tour) => [tour.categorySlug, tour.category])).entries(),
   )
@@ -1452,7 +1426,7 @@ function TourEnquiryForm({ tour }: { tour: Tour }) {
   )
 }
 
-function TourPage({ tour }: { tour: Tour }) {
+export function TourPage({ tour }: { tour: Tour }) {
   const details = tourDetails[tour.slug] ?? {
     price: "On request",
     duration: "Confirmed with proposal",
@@ -1484,38 +1458,40 @@ function TourPage({ tour }: { tour: Tour }) {
       />
       <section className="tour-sheet">
         <div className="tour-facts">
-          <dl>
-            <div>
-              <dt>Price</dt>
-              <dd className="tour-price">{details.price}</dd>
-            </div>
-            <div>
-              <dt>Duration</dt>
-              <dd>{details.duration}</dd>
-            </div>
-            <div>
-              <dt>Places</dt>
-              <dd>
-                {details.route.length}{" "}
-                {details.route.length === 1 ? "stop" : "stops"}
-              </dd>
-            </div>
-            <div>
-              <dt>Route</dt>
-              <dd>
-                {details.route[0]}
-                {details.route.length > 1
-                  ? ` to ${details.route[details.route.length - 1]}`
-                  : ""}
-              </dd>
-            </div>
-          </dl>
-          <a href="#tour-enquiry">Enquire</a>
+          <div className="tour-facts-main">
+            <dl>
+              <div>
+                <dt>Price</dt>
+                <dd className="tour-price">{details.price}</dd>
+              </div>
+              <div>
+                <dt>Duration</dt>
+                <dd>{details.duration}</dd>
+              </div>
+              <div>
+                <dt>Places</dt>
+                <dd>
+                  {details.route.length}{" "}
+                  {details.route.length === 1 ? "stop" : "stops"}
+                </dd>
+              </div>
+              <div>
+                <dt>Route</dt>
+                <dd>
+                  {details.route[0]}
+                  {details.route.length > 1
+                    ? ` to ${details.route[details.route.length - 1]}`
+                    : ""}
+                </dd>
+              </div>
+            </dl>
+            <a href="#tour-enquiry">Enquire</a>
+          </div>
+          <p className="tour-facts-note">
+            Planning overview. Your proposal confirms the current route, price,
+            and availability before you book flights.
+          </p>
         </div>
-        <p className="tour-facts-note">
-          Planning overview. Your proposal confirms the current route, price,
-          and availability before you book flights.
-        </p>
         <div className="tour-program" id="itinerary">
           <div className="tour-program-heading">
             <div>
@@ -1576,30 +1552,6 @@ function TourPage({ tour }: { tour: Tour }) {
             )
           })}
         </div>
-        <div className="tour-atlas">
-          {details.map ? (
-            <figure className="tour-sheet-map">
-              <img
-                src={details.map}
-                alt={`Route map for ${tour.title}`}
-                loading="lazy"
-              />
-            </figure>
-          ) : (
-            <div className="tour-map-pending">
-              <span aria-hidden="true">M</span>
-              <p>The route map is included with the confirmed itinerary.</p>
-            </div>
-          )}
-          <ol className="tour-rail" aria-label="Places in order">
-            {details.route.map((stop, index) => (
-              <li key={`${stop}-${index}`}>
-                <span>{index + 1}</span>
-                {stop}
-              </li>
-            ))}
-          </ol>
-        </div>
       </section>
       <TourGallery gallery={gallery} title={tour.title} />
       <section className="tour-logistics">
@@ -1630,7 +1582,7 @@ function TourPage({ tour }: { tour: Tour }) {
           this website summary.
         </p>
       </section>
-      <nav className="tour-policy-links" aria-label="Tour policies">
+      <nav className="tour-policy-links pt-4" aria-label="Tour policies">
         <a href="/terms">
           <span>Terms & conditions</span>
           <b aria-hidden="true">↗</b>
@@ -1785,7 +1737,7 @@ function EnquiryForm() {
   )
 }
 
-function TailorMadePage() {
+export function TailorMadePage() {
   return (
     <>
       <InnerHero
@@ -1846,7 +1798,7 @@ function TailorMadePage() {
   )
 }
 
-function AboutPage() {
+export function AboutPage() {
   return (
     <>
       <InnerHero
@@ -1906,7 +1858,7 @@ function AboutPage() {
   )
 }
 
-function JournalPage() {
+export function JournalPage() {
   return (
     <>
       <InnerHero
@@ -1942,7 +1894,7 @@ function JournalPage() {
   )
 }
 
-function ArticlePage({ article }: { article: typeof articles[number] }) {
+export function ArticlePage({ article }: { article: typeof articles[number] }) {
   return (
     <>
       <InnerHero
@@ -1991,7 +1943,7 @@ function ArticlePage({ article }: { article: typeof articles[number] }) {
   )
 }
 
-function ContactPage() {
+export function ContactPage() {
   return (
     <>
       <InnerHero
@@ -2018,7 +1970,7 @@ function ContactPage() {
   )
 }
 
-function PolicyPage({
+export function PolicyPage({
   type,
 }: {
   type: "privacy" | "terms" | "payment" | "cancellation" | "information"
@@ -2161,7 +2113,7 @@ function PolicyPage({
   )
 }
 
-function NotFoundPage() {
+export function NotFoundPage() {
   return (
     <main className="not-found">
       <p className="inner-eyebrow">404 · Journey interrupted</p>
@@ -2175,91 +2127,58 @@ function NotFoundPage() {
   )
 }
 
-export default function InnerPages({ pathname }: { pathname: string }) {
-  const path = normalizePath(pathname)
-  let content: React.ReactNode
-  let title = "Maragià Express"
+export function getDestination(slug: string) {
+  return [...destinations, ...beyondIndiaDestinations].find(
+    (destination) => destination.slug === slug,
+  )
+}
 
-  if (path === "/destinations") {
-    content = <DestinationsPage />
-    title = "Destinations"
-  } else if (path.startsWith("/destinations/")) {
-    const item = [...destinations, ...beyondIndiaDestinations].find(
-      (destination) => `/destinations/${destination.slug}` === path,
-    )
-    content = item ? <DestinationPage destination={item} /> : <NotFoundPage />
-    title = item?.name || "Page not found"
-  } else if (path === "/tours") {
-    content = <ToursPage />
-    title = "Tours of India"
-  } else if (path.startsWith("/tours/")) {
-    const item = tours.find((tour) => `/tours/${tour.slug}` === path)
-    content = item ? <TourPage tour={item} /> : <NotFoundPage />
-    title = item?.title || "Page not found"
-  } else if (path === "/experiences") {
-    content = <ExperiencesPage />
-    title = "Travel experiences"
-  } else if (path.startsWith("/experiences/")) {
-    const item = experiences.find(
-      (experience) => `/experiences/${experience.slug}` === path,
-    )
-    content = item ? <ExperiencePage experience={item} /> : <NotFoundPage />
-    title = item?.name || "Page not found"
-  } else if (path === "/tailor-made") {
-    content = <TailorMadePage />
-    title = "Tailor-made journeys"
-  } else if (path === "/about") {
-    content = <AboutPage />
-    title = "About"
-  } else if (path === "/travel-journal") {
-    content = <JournalPage />
-    title = "Travel journal"
-  } else if (path.startsWith("/travel-journal/")) {
-    const item = articles.find(
-      (article) => `/travel-journal/${article.slug}` === path,
-    )
-    content = item ? <ArticlePage article={item} /> : <NotFoundPage />
-    title = item?.title || "Page not found"
-  } else if (path === "/contact") {
-    content = <ContactPage />
-    title = "Contact"
-  } else if (path === "/privacy") {
-    content = <PolicyPage type="privacy" />
-    title = "Privacy notice"
-  } else if (path === "/terms") {
-    content = <PolicyPage type="terms" />
-    title = "Terms and conditions"
-  } else if (path === "/payment-policy") {
-    content = <PolicyPage type="payment" />
-    title = "Payment policy"
-  } else if (path === "/cancellation-policy") {
-    content = <PolicyPage type="cancellation" />
-    title = "Cancellation and refunds"
-  } else if (path === "/travel-information") {
-    content = <PolicyPage type="information" />
-    title = "Travel information"
-  } else {
-    content = <NotFoundPage />
-    title = "Page not found"
-  }
+export function getTour(slug: string) {
+  return tours.find((tour) => tour.slug === slug)
+}
 
+export function getExperience(slug: string) {
+  return experiences.find((experience) => experience.slug === slug)
+}
+
+export function getArticle(slug: string) {
+  return articles.find((article) => article.slug === slug)
+}
+
+function useDocumentTitle(title: string) {
   useEffect(() => {
     document.title = `${title} | Maragià Express`
-    const hash = window.location.hash.slice(1)
-    const target = hash ? document.getElementById(hash) : null
-    if (target) {
-      target.scrollIntoView()
-      return
-    }
-    window.scrollTo(0, 0)
-  }, [pathname, title])
+  }, [title])
+}
 
-  return (
-    <div className="inner-site">
-      <PageHeader />
-      {content}
-      {path !== "/404" && <PageFooter />}
-      <BackToTop />
-    </div>
+export function DestinationBySlug({ slug }: { slug: string }) {
+  const destination = getDestination(slug)
+  useDocumentTitle(destination?.name || "Page not found")
+  return destination ? (
+    <DestinationPage destination={destination} />
+  ) : (
+    <NotFoundPage />
   )
+}
+
+export function TourBySlug({ slug }: { slug: string }) {
+  const tour = getTour(slug)
+  useDocumentTitle(tour?.title || "Page not found")
+  return tour ? <TourPage tour={tour} /> : <NotFoundPage />
+}
+
+export function ExperienceBySlug({ slug }: { slug: string }) {
+  const experience = getExperience(slug)
+  useDocumentTitle(experience?.name || "Page not found")
+  return experience ? (
+    <ExperiencePage experience={experience} />
+  ) : (
+    <NotFoundPage />
+  )
+}
+
+export function ArticleBySlug({ slug }: { slug: string }) {
+  const article = getArticle(slug)
+  useDocumentTitle(article?.title || "Page not found")
+  return article ? <ArticlePage article={article} /> : <NotFoundPage />
 }

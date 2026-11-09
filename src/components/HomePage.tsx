@@ -1,11 +1,10 @@
-import { FormEvent, useMemo, useState } from "react"
+"use client"
+
+import { FormEvent, useState } from "react"
 import BackToTop from "./BackToTop"
 import { EnquiryReady } from "./EnquiryReady"
 import ProfileLinks from "./ProfileLinks"
-import InnerPages from "./InnerPages"
-import { organizationSchema, websiteSchema } from "./lib/schema"
-import { siteConfig } from "./lib/site-config"
-import { usePathname } from "./lib/use-pathname"
+import { siteConfig } from "@/lib/site-config"
 
 const images = {
   hero: "https://images.unsplash.com/photo-1575994532957-773da2f83eb1?auto=format&fit=crop&w=2200&q=84",
@@ -728,15 +727,9 @@ function Footer() {
   )
 }
 
-export default function App() {
-  const path = usePathname()
-  const schema = useMemo(() => [organizationSchema(), websiteSchema()], [])
-  if (path !== "/") {
-    return <InnerPages pathname={path} />
-  }
+export default function HomePage() {
   return (
     <>
-      <script type="application/ld+json">{JSON.stringify(schema)}</script>
       <Header />
       <main>
         <Hero />
