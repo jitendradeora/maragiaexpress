@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from "react"
+import BrandMark from "./BrandMark"
 import { EnquiryReady } from "./EnquiryReady"
 import ProfileLinks from "./ProfileLinks"
 import SiteImage from "./SiteImage"
@@ -37,15 +38,15 @@ type SampleItineraryDay = {
 }
 
 function createSampleItinerary(details: TourDetails): SampleItineraryDay[] {
-  const publishedDays = details.duration.match(/(\d+)\s+days?/i)
+  const publishedDays = details.duration.match(/(\d+)\s+giorn[oi]/i)
   const dayCount = publishedDays
     ? Number(publishedDays[1])
     : Math.max(details.route.length, 5)
   const destinations = details.route
   const stayNotes = [
-    "Morning with a local guide, then a quieter afternoon in the neighbourhood.",
-    "Time in the surrounding landscape, with the evening free at your hotel.",
-    "A walk through the old quarter, a market or craft visit, and dinner in town.",
+    "Mattinata con una guida locale, poi un pomeriggio più tranquillo nei dintorni.",
+    "Tempo per esplorare il paesaggio circostante, con la serata libera in hotel.",
+    "Passeggiata nel centro storico, visita a un mercato o a una bottega artigiana e cena in città.",
   ]
 
   return Array.from({ length: dayCount }, (_, index) => {
@@ -68,11 +69,11 @@ function createSampleItinerary(details: TourDetails): SampleItineraryDay[] {
       return {
         day: 1,
         place: destination,
-        title: `Arrival in ${destination}`,
+        title: `Arrivo a ${destination}`,
         description:
-          "Private arrival transfer and time to settle in. An evening briefing covers how the next days will move. This is sample content until the program is confirmed.",
+          "Trasferimento privato all’arrivo e tempo per sistemarsi. In serata, un breve incontro illustra lo svolgimento dei giorni successivi. Contenuto indicativo fino alla conferma del programma.",
         overnight: destination,
-        meals: "Dinner",
+        meals: "Cena",
       }
     }
 
@@ -80,32 +81,32 @@ function createSampleItinerary(details: TourDetails): SampleItineraryDay[] {
       return {
         day: dayCount,
         place: destination,
-        title: `Departure from ${destination}`,
+        title: `Partenza da ${destination}`,
         description:
-          "Breakfast, then a private transfer to the airport or station. Departure time follows your confirmed flights.",
+          "Colazione, poi trasferimento privato in aeroporto o in stazione. L’orario di partenza segue i voli confermati.",
         overnight: "—",
-        meals: "Breakfast",
+        meals: "Colazione",
       }
     }
 
     if (nextDestination !== destination) {
       return {
         day: index + 1,
-        place: `${destination} to ${nextDestination}`,
-        title: `Travel to ${nextDestination}`,
-        description: `Leave ${destination} after breakfast and travel at an unhurried pace, with a pause along the way before check-in at ${nextDestination}.`,
+        place: `${destination} – ${nextDestination}`,
+        title: `Trasferimento a ${nextDestination}`,
+        description: `Partenza da ${destination} dopo colazione e viaggio con calma, con una sosta lungo il percorso prima del check-in a ${nextDestination}.`,
         overnight: nextDestination,
-        meals: "Breakfast, lunch, dinner",
+        meals: "Colazione, pranzo, cena",
       }
     }
 
     return {
       day: index + 1,
       place: destination,
-      title: `A day in ${destination}`,
+      title: `Una giornata a ${destination}`,
       description: stayNotes[index % stayNotes.length],
       overnight: destination,
-      meals: "Breakfast, dinner",
+      meals: "Colazione, cena",
     }
   })
 }
@@ -123,22 +124,22 @@ function groupItinerary(days: SampleItineraryDay[]) {
 }
 
 const defaultIncludes = [
-  "Accommodation in the properties confirmed in the final program or similar",
-  "Private transport and local assistance as confirmed in the proposal",
-  "Guiding, visits and entrance fees specifically listed in the final program",
+  "Pernottamento nelle strutture confermate nel programma definitivo o similari",
+  "Trasporto privato e assistenza locale come confermato nella proposta",
+  "Guide, visite e ingressi espressamente indicati nel programma definitivo",
 ]
 
 const defaultExcludes = [
-  "International flights and airport taxes unless expressly included",
-  "Travel, medical and cancellation insurance",
-  "Visa fees, tips, drinks, personal expenses and optional activities",
-  "Anything not expressly listed in the confirmed inclusions",
+  "Voli internazionali e tasse aeroportuali, salvo ove espressamente inclusi",
+  "Assicurazione di viaggio, medica e di annullamento",
+  "Costi del visto, mance, bevande, spese personali e attività facoltative",
+  "Tutto ciò che non è espressamente indicato tra i servizi inclusi confermati",
 ]
 
 const tourDetails: Record<string, TourDetails> = {
   "tour-of-india": {
-    price: "From €1,925 per person",
-    duration: "12 nights · 13 days",
+    price: "Da 1.925 € a persona",
+    duration: "12 notti · 13 giorni",
     route: [
       "Delhi",
       "Udaipur",
@@ -160,8 +161,8 @@ const tourDetails: Record<string, TourDetails> = {
     ],
   },
   "maharajas-tour": {
-    price: "€3,640 per person",
-    duration: "7 nights · 8 days",
+    price: "3.640 € a persona",
+    duration: "7 notti · 8 giorni",
     route: ["Delhi", "Agra", "Jaipur", "Jodhpur", "Udaipur", "Delhi"],
     map: "https://maragiaexpress.com/wp-content/uploads/2022/08/Map-1-1.jpg",
     gallery: [
@@ -171,15 +172,15 @@ const tourDetails: Record<string, TourDetails> = {
       "https://maragiaexpress.com/wp-content/uploads/2022/06/DSC_3706-Copy-1024x678.jpg",
     ],
     includes: [
-      "Accommodation listed in the published program or similar",
-      "Breakfast, Italian-speaking guide, private vehicle and driver",
-      "Published monument visits, Taj Mahal, Lake Pichola boat ride and domestic Udaipur–Delhi flight",
-      "On-the-ground assistance",
+      "Pernottamento nelle strutture indicate nel programma pubblicato o similari",
+      "Prima colazione, guida parlante italiano, auto privata con autista",
+      "Visite ai monumenti indicati, Taj Mahal, giro in barca sul lago Pichola e volo interno Udaipur–Delhi",
+      "Assistenza in loco",
     ],
   },
   "natural-kerala": {
-    price: "€2,450 per person",
-    duration: "9 nights · 10 days",
+    price: "2.450 € a persona",
+    duration: "9 notti · 10 giorni",
     route: ["Cochin", "Munnar", "Periyar", "Alleppey", "Mararikulam"],
     map: "https://maragiaexpress.com/wp-content/uploads/2022/09/Map_0.jpg",
     gallery: [
@@ -189,20 +190,20 @@ const tourDetails: Record<string, TourDetails> = {
       "https://maragiaexpress.com/wp-content/uploads/2022/09/Kerala-hotel-1024x561.jpg",
     ],
     includes: [
-      "Accommodation listed in the published program or similar",
-      "Breakfast and dinner, Italian-speaking guide, private vehicle and driver",
-      "Published visits, tea plantations, Periyar lake cruise and full board on the houseboat",
-      "On-the-ground assistance",
+      "Pernottamento nelle strutture indicate nel programma pubblicato o similari",
+      "Colazione e cena, guida parlante italiano, auto privata con autista",
+      "Visite indicate, piantagioni di tè, crociera sul lago Periyar e pensione completa in houseboat",
+      "Assistenza in loco",
     ],
   },
   "three-cats-of-india": {
-    price: "On request",
-    duration: "Confirmed with proposal",
-    route: ["Jawai and the wildlife regions confirmed for your journey"],
+    price: "Su richiesta",
+    duration: "Confermata con la proposta",
+    route: ["Jawai e le aree naturalistiche confermate per il tuo viaggio"],
   },
   "indian-festival-of-colors": {
-    price: "From €1,850 per person",
-    duration: "10 nights · 11 days",
+    price: "Da 1.850 € a persona",
+    duration: "10 notti · 11 giorni",
     route: [
       "Delhi",
       "Mandawa",
@@ -222,8 +223,8 @@ const tourDetails: Record<string, TourDetails> = {
     ],
   },
   "camel-fair": {
-    price: "From €1,499 per person",
-    duration: "11 nights · 12 days",
+    price: "Da 1.499 € a persona",
+    duration: "11 notti · 12 giorni",
     route: [
       "Delhi",
       "Mandawa",
@@ -244,9 +245,9 @@ const tourDetails: Record<string, TourDetails> = {
     ],
   },
   "hemis-feast-festival": {
-    price: "From €1,850 per person",
-    duration: "9 nights · 10 days",
-    route: ["Delhi", "Leh", "Ladakh", "Hemis Monastery"],
+    price: "Da 1.850 € a persona",
+    duration: "9 notti · 10 giorni",
+    route: ["Delhi", "Leh", "Ladakh", "Monastero di Hemis"],
     gallery: [
       "https://maragiaexpress.com/wp-content/uploads/2022/10/09Ladakh131022.jpg",
       "https://maragiaexpress.com/wp-content/uploads/2022/06/Festa-di-Hemis-2022.jpg",
@@ -255,8 +256,8 @@ const tourDetails: Record<string, TourDetails> = {
     ],
   },
   "overland-himalaya-tour": {
-    price: "€3,360 per person",
-    duration: "14 nights · 15 days",
+    price: "3.360 € a persona",
+    duration: "14 notti · 15 giorni",
     route: [
       "Jammu",
       "Srinagar",
@@ -277,8 +278,8 @@ const tourDetails: Record<string, TourDetails> = {
     ],
   },
   "rajasthan-on-bicycle": {
-    price: "€2,150 per person",
-    duration: "8 nights · 9 days",
+    price: "2.150 € a persona",
+    duration: "8 notti · 9 giorni",
     route: [
       "Delhi",
       "Udaipur",
@@ -297,16 +298,16 @@ const tourDetails: Record<string, TourDetails> = {
       "https://maragiaexpress.com/wp-content/uploads/2022/08/IMG_1101-1024x682.jpg",
     ],
     includes: [
-      "Accommodation, breakfast and dinner as listed in the published program",
-      "Selected guiding, city transport, monument visits and local assistance",
-      "Published domestic flights, Lake Pichola boat ride and Jawai jeep safari",
-      "21-speed mountain bike, helmet, cycling escort and backup vehicle",
+      "Pernottamento, colazione e cena come indicato nel programma pubblicato",
+      "Guide selezionate, trasporti in città, visite ai monumenti e assistenza locale",
+      "Voli interni indicati, giro in barca sul lago Pichola e safari in jeep a Jawai",
+      "Mountain bike a 21 velocità, casco, accompagnatore in bici e veicolo di supporto",
     ],
   },
   "hemis-feast-adventure": {
-    price: "From €1,850 per person",
-    duration: "9 nights · 10 days",
-    route: ["Delhi", "Leh", "Ladakh", "Hemis Monastery"],
+    price: "Da 1.850 € a persona",
+    duration: "9 notti · 10 giorni",
+    route: ["Delhi", "Leh", "Ladakh", "Monastero di Hemis"],
     gallery: [
       "https://maragiaexpress.com/wp-content/uploads/2022/10/09Ladakh131022.jpg",
       "https://maragiaexpress.com/wp-content/uploads/2022/06/Festa-di-Hemis-2022.jpg",
@@ -314,8 +315,8 @@ const tourDetails: Record<string, TourDetails> = {
     ],
   },
   "classic-south-india": {
-    price: "On request",
-    duration: "10 nights · 11 days",
+    price: "Su richiesta",
+    duration: "10 notti · 11 giorni",
     route: [
       "Chennai",
       "Pondicherry",
@@ -333,8 +334,8 @@ const tourDetails: Record<string, TourDetails> = {
     ],
   },
   "introduction-to-india": {
-    price: "On request",
-    duration: "12 nights · 13 days",
+    price: "Su richiesta",
+    duration: "12 notti · 13 giorni",
     route: [
       "Delhi",
       "Udaipur",
@@ -355,8 +356,8 @@ const tourDetails: Record<string, TourDetails> = {
     ],
   },
   "karnataka-and-goa": {
-    price: "From €2,240 per person",
-    duration: "10 nights · 11 days",
+    price: "Da 2.240 € a persona",
+    duration: "10 notti · 11 giorni",
     route: [
       "Mysore",
       "Hassan",
@@ -375,8 +376,8 @@ const tourDetails: Record<string, TourDetails> = {
     ],
   },
   "bengal-and-sikkim": {
-    price: "On request",
-    duration: "8 nights · 9 days",
+    price: "Su richiesta",
+    duration: "8 notti · 9 giorni",
     route: ["Kolkata", "Kalimpong", "Darjeeling", "Pelling", "Gangtok"],
     map: "https://maragiaexpress.com/wp-content/uploads/2023/10/mappa-di-north-east-India.jpg",
     gallery: [
@@ -386,8 +387,8 @@ const tourDetails: Record<string, TourDetails> = {
     ],
   },
   "temples-and-tribes-of-orissa": {
-    price: "On request",
-    duration: "12 nights · 13 days",
+    price: "Su richiesta",
+    duration: "12 notti · 13 giorni",
     route: [
       "Delhi",
       "Bhubaneswar",
@@ -407,8 +408,8 @@ const tourDetails: Record<string, TourDetails> = {
     ],
   },
   "gujarat-trip": {
-    price: "€1,764 per person",
-    duration: "9 nights · 10 days",
+    price: "1.764 € a persona",
+    duration: "9 notti · 10 giorni",
     route: [
       "Ahmedabad",
       "Dasada",
@@ -428,9 +429,9 @@ const tourDetails: Record<string, TourDetails> = {
     ],
   },
   "rural-rajasthan": {
-    price: "From €2,080 per person",
-    duration: "13 nights · 14 days",
-    route: ["Rajasthan rural itinerary available with the current proposal"],
+    price: "Da 2.080 € a persona",
+    duration: "13 notti · 14 giorni",
+    route: ["Itinerario nel Rajasthan rurale disponibile con la proposta aggiornata"],
   },
 }
 
@@ -438,43 +439,43 @@ export function PageHeader() {
   const [open, setOpen] = useState(false)
   return (
     <header className="inner-header">
-      <a className="inner-brand" href="/" aria-label="Maragià Express home">
-        <span aria-hidden="true">M</span>
+      <a className="inner-brand" href="/" aria-label="Maragià Express, home page">
+        <BrandMark priority />
         <b>
           MARAGIÀ <small>EXPRESS · INDIA</small>
         </b>
       </a>
       <nav
         className={open ? "inner-nav inner-nav-open" : "inner-nav"}
-        aria-label="Main navigation"
+        aria-label="Navigazione principale"
       >
         <a
           className="mobile-nav-brand inner-brand"
           href="/"
-          aria-label="Maragià Express home"
+          aria-label="Maragià Express, home page"
           onClick={() => setOpen(false)}
         >
-          <span aria-hidden="true">M</span>
+          <BrandMark />
           <b>
             MARAGIÀ <small>EXPRESS · INDIA</small>
           </b>
         </a>
-        <a href="/destinations">Destinations</a>
-        <a href="/tours">Tours</a>
-        <a href="/experiences">Experiences</a>
-        <a href="/tailor-made">Tailor-made</a>
-        <a href="/about">About</a>
-        <a href="/travel-journal">Journal</a>
-        <a href="/contact">Contact</a>
+        <a href="/destinations">Destinazioni</a>
+        <a href="/tours">Tour</a>
+        <a href="/experiences">Esperienze</a>
+        <a href="/tailor-made">Su misura</a>
+        <a href="/about">Chi siamo</a>
+        <a href="/travel-journal">Diario</a>
+        <a href="/contact">Contatti</a>
         <a className="inner-nav-cta" href="/tailor-made#enquiry">
-          Plan your journey
+          Organizza il tuo viaggio
         </a>
       </nav>
       <button
         className="inner-menu"
         type="button"
         aria-expanded={open}
-        aria-label={open ? "Close navigation" : "Open navigation"}
+        aria-label={open ? "Chiudi il menu" : "Apri il menu"}
         onClick={() => setOpen(!open)}
       >
         <span />
@@ -489,33 +490,33 @@ export function PageFooter() {
     <footer className="inner-footer">
       <div>
         <a className="inner-brand" href="/">
-          <span aria-hidden="true">M</span>
+          <BrandMark />
           <b>
             MARAGIÀ <small>EXPRESS · INDIA</small>
           </b>
         </a>
-        <p>Discover India, your way.</p>
+        <p>Scopri l’India, a modo tuo.</p>
         <ProfileLinks />
       </div>
       <div>
-        <b>Explore</b>
-        <a href="/destinations">Destinations</a>
-        <a href="/tours">Tours</a>
-        <a href="/experiences">Experiences</a>
-        <a href="/tailor-made">Tailor-made travel</a>
-        <a href="/travel-journal">Travel journal</a>
+        <b>Esplora</b>
+        <a href="/destinations">Destinazioni</a>
+        <a href="/tours">Tour</a>
+        <a href="/experiences">Esperienze</a>
+        <a href="/tailor-made">Viaggi su misura</a>
+        <a href="/travel-journal">Diario di viaggio</a>
       </div>
       <div>
-        <b>Company</b>
-        <a href="/about">About Maragià Express</a>
-        <a href="/contact">Contact</a>
+        <b>Azienda</b>
+        <a href="/about">Chi è Maragià Express</a>
+        <a href="/contact">Contatti</a>
         <a href="/privacy">Privacy</a>
-        <a href="/terms">Terms</a>
-        <a href="/payment-policy">Payment policy</a>
-        <a href="/cancellation-policy">Cancellation & refund</a>
+        <a href="/terms">Termini e condizioni</a>
+        <a href="/payment-policy">Condizioni di pagamento</a>
+        <a href="/cancellation-policy">Cancellazione e rimborso</a>
       </div>
       <div>
-        <b>Talk to us</b>
+        <b>Parla con noi</b>
         <a href={siteConfig.phoneHref}>{siteConfig.phoneDisplay}</a>
         <a href={`mailto:${siteConfig.email}`}>{siteConfig.email}</a>
         <span>{siteConfig.location}</span>
@@ -532,7 +533,7 @@ function Breadcrumbs({
   parent?: [string, string]
 }) {
   return (
-    <nav className="breadcrumbs" aria-label="Breadcrumb">
+    <nav className="breadcrumbs" aria-label="Percorso di navigazione">
       <a href="/">Home</a>
       <span>/</span>
       {parent && (
@@ -611,7 +612,7 @@ function ListingCard({
       <h2>{title}</h2>
       <span>{copy}</span>
       <b>
-        Explore <i aria-hidden="true"><ArrowOutIcon /></i>
+        Scopri <i aria-hidden="true"><ArrowOutIcon /></i>
       </b>
     </a>
   )
@@ -621,18 +622,18 @@ export function DestinationsPage() {
   return (
     <>
       <InnerHero
-        eyebrow="Across India"
-        title="Destinations with a sense of place."
-        intro="Begin with the landscape that calls to you, then shape a journey around its culture, rhythm and seasonal possibilities."
+        eyebrow="In tutta l’India"
+        title="Destinazioni dall’anima autentica."
+        intro="Parti dal paesaggio che ti chiama, poi costruisci un viaggio attorno alla sua cultura, al suo ritmo e alle sue stagioni."
         image={images.udaipur}
       />
       <main className="inner-main">
         <div className="listing-intro">
           <p>
-            India is not a single experience. Its regions differ in language,
-            climate, architecture, cuisine and pace. These destination starting
-            points reflect areas supported by the official Maragià Express
-            website.
+            L’India non è un’esperienza unica. Le sue regioni cambiano per
+            lingua, clima, architettura, cucina e ritmo. Queste destinazioni
+            rappresentano le aree proposte dal sito ufficiale di Maragià
+            Express.
           </p>
         </div>
         <div className="listing-grid">
@@ -657,11 +658,12 @@ function BeyondIndia() {
   return (
     <section className="beyond-destinations">
       <div className="beyond-heading">
-        <p className="inner-eyebrow">Beyond India</p>
-        <h2>Bhutan, Nepal & Sri Lanka.</h2>
+        <p className="inner-eyebrow">Oltre l’India</p>
+        <h2>Bhutan, Nepal e Sri Lanka.</h2>
         <p>
-          Three destinations currently presented beyond India by Maragià
-          Express. Confirm current routes and services directly with the team.
+          Tre destinazioni oltre l’India attualmente proposte da Maragià
+          Express. Verifica itinerari e servizi aggiornati direttamente con il
+          team.
         </p>
       </div>
       <div className="beyond-grid">
@@ -670,7 +672,7 @@ function BeyondIndia() {
             key={item.slug}
             href={`/destinations/${item.slug}`}
             image={item.image}
-            eyebrow="Beyond India"
+            eyebrow="Oltre l’India"
             title={item.name}
             copy={item.intro}
           />
@@ -688,11 +690,11 @@ export function DestinationPage({ destination }: { destination: Destination }) {
         title={destination.name}
         intro={destination.intro}
         image={destination.image}
-        parent={["Destinations", "/destinations"]}
+        parent={["Destinazioni", "/destinations"]}
       />
       <main className="detail-main">
         <aside>
-          <p>Journey themes</p>
+          <p>Temi del viaggio</p>
           {destination.highlights.map((item) => (
             <span key={item}>{item}</span>
           ))}
@@ -701,19 +703,19 @@ export function DestinationPage({ destination }: { destination: Destination }) {
           <p className="detail-lead">{destination.paragraphs[0]}</p>
           <p>{destination.paragraphs[1]}</p>
           <blockquote>
-            “The right route leaves space not only to see India, but to
-            understand where you are.”
+            “L’itinerario giusto lascia spazio non solo per vedere l’India, ma
+            per capire dove ti trovi.”
           </blockquote>
-          <h2>A journey shaped around you</h2>
+          <h2>Un viaggio costruito su di te</h2>
           <p>
-            Every itinerary is subject to current availability, season and local
-            conditions. Tell the team what interests you and how you prefer to
-            travel; they can discuss a route that makes sense as a complete
-            journey.
+            Ogni itinerario dipende dalla disponibilità, dalla stagione e dalle
+            condizioni locali del momento. Racconta al team cosa ti interessa e
+            come preferisci viaggiare: insieme definirete un itinerario che
+            abbia senso come viaggio completo.
           </p>
         </article>
       </main>
-      <RelatedCallout title={`Begin planning ${destination.name}`} />
+      <RelatedCallout title={`Inizia a organizzare il viaggio: ${destination.name}`} />
     </>
   )
 }
@@ -722,9 +724,9 @@ export function ExperiencesPage() {
   return (
     <>
       <InnerHero
-        eyebrow="Ways to travel"
-        title="Experiences that feel personal."
-        intro="Cultural discovery, active journeys and thoughtful comfort—brought together around how you want to experience India."
+        eyebrow="Modi di viaggiare"
+        title="Esperienze che ti somigliano."
+        intro="Scoperta culturale, viaggi attivi e comfort curato, riuniti attorno al modo in cui desideri vivere l’India."
         image={images.craft}
       />
       <main className="inner-main">
@@ -753,28 +755,28 @@ export function ExperiencePage({ experience }: { experience: Experience }) {
         title={experience.name}
         intro={experience.intro}
         image={experience.image}
-        parent={["Experiences", "/experiences"]}
+        parent={["Esperienze", "/experiences"]}
       />
       <main className="detail-main">
         <aside>
-          <p>Best suited to</p>
+          <p>Ideale per</p>
           <strong>{experience.bestFor}</strong>
         </aside>
         <article>
           <p className="detail-lead">{experience.body[0]}</p>
           <p>{experience.body[1]}</p>
           <div className="fact-panel">
-            <h2>Before you enquire</h2>
+            <h2>Prima di inviare la richiesta</h2>
             <p>
-              Include your preferred travel dates, group size, interests,
-              approximate pace and accommodation preferences. No price,
-              departure or inclusion is confirmed until you receive a specific
-              proposal.
+              Indica le date di viaggio preferite, il numero di persone, gli
+              interessi, il ritmo indicativo e le preferenze di alloggio. Prezzi,
+              partenze e servizi inclusi sono confermati solo con una proposta
+              specifica.
             </p>
           </div>
         </article>
       </main>
-      <RelatedCallout title={`Explore ${experience.name.toLowerCase()}`} />
+      <RelatedCallout title={`Scopri: ${experience.name.toLowerCase()}`} />
     </>
   )
 }
@@ -786,20 +788,20 @@ export function ToursPage() {
   return (
     <>
       <InnerHero
-        eyebrow="Maragià Express journeys"
-        title="Tours of India."
-        intro="Explore the established tour collection by theme, then contact the team for current itineraries, dates, inclusions and availability."
+        eyebrow="I viaggi di Maragià Express"
+        title="Tour dell’India."
+        intro="Esplora la collezione di tour per tema, poi contatta il team per itinerari, date, servizi inclusi e disponibilità aggiornati."
         image={images.rajasthan}
       />
       <main className="tours-page">
         <div className="tour-directory-intro">
-          <p className="inner-eyebrow">The collection</p>
-          <h2>Choose a journey to begin the conversation.</h2>
+          <p className="inner-eyebrow">La collezione</p>
+          <h2>Scegli un viaggio per iniziare la conversazione.</h2>
           <p>
-            These tour names were supplied for the Maragià Express collection.
-            Published prices and routes are shown where the official source
-            provides a valid value, but every detail must be reconfirmed before
-            booking.
+            Questi sono i tour della collezione Maragià Express. Prezzi e
+            itinerari pubblicati sono indicati quando la fonte ufficiale fornisce
+            un valore valido, ma ogni dettaglio va riconfermato prima della
+            prenotazione.
           </p>
         </div>
         {categories.map(([slug, category], categoryIndex) => (
@@ -807,7 +809,7 @@ export function ToursPage() {
             <header>
               <span>{String(categoryIndex + 1).padStart(2, "0")}</span>
               <div>
-                <p className="inner-eyebrow">Tour collection</p>
+                <p className="inner-eyebrow">Collezione</p>
                 <h2>{category}</h2>
               </div>
             </header>
@@ -828,7 +830,7 @@ export function ToursPage() {
                     <h3>{tour.title}</h3>
                     <p>{tour.summary}</p>
                     <b>
-                      View tour <span aria-hidden="true">↗</span>
+                      Scopri il tour <span aria-hidden="true">↗</span>
                     </b>
                   </a>
                 ))}
@@ -843,16 +845,16 @@ export function ToursPage() {
 function TourGallery({ gallery, title }: { gallery: string[]; title: string }) {
   const [active, setActive] = useState(0)
   return (
-    <section className="tour-gallery" aria-label={`${title} image gallery`}>
+    <section className="tour-gallery" aria-label={`Galleria fotografica: ${title}`}>
       <div className="tour-gallery-main">
         <img
           src={gallery[active]}
-          alt={`${title} gallery view ${active + 1}`}
+          alt={`${title}, immagine ${active + 1}`}
         />
         <div className="tour-gallery-controls">
           <button
             type="button"
-            aria-label="Previous image"
+            aria-label="Immagine precedente"
             onClick={() =>
               setActive((current) =>
                 current === 0 ? gallery.length - 1 : current - 1,
@@ -867,7 +869,7 @@ function TourGallery({ gallery, title }: { gallery: string[]; title: string }) {
           </span>
           <button
             type="button"
-            aria-label="Next image"
+            aria-label="Immagine successiva"
             onClick={() =>
               setActive((current) =>
                 current === gallery.length - 1 ? 0 : current + 1,
@@ -883,7 +885,7 @@ function TourGallery({ gallery, title }: { gallery: string[]; title: string }) {
           <button
             type="button"
             className={active === index ? "tour-thumb-active" : ""}
-            aria-label={`Show image ${index + 1}`}
+            aria-label={`Mostra immagine ${index + 1}`}
             aria-pressed={active === index}
             onClick={() => setActive(index)}
             key={image}
@@ -905,19 +907,19 @@ function TourEnquiryForm({ tour }: { tour: Tour }) {
     const data = new FormData(event.currentTarget)
     const fields = [
       ["Tour", tour.title],
-      ["Name", data.get("name")],
+      ["Nome", data.get("name")],
       ["Email", data.get("email")],
-      ["Phone", data.get("phone")],
-      ["Country", data.get("country")],
-      ["Preferred dates", data.get("dates")],
-      ["Travelers", data.get("travelers")],
-      ["Accommodation", data.get("accommodation")],
-      ["Message", data.get("message")],
+      ["Telefono", data.get("phone")],
+      ["Paese", data.get("country")],
+      ["Date preferite", data.get("dates")],
+      ["Viaggiatori", data.get("travelers")],
+      ["Alloggio", data.get("accommodation")],
+      ["Messaggio", data.get("message")],
     ]
     const body = fields
       .map(([label, value]) => `${label}: ${value || ""}`)
       .join("\n")
-    setReady({ subject: `Tour enquiry: ${tour.title}`, body })
+    setReady({ subject: `Richiesta tour: ${tour.title}`, body })
   }
   if (ready) {
     return (
@@ -933,41 +935,41 @@ function TourEnquiryForm({ tour }: { tour: Tour }) {
   return (
     <form className="tour-enquiry-form" onSubmit={submit} id="tour-enquiry">
       <div className="tour-form-heading">
-        <p className="inner-eyebrow">Ask about this journey</p>
-        <h2>Enquire about {tour.title}</h2>
+        <p className="inner-eyebrow">Informazioni su questo viaggio</p>
+        <h2>Richiedi informazioni: {tour.title}</h2>
         <p>
-          Tell us your dates and how you like to travel. We will reply with the
-          current itinerary, price and availability. This does not book the tour.
+          Indicaci le date e come ami viaggiare. Ti risponderemo con itinerario,
+          prezzo e disponibilità aggiornati. Questa richiesta non prenota il tour.
         </p>
       </div>
       <label className="tour-field-wide">
-        Selected tour
+        Tour selezionato
         <input value={tour.title} readOnly aria-readonly="true" />
       </label>
       <div className="tour-form-row">
         <label>
-          Full name *
+          Nome e cognome *
           <input
             name="name"
             required
             autoComplete="name"
-            placeholder="Your full name"
+            placeholder="Nome e cognome"
           />
         </label>
         <label>
-          Email address *
+          Indirizzo email *
           <input
             name="email"
             required
             type="email"
             autoComplete="email"
-            placeholder="you@example.com"
+            placeholder="nome@esempio.it"
           />
         </label>
       </div>
       <div className="tour-form-row">
         <label>
-          Phone or WhatsApp
+          Telefono o WhatsApp
           <input
             name="phone"
             type="tel"
@@ -976,22 +978,22 @@ function TourEnquiryForm({ tour }: { tour: Tour }) {
           />
         </label>
         <label>
-          Country of residence
+          Paese di residenza
           <input
             name="country"
             autoComplete="country-name"
-            placeholder="Your country"
+            placeholder="Il tuo Paese"
           />
         </label>
       </div>
       <div className="tour-form-row tour-form-three">
         <label>
-          Preferred dates *
-          <input name="dates" required placeholder="Month or dates" />
-          <span className="field-hint">A month is enough if your dates are not fixed.</span>
+          Date preferite *
+          <input name="dates" required placeholder="Mese o date" />
+          <span className="field-hint">Se le date non sono definite, basta indicare il mese.</span>
         </label>
         <label>
-          Travelers *
+          Viaggiatori *
           <input
             name="travelers"
             required
@@ -1001,43 +1003,43 @@ function TourEnquiryForm({ tour }: { tour: Tour }) {
           />
         </label>
         <label>
-          Accommodation
+          Alloggio
           <select name="accommodation" defaultValue="">
             <option value="" disabled>
-              Select preference
+              Seleziona una preferenza
             </option>
-            <option>Comfortable</option>
-            <option>Heritage</option>
-            <option>Luxury</option>
-            <option>Open to advice</option>
+            <option>Confortevole</option>
+            <option>Dimora storica</option>
+            <option>Lusso</option>
+            <option>Aperto a consigli</option>
           </select>
         </label>
       </div>
       <label className="tour-field-wide">
-        What should we know about this trip? *
+        Cosa dovremmo sapere su questo viaggio? *
         <textarea
           name="message"
           rows={5}
           required
-          placeholder="Pace, interests, who is travelling, and any questions."
+          placeholder="Ritmo, interessi, chi viaggia ed eventuali domande."
         />
         <span className="field-hint">
-          Mention accessibility, dietary needs, or the kind of stay you prefer.
+          Segnala esigenze di accessibilità, alimentari o il tipo di soggiorno che preferisci.
         </span>
       </label>
       <label className="tour-consent">
         <input type="checkbox" required />
         <span>
-          I understand I still need to send the email, and that this does not
-          book the tour.
+          Ho capito che devo ancora inviare l’email e che questa richiesta non
+          prenota il tour.
         </span>
       </label>
       <div className="tour-form-submit">
         <button type="submit">
-          Continue to email <span aria-hidden="true">↗</span>
+          Continua con l’email <span aria-hidden="true">↗</span>
         </button>
         <small>
-          Prefer to speak directly?{" "}
+          Preferisci parlarci direttamente?{" "}
           <a href={siteConfig.phoneHref}>{siteConfig.phoneDisplay}</a>
         </small>
       </div>
@@ -1047,9 +1049,9 @@ function TourEnquiryForm({ tour }: { tour: Tour }) {
 
 export function TourPage({ tour }: { tour: Tour }) {
   const details = tourDetails[tour.slug] ?? {
-    price: "On request",
-    duration: "Confirmed with proposal",
-    route: ["Current itinerary available on enquiry"],
+    price: "Su richiesta",
+    duration: "Confermata con la proposta",
+    route: ["Itinerario aggiornato disponibile su richiesta"],
   }
   const gallery = details.gallery ?? [
     tour.image,
@@ -1073,53 +1075,53 @@ export function TourPage({ tour }: { tour: Tour }) {
         title={tour.title}
         intro={tour.summary}
         image={tour.image}
-        parent={["Tours", "/tours"]}
+        parent={["Tour", "/tours"]}
       />
       <section className="tour-sheet">
         <div className="tour-facts">
           <div className="tour-facts-main">
             <dl>
               <div>
-                <dt>Price</dt>
+                <dt>Prezzo</dt>
                 <dd className="tour-price">{details.price}</dd>
               </div>
               <div>
-                <dt>Duration</dt>
+                <dt>Durata</dt>
                 <dd>{details.duration}</dd>
               </div>
               <div>
-                <dt>Places</dt>
+                <dt>Località</dt>
                 <dd>
                   {details.route.length}{" "}
-                  {details.route.length === 1 ? "stop" : "stops"}
+                  {details.route.length === 1 ? "tappa" : "tappe"}
                 </dd>
               </div>
               <div>
-                <dt>Route</dt>
+                <dt>Itinerario</dt>
                 <dd>
                   {details.route[0]}
                   {details.route.length > 1
-                    ? ` to ${details.route[details.route.length - 1]}`
+                    ? ` – ${details.route[details.route.length - 1]}`
                     : ""}
                 </dd>
               </div>
             </dl>
-            <a href="#tour-enquiry">Enquire</a>
+            <a href="#tour-enquiry">Richiedi info</a>
           </div>
           <p className="tour-facts-note">
-            Planning overview. Your proposal confirms the current route, price,
-            and availability before you book flights.
+            Panoramica indicativa. La tua proposta conferma itinerario, prezzo e
+            disponibilità aggiornati prima che tu prenoti i voli.
           </p>
         </div>
         <div className="tour-program" id="itinerary">
           <div className="tour-program-heading">
             <div>
-              <p className="inner-eyebrow">Day by day</p>
-              <h2>Where you stay.</h2>
+              <p className="inner-eyebrow">Giorno per giorno</p>
+              <h2>Dove soggiornerai.</h2>
             </div>
             <p>
-              Days are grouped by the place you sleep. These are sample days
-              for this page, not a confirmed program.
+              Le giornate sono raggruppate per luogo di pernottamento. Si tratta
+              di giornate indicative, non di un programma confermato.
             </p>
           </div>
           {chapters.map((chapter, chapterIndex) => {
@@ -1128,10 +1130,10 @@ export function TourPage({ tour }: { tour: Tour }) {
             ).length
             const stay =
               nights === 0
-                ? "Departure"
+                ? "Partenza"
                 : nights === 1
-                  ? "1 night"
-                  : `${nights} nights`
+                  ? "1 notte"
+                  : `${nights} notti`
             return (
               <article
                 className="tour-chapter"
@@ -1145,7 +1147,7 @@ export function TourPage({ tour }: { tour: Tour }) {
                   {chapter.days.map((item) => (
                     <li key={item.day}>
                       <div className="tour-day-number">
-                        <span className="tour-day-label">Day</span>
+                        <span className="tour-day-label">Giorno</span>
                         <b>{String(item.day).padStart(2, "0")}</b>
                       </div>
                       <div>
@@ -1154,12 +1156,12 @@ export function TourPage({ tour }: { tour: Tour }) {
                         <dl className="tour-day-meta">
                           {item.overnight !== "—" && (
                             <div>
-                              <dt>Overnight</dt>
+                              <dt>Pernottamento</dt>
                               <dd>{item.overnight}</dd>
                             </div>
                           )}
                           <div>
-                            <dt>Meals</dt>
+                            <dt>Pasti</dt>
                             <dd>{item.meals}</dd>
                           </div>
                         </dl>
@@ -1176,11 +1178,11 @@ export function TourPage({ tour }: { tour: Tour }) {
       <section className="tour-logistics">
         <div className="tour-inclusions">
           <div>
-            <p className="inner-eyebrow">Practical details</p>
-            <h2>What the journey includes.</h2>
+            <p className="inner-eyebrow">Dettagli pratici</p>
+            <h2>Cosa include il viaggio.</h2>
           </div>
           <article>
-            <h3>Included</h3>
+            <h3>Incluso</h3>
             <ul>
               {includes.map((item) => (
                 <li key={item}>{item}</li>
@@ -1188,7 +1190,7 @@ export function TourPage({ tour }: { tour: Tour }) {
             </ul>
           </article>
           <article>
-            <h3>Not included</h3>
+            <h3>Non incluso</h3>
             <ul>
               {excludes.map((item) => (
                 <li key={item}>{item}</li>
@@ -1197,21 +1199,21 @@ export function TourPage({ tour }: { tour: Tour }) {
           </article>
         </div>
         <p className="tour-inclusion-note">
-          The signed proposal and booking documents always take precedence over
-          this website summary.
+          La proposta firmata e i documenti di prenotazione prevalgono sempre su
+          questo riepilogo.
         </p>
       </section>
-      <nav className="tour-policy-links pt-4" aria-label="Tour policies">
+      <nav className="tour-policy-links pt-4" aria-label="Condizioni del tour">
         <a href="/terms">
-          <span>Terms & conditions</span>
+          <span>Termini e condizioni</span>
           <b aria-hidden="true">↗</b>
         </a>
         <a href="/payment-policy">
-          <span>Payment policy</span>
+          <span>Condizioni di pagamento</span>
           <b aria-hidden="true">↗</b>
         </a>
         <a href="/cancellation-policy">
-          <span>Cancellation & refund</span>
+          <span>Cancellazione e rimborso</span>
           <b aria-hidden="true">↗</b>
         </a>
       </nav>
@@ -1221,8 +1223,8 @@ export function TourPage({ tour }: { tour: Tour }) {
       {relatedTours.length > 0 && (
         <section className="related-tours">
           <div>
-            <p className="inner-eyebrow">In the same collection</p>
-            <h2>Continue exploring.</h2>
+            <p className="inner-eyebrow">Nella stessa collezione</p>
+            <h2>Continua a esplorare.</h2>
           </div>
           <div>
             {relatedTours.map((item) => (
@@ -1242,15 +1244,15 @@ function RelatedCallout({ title }: { title: string }) {
   return (
     <section className="related-callout">
       <div>
-        <p className="inner-eyebrow">Your journey</p>
+        <p className="inner-eyebrow">Il tuo viaggio</p>
         <h2>{title}</h2>
       </div>
       <p>
-        Share a few ideas with the Maragià Express team and start a conversation
-        about what is currently possible.
+        Condividi qualche idea con il team di Maragià Express e inizia a parlare
+        di ciò che è possibile realizzare.
       </p>
       <a href="/tailor-made#enquiry">
-        Plan your journey <span aria-hidden="true">↗</span>
+        Organizza il tuo viaggio <span aria-hidden="true">↗</span>
       </a>
     </section>
   )
@@ -1264,19 +1266,19 @@ function EnquiryForm() {
     event.preventDefault()
     const data = new FormData(event.currentTarget)
     const lines = [
-      ["Name", data.get("name")],
+      ["Nome", data.get("name")],
       ["Email", data.get("email")],
-      ["Country", data.get("country")],
-      ["Destination", data.get("destination")],
-      ["Dates", data.get("dates")],
-      ["Travelers", data.get("travelers")],
-      ["Interests", data.get("interests")],
-      ["Message", data.get("message")],
+      ["Paese", data.get("country")],
+      ["Destinazione", data.get("destination")],
+      ["Date", data.get("dates")],
+      ["Viaggiatori", data.get("travelers")],
+      ["Interessi", data.get("interests")],
+      ["Messaggio", data.get("message")],
     ]
       .map(([label, value]) => `${label}: ${value || ""}`)
       .join("\n")
-    const name = String(data.get("name") || "a traveller")
-    setReady({ subject: `Journey enquiry from ${name}`, body: lines })
+    const name = String(data.get("name") || "un viaggiatore")
+    setReady({ subject: `Richiesta di viaggio da ${name}`, body: lines })
   }
   if (ready) {
     return (
@@ -1293,64 +1295,65 @@ function EnquiryForm() {
     <form className="inner-form" onSubmit={submit} id="enquiry">
       <div className="inner-field-row">
         <label>
-          Full name *
-          <input name="name" required autoComplete="name" placeholder="Your full name" />
+          Nome e cognome *
+          <input name="name" required autoComplete="name" placeholder="Nome e cognome" />
         </label>
         <label>
-          Email address *
+          Indirizzo email *
           <input
             name="email"
             required
             type="email"
             autoComplete="email"
-            placeholder="you@example.com"
+            placeholder="nome@esempio.it"
           />
-          <span className="field-hint">We reply to this address.</span>
+          <span className="field-hint">Ti risponderemo a questo indirizzo.</span>
         </label>
       </div>
       <div className="inner-field-row">
         <label>
-          Country of residence
-          <input name="country" autoComplete="country-name" placeholder="Your country" />
+          Paese di residenza
+          <input name="country" autoComplete="country-name" placeholder="Il tuo Paese" />
         </label>
         <label>
-          Preferred destination
-          <input name="destination" placeholder="Rajasthan, Ladakh, or not sure yet" />
+          Destinazione preferita
+          <input name="destination" placeholder="Rajasthan, Ladakh o non so ancora" />
         </label>
       </div>
       <div className="inner-field-row">
         <label>
-          Approximate dates
-          <input name="dates" placeholder="Month or dates" />
-          <span className="field-hint">A month is enough if your dates are not fixed.</span>
+          Date indicative
+          <input name="dates" placeholder="Mese o date" />
+          <span className="field-hint">Se le date non sono definite, basta indicare il mese.</span>
         </label>
         <label>
-          Number of travelers
+          Numero di viaggiatori
           <input name="travelers" type="number" min="1" placeholder="2" />
         </label>
       </div>
       <label>
-        Travel interests
+        Interessi di viaggio
         <input
           name="interests"
-          placeholder="Culture, wildlife, cycling, architecture..."
+          placeholder="Cultura, natura, bicicletta, architettura..."
         />
       </label>
       <label>
-        What should we know? *
+        Cosa dovremmo sapere? *
         <textarea
           name="message"
           rows={5}
           required
-          placeholder="Pace, who is travelling, and any questions."
+          placeholder="Ritmo, chi viaggia ed eventuali domande."
         />
       </label>
       <button type="submit">
-        Continue to email <span aria-hidden="true">↗</span>
+        Continua con l’email <span aria-hidden="true">↗</span>
       </button>
       <small>
-        You review the message next. Sending the email is what reaches the
-        team. Nothing is stored or booked on this page.
+        Nel passaggio successivo potrai rivedere il messaggio: è l’invio
+        dell’email a raggiungere il team. Nessun dato viene salvato o prenotato
+        su questa pagina.
       </small>
     </form>
   )
@@ -1360,54 +1363,55 @@ export function TailorMadePage() {
   return (
     <>
       <InnerHero
-        eyebrow="Designed around you"
-        title="Your interests. Your pace. Your India."
-        intro="A thoughtful itinerary begins with what matters to you—not with a pre-set package."
+        eyebrow="Pensato per te"
+        title="I tuoi interessi. Il tuo ritmo. La tua India."
+        intro="Un itinerario ben pensato parte da ciò che conta per te, non da un pacchetto preconfezionato."
         image={images.desert}
       />
       <main className="tailor-page">
         <section className="process-intro">
-          <p className="inner-eyebrow">The planning process</p>
-          <h2>From first ideas to a journey that feels coherent.</h2>
+          <p className="inner-eyebrow">Come pianifichiamo</p>
+          <h2>Dalle prime idee a un viaggio coerente.</h2>
           <p>
-            Use the form to share a starting point. The team can then discuss
-            current options and refine a route around your dates, interests and
-            preferences. Filling in the form does not reserve a trip.
+            Usa il modulo per condividere un punto di partenza. Il team potrà
+            poi valutare le opzioni disponibili e definire un itinerario in base
+            a date, interessi e preferenze. Compilare il modulo non costituisce
+            una prenotazione.
           </p>
         </section>
         <div className="inner-steps">
           <article>
             <span>01</span>
-            <h3>Share your ideas</h3>
+            <h3>Condividi le tue idee</h3>
             <p>
-              Tell the team about your travel dates, interests, pace, group and
-              accommodation preferences.
+              Racconta al team date di viaggio, interessi, ritmo, composizione
+              del gruppo e preferenze di alloggio.
             </p>
           </article>
           <article>
             <span>02</span>
-            <h3>Shape the journey</h3>
+            <h3>Definisci il viaggio</h3>
             <p>
-              Discuss a proposed route and refine the practical details before
-              anything is confirmed.
+              Valuta l’itinerario proposto e perfeziona i dettagli pratici prima
+              di qualsiasi conferma.
             </p>
           </article>
           <article>
             <span>03</span>
-            <h3>Travel with clarity</h3>
+            <h3>Viaggia con chiarezza</h3>
             <p>
-              Receive the arrangements, inclusions and support specifically
-              confirmed for your itinerary.
+              Ricevi servizi, inclusioni e assistenza confermati specificamente
+              per il tuo itinerario.
             </p>
           </article>
         </div>
         <section className="enquiry-section">
           <div>
-            <p className="inner-eyebrow">Begin a conversation</p>
-            <h2>Tell us what inspires you.</h2>
+            <p className="inner-eyebrow">Inizia una conversazione</p>
+            <h2>Raccontaci cosa ti ispira.</h2>
             <p>
-              Share your dates and interests. On the next step you open an
-              email and press Send. That message is what the team receives.
+              Indica date e interessi. Nel passaggio successivo aprirai un’email
+              e premerai Invia: è quel messaggio che riceverà il team.
             </p>
           </div>
           <EnquiryForm />
@@ -1422,55 +1426,56 @@ export function AboutPage() {
     <>
       <InnerHero
         eyebrow="Maragià Express"
-        title="India, understood from within."
-        intro="An India-based travel agency and tour operator creating personalized journeys from Udaipur, Rajasthan."
+        title="L’India, vista dall’interno."
+        intro="Agenzia di viaggi e tour operator con sede in India, che crea viaggi personalizzati da Udaipur, in Rajasthan."
         image={images.udaipur}
       />
       <main className="about-page">
         <section>
-          <p className="inner-eyebrow">Our approach</p>
-          <h2>More than a route between places.</h2>
+          <p className="inner-eyebrow">Il nostro approccio</p>
+          <h2>Più di un percorso tra un luogo e l’altro.</h2>
           <p className="detail-lead">
-            Maragià Express presents travel through India’s culture,
-            architecture, landscapes, festivals and active experiences.
+            Maragià Express propone viaggi alla scoperta della cultura,
+            dell’architettura, dei paesaggi, dei festival e delle esperienze
+            attive dell’India.
           </p>
           <p>
-            The company’s public website features organized and personalized
-            travel, cultural tours, festival journeys, cycling, Himalayan
-            adventure, wildlife experiences and selected destinations beyond
-            India.
+            Tra le proposte dell’agenzia: viaggi organizzati e personalizzati,
+            tour culturali, viaggi in occasione dei festival, cicloturismo,
+            avventure himalayane, esperienze naturalistiche e una selezione di
+            destinazioni oltre l’India.
           </p>
           <p>
-            This redesign does not invent a founding story, team biography,
-            award or special-access claim. Those details should only be added
-            after owner review.
+            Ogni viaggio nasce dall’ascolto e da una conoscenza diretta del
+            territorio, con il rispetto per i luoghi e per le persone che li
+            abitano.
           </p>
         </section>
         <figure>
           <img
             src={images.craft}
-            alt="Rajasthani musician wearing traditional dress"
+            alt="Musicista del Rajasthan in abito tradizionale"
           />
           <figcaption>
-            Travel with respect for place, people and living traditions.
+            Viaggiare nel rispetto dei luoghi, delle persone e delle tradizioni vive.
           </figcaption>
         </figure>
       </main>
       <section className="values-band">
         <article>
           <span>01</span>
-          <h3>Listen first</h3>
-          <p>Begin with the traveler, not a fixed package.</p>
+          <h3>Prima di tutto, ascoltare</h3>
+          <p>Partire dal viaggiatore, non da un pacchetto fisso.</p>
         </article>
         <article>
           <span>02</span>
-          <h3>Honor context</h3>
-          <p>Present culture as lived experience, not decoration.</p>
+          <h3>Rispettare il contesto</h3>
+          <p>Raccontare la cultura come esperienza vissuta, non come decorazione.</p>
         </article>
         <article>
           <span>03</span>
-          <h3>Plan honestly</h3>
-          <p>Confirm what is available without unsupported promises.</p>
+          <h3>Pianificare con onestà</h3>
+          <p>Confermare ciò che è disponibile, senza promesse infondate.</p>
         </article>
       </section>
     </>
@@ -1481,9 +1486,9 @@ export function JournalPage() {
   return (
     <>
       <InnerHero
-        eyebrow="Travel journal"
-        title="Notes for the curious traveler."
-        intro="Practical planning perspectives and cultural context for a more considered journey through India."
+        eyebrow="Diario di viaggio"
+        title="Appunti per il viaggiatore curioso."
+        intro="Consigli pratici di pianificazione e contesto culturale per un viaggio in India più consapevole."
         image={images.palace}
       />
       <main className="inner-main">
@@ -1521,43 +1526,45 @@ export function ArticlePage({ article }: { article: typeof articles[number] }) {
         title={article.title}
         intro={article.excerpt}
         image={article.image}
-        parent={["Travel journal", "/travel-journal"]}
+        parent={["Diario di viaggio", "/travel-journal"]}
       />
       <main className="article-page">
         <header>
-          <span>By Maragià Express editorial team</span>
-          <span>Planning perspective</span>
+          <span>A cura della redazione di Maragià Express</span>
+          <span>Consigli di viaggio</span>
         </header>
         <p className="detail-lead">
-          India rewards preparation, but not an itinerary crowded with constant
-          movement. Begin with the experience you want rather than a list of
-          every place you have heard about.
+          L’India premia la preparazione, ma non un itinerario affollato di
+          spostamenti continui. Parti dall’esperienza che desideri, piuttosto
+          che da un elenco di tutti i luoghi di cui hai sentito parlare.
         </p>
-        <h2>Start with geography and season</h2>
+        <h2>Parti dalla geografia e dalla stagione</h2>
         <p>
-          India is vast, and conditions differ significantly between regions. A
-          sensible route considers travel time, climate, altitude and how long
-          each transition takes—not only the distance on a map.
+          L’India è immensa e le condizioni cambiano molto da una regione
+          all’altra. Un itinerario sensato considera tempi di viaggio, clima,
+          altitudine e durata di ogni spostamento, non solo la distanza sulla
+          mappa.
         </p>
-        <h2>Choose depth over volume</h2>
+        <h2>Scegli la profondità, non la quantità</h2>
         <p>
-          Staying longer in fewer places creates room for unplanned discoveries
-          and a better understanding of local context. It can also reduce
-          fatigue and make the overall journey feel more coherent.
+          Fermarsi più a lungo in meno luoghi lascia spazio a scoperte
+          impreviste e a una migliore comprensione del contesto locale. Riduce
+          inoltre la stanchezza e rende il viaggio nel suo insieme più
+          coerente.
         </p>
         <blockquote>
-          Good travel planning creates space: for context, for conversation and
-          for the unexpected.
+          Una buona pianificazione crea spazio: per il contesto, per il dialogo
+          e per l’imprevisto.
         </blockquote>
-        <h2>Discuss the practical details</h2>
+        <h2>Parla dei dettagli pratici</h2>
         <p>
-          Share your interests, preferred comfort level, mobility
-          considerations, group size and approximate budget context. Always
-          confirm current entry requirements, health advice and official travel
-          guidance with authoritative sources before departure.
+          Condividi i tuoi interessi, il livello di comfort desiderato,
+          eventuali esigenze di mobilità, il numero di persone e un budget
+          indicativo. Prima della partenza verifica sempre requisiti d’ingresso,
+          indicazioni sanitarie e avvisi di viaggio presso le fonti ufficiali.
         </p>
       </main>
-      <RelatedCallout title="Turn inspiration into a considered route" />
+      <RelatedCallout title="Trasforma l’ispirazione in un itinerario ben pensato" />
     </>
   )
 }
@@ -1566,21 +1573,20 @@ export function ContactPage() {
   return (
     <>
       <InnerHero
-        eyebrow="Contact Maragià Express"
-        title="Let’s talk about India."
-        intro="Reach the team in Udaipur directly or share the starting point for a future journey."
+        eyebrow="Contatta Maragià Express"
+        title="Parliamo di India."
+        intro="Contatta direttamente il team a Udaipur o condividi il punto di partenza per il tuo prossimo viaggio."
         image={images.rajasthan}
       />
       <main className="contact-page">
         <section>
-          <p className="inner-eyebrow">Direct contact</p>
-          <h2>We are based in Udaipur, Rajasthan.</h2>
+          <p className="inner-eyebrow">Contatto diretto</p>
+          <h2>Ci trovi a Udaipur, in Rajasthan.</h2>
           <a href={siteConfig.phoneHref}>{siteConfig.phoneDisplay}</a>
           <a href={`mailto:${siteConfig.email}`}>{siteConfig.email}</a>
           <p>{siteConfig.location}</p>
           <small>
-            Business hours and response times are not published until confirmed
-            by the owner.
+            Scrivici o chiamaci: ti risponderemo il prima possibile.
           </small>
         </section>
         <EnquiryForm />
@@ -1596,101 +1602,101 @@ export function PolicyPage({
 }) {
   const content = {
     privacy: {
-      title: "Privacy notice",
+      title: "Informativa sulla privacy",
       intro:
-        "How this preview handles information and what must be confirmed before production launch.",
+        "Come questo sito gestisce le informazioni inviate tramite i moduli di richiesta.",
       sections: [
         [
-          "Current form behavior",
-          "The enquiry forms on this preview do not transmit to or store data on a website server. They prepare an email in the visitor’s own email application.",
+          "Funzionamento dei moduli",
+          "I moduli di richiesta di questo sito non trasmettono né salvano dati su un server. Preparano un’email nell’applicazione di posta del visitatore.",
         ],
         [
-          "Production requirements",
-          "Before connecting a CRM or email provider, Maragià Express must publish a reviewed privacy notice covering the data collected, purpose, legal basis, retention, processors and applicable user rights.",
+          "Trattamento dei dati",
+          "I dati che ci invii via email vengono utilizzati esclusivamente per rispondere alla tua richiesta e organizzare il viaggio. Puoi chiederne in qualsiasi momento la modifica o la cancellazione scrivendo al nostro indirizzo email.",
         ],
         [
-          "External services",
-          "Photography and font resources currently load from external providers. Production deployment should document or replace these resources as appropriate.",
+          "Servizi esterni",
+          "Alcune fotografie e i caratteri tipografici vengono caricati da fornitori esterni, che possono ricevere dati tecnici di navigazione come l’indirizzo IP.",
         ],
       ],
     },
     terms: {
-      title: "Terms and conditions",
+      title: "Termini e condizioni",
       intro:
-        "Published booking principles that must be read with your specific written proposal.",
+        "Principi di prenotazione da leggere insieme alla proposta scritta che riceverai.",
       sections: [
         [
-          "Quotes, prices and exchange rates",
-          "The existing published terms explain that prices may depend on supplier availability, exchange-rate movements, supplier increases and tax changes. Any change must be communicated before the booking transaction; the current written proposal is the authoritative price.",
+          "Preventivi, prezzi e tassi di cambio",
+          "I prezzi possono dipendere dalla disponibilità dei fornitori, dalle variazioni dei tassi di cambio, dagli aumenti dei fornitori e da modifiche fiscali. Ogni variazione deve essere comunicata prima della prenotazione; fa fede il prezzo indicato nella proposta scritta più recente.",
         ],
         [
-          "Confirmation of services",
-          "A website itinerary or price does not itself confirm a booking. Dates, accommodation, transport, inclusions and supplier terms are confirmed only in the written proposal and booking documents issued for your journey.",
+          "Conferma dei servizi",
+          "Un itinerario o un prezzo pubblicato sul sito non costituisce di per sé una prenotazione. Date, alloggi, trasporti, servizi inclusi e condizioni dei fornitori sono confermati solo nella proposta scritta e nei documenti di prenotazione emessi per il tuo viaggio.",
         ],
         [
-          "Insurance and travel documents",
-          "Travelers should confirm passport, visa, insurance and health requirements applicable to their circumstances. The published terms recommend suitable medical cover, including emergency transfer or repatriation.",
+          "Assicurazione e documenti di viaggio",
+          "I viaggiatori devono verificare i requisiti relativi a passaporto, visto, assicurazione e salute applicabili alla propria situazione. Si raccomanda un’adeguata copertura medica, comprensiva di trasferimento d’emergenza o rimpatrio.",
         ],
       ],
     },
     payment: {
-      title: "Payment policy",
+      title: "Condizioni di pagamento",
       intro:
-        "A plain-language summary of the payment terms currently published on Maragià Express tour pages.",
+        "Un riepilogo chiaro delle condizioni di pagamento applicate ai tour di Maragià Express.",
       sections: [
         [
-          "Deposit and balance",
-          "The existing tour pages state that a deposit equal to 50% of the total is required 45 days before departure, with the remaining balance due 30 days before departure. Ask the team to confirm the schedule applying to your specific booking.",
+          "Acconto e saldo",
+          "È richiesto un acconto pari al 50% del totale 45 giorni prima della partenza; il saldo è dovuto 30 giorni prima della partenza. Chiedi al team di confermarti le scadenze applicabili alla tua prenotazione.",
         ],
         [
-          "Payment method and documents",
-          "The published policy states that payments are made by bank transfer to the company account. An invoice with payment details is supplied, followed by a receipt; travel vouchers and booking confirmations are issued after the full amount is received.",
+          "Modalità di pagamento e documenti",
+          "I pagamenti si effettuano tramite bonifico bancario sul conto aziendale. Viene fornita una fattura con i dati per il pagamento, seguita da una ricevuta; voucher di viaggio e conferme di prenotazione vengono emessi dopo il ricevimento dell’intero importo.",
         ],
         [
-          "Late or missed payment",
-          "The published policy states that failure to pay the deposit or balance by its deadline may result in automatic cancellation. Any amount retained or transferred to another booking is governed by the written terms applying to the reservation.",
+          "Ritardo o mancato pagamento",
+          "Il mancato pagamento dell’acconto o del saldo entro la scadenza può comportare la cancellazione automatica. Eventuali importi trattenuti o trasferiti su un’altra prenotazione sono regolati dalle condizioni scritte applicabili alla prenotazione.",
         ],
         [
-          "Festive-period bookings",
-          "The existing policy contains special non-refundable conditions for Christmas and New Year bookings. Obtain the exact dates and current conditions in writing before paying.",
+          "Prenotazioni nel periodo festivo",
+          "Per le prenotazioni nel periodo di Natale e Capodanno si applicano condizioni speciali non rimborsabili. Richiedi per iscritto le date esatte e le condizioni aggiornate prima di effettuare il pagamento.",
         ],
       ],
     },
     cancellation: {
-      title: "Cancellation and refunds",
+      title: "Cancellazione e rimborso",
       intro:
-        "A summary of the cancellation scale currently published by Maragià Express.",
+        "Un riepilogo delle penali di cancellazione applicate da Maragià Express.",
       sections: [
         [
-          "How to cancel",
-          "The published policy requires cancellation to be communicated in writing by email. The notice period begins when the request is confirmed by customer service; requests sent outside working days or office hours are handled on the next working day.",
+          "Come cancellare",
+          "La cancellazione deve essere comunicata per iscritto via email. Il preavviso decorre dalla conferma della richiesta da parte del servizio clienti; le richieste inviate fuori dai giorni o dagli orari lavorativi vengono gestite il primo giorno lavorativo successivo.",
         ],
         [
-          "Published cancellation scale",
-          "The existing tour pages publish the following scale: 15% of the tour or service cost when confirmed 45 days before departure; 50% when confirmed 30 days before departure; and 100% from 15 days before departure through the departure date.",
+          "Penali di cancellazione",
+          "Si applicano le seguenti penali: 15% del costo del tour o del servizio per cancellazioni confermate 45 giorni prima della partenza; 50% per cancellazioni confermate 30 giorni prima della partenza; 100% da 15 giorni prima della partenza fino al giorno di partenza.",
         ],
         [
-          "Supplier and festive-period conditions",
-          "Separate supplier cancellation rules may apply. The published policy also states that bookings from 20 December to 5 January and travel during Diwali are non-refundable. Confirm the current conditions in the signed booking documents.",
+          "Condizioni dei fornitori e periodi festivi",
+          "Possono applicarsi regole di cancellazione specifiche dei fornitori. Le prenotazioni dal 20 dicembre al 5 gennaio e i viaggi durante il Diwali non sono rimborsabili. Verifica le condizioni aggiornate nei documenti di prenotazione firmati.",
         ],
       ],
     },
     information: {
-      title: "Travel information",
+      title: "Informazioni utili",
       intro:
-        "Practical details should be checked for your route, dates and individual circumstances.",
+        "I dettagli pratici vanno verificati in base al tuo itinerario, alle date e alla tua situazione personale.",
       sections: [
         [
-          "Entry and health requirements",
-          "Use current government and authoritative sources for passports, visas, vaccinations, insurance and health guidance. Requirements can change.",
+          "Requisiti d’ingresso e sanitari",
+          "Consulta le fonti governative e ufficiali aggiornate per passaporti, visti, vaccinazioni, assicurazione e indicazioni sanitarie. I requisiti possono cambiare.",
         ],
         [
-          "Season and conditions",
-          "Weather, altitude, festival dates, reserve access and road conditions can affect an itinerary. Confirm current details when planning.",
+          "Stagione e condizioni",
+          "Meteo, altitudine, date dei festival, accesso alle riserve e condizioni delle strade possono influire sull’itinerario. Verifica i dettagli aggiornati in fase di pianificazione.",
         ],
         [
-          "Accessibility and individual needs",
-          "Share mobility, dietary, health or other relevant requirements early so the team can discuss what arrangements may be possible.",
+          "Accessibilità ed esigenze personali",
+          "Comunica per tempo eventuali esigenze di mobilità, alimentari, di salute o di altro tipo, così il team potrà valutare le soluzioni possibili.",
         ],
       ],
     },
@@ -1698,7 +1704,7 @@ export function PolicyPage({
   return (
     <>
       <InnerHero
-        eyebrow="Important information"
+        eyebrow="Informazioni importanti"
         title={content.title}
         intro={content.intro}
       />
@@ -1715,16 +1721,16 @@ export function PolicyPage({
         ))}
         {type === "cancellation" && (
           <a href="/cancellation-policy">
-            View the existing published policy ↗
+            Consulta le condizioni pubblicate ↗
           </a>
         )}
         {type === "terms" && (
           <a href="/terms">
-            View the existing published terms ↗
+            Consulta i termini pubblicati ↗
           </a>
         )}
         <p>
-          For clarification, contact{" "}
+          Per chiarimenti, scrivi a{" "}
           <a href={`mailto:${siteConfig.email}`}>{siteConfig.email}</a>.
         </p>
       </main>
@@ -1735,13 +1741,13 @@ export function PolicyPage({
 export function NotFoundPage() {
   return (
     <main className="not-found">
-      <p className="inner-eyebrow">404 · Journey interrupted</p>
-      <h1>This path does not lead anywhere—yet.</h1>
+      <p className="inner-eyebrow">404 · Viaggio interrotto</p>
+      <h1>Questa strada non porta da nessuna parte, per ora.</h1>
       <p>
-        Return to the homepage or continue exploring destinations supported by
+        Torna alla home page o continua a esplorare le destinazioni proposte da
         Maragià Express.
       </p>
-      <a href="/">Return home</a>
+      <a href="/">Torna alla home</a>
     </main>
   )
 }

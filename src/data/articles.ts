@@ -11,26 +11,26 @@ export type Article = {
 export const articles: Article[] = [
   {
     slug: "planning-first-visit-india",
-    category: "Planning",
-    title: "Planning a first journey through India",
+    category: "Pianificazione",
+    title: "Pianificare il primo viaggio in India",
     excerpt:
-      "Start with season, geography and pace before deciding how many places belong in your itinerary.",
+      "Parti da stagione, geografia e ritmo prima di decidere quante tappe inserire nel tuo itinerario.",
     image: siteImages.udaipur,
   },
   {
     slug: "rajasthan-heritage-cities",
-    category: "Culture",
-    title: "Reading Rajasthan through its heritage cities",
+    category: "Cultura",
+    title: "Leggere il Rajasthan attraverso le sue città storiche",
     excerpt:
-      "Udaipur, Jodhpur and Jaipur each tell a different story through landscape, architecture and color.",
+      "Udaipur, Jodhpur e Jaipur raccontano ciascuna una storia diversa attraverso paesaggio, architettura e colore.",
     image: siteImages.palace,
   },
   {
     slug: "travel-at-a-slower-pace",
-    category: "Travel well",
-    title: "Why a slower journey often reveals more",
+    category: "Viaggiare bene",
+    title: "Perché un viaggio più lento spesso rivela di più",
     excerpt:
-      "Fewer transitions can create more space for context, conversation and a genuine sense of place.",
+      "Meno spostamenti lasciano più spazio al contesto, alle conversazioni e a un autentico senso del luogo.",
     image: siteImages.desert,
   },
 ]

@@ -34,10 +34,10 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en" className={`${displayFont.variable} ${bodyFont.variable}`}>
+    <html lang="it" className={`${displayFont.variable} ${bodyFont.variable}`}>
       <body>
         <a className="skip-link" href="#main-content">
-          Skip to main content
+          Vai al contenuto principale
         </a>
         <JsonLd data={[organizationSchema(), websiteSchema()]} />
         {children}

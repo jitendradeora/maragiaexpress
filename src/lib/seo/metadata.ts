@@ -23,7 +23,7 @@ export function createPageMetadata({
   description,
   path,
   image = siteImages.og,
-  imageAlt = `${siteConfig.name} — tailor-made journeys through India`,
+  imageAlt = `${siteConfig.name} — viaggi su misura in India`,
   type = "website",
   noIndex = false,
   keywords,
@@ -46,7 +46,7 @@ export function createPageMetadata({
       title: `${title} | ${siteConfig.name}`,
       description,
       siteName: siteConfig.name,
-      locale: "en_IN",
+      locale: "it_IT",
       images: [
         {
           url: image,
@@ -68,7 +68,7 @@ export function createPageMetadata({
 export const rootMetadata: Metadata = {
   metadataBase: new URL(siteConfig.url),
   title: {
-    default: `${siteConfig.name} | Tailor-Made Journeys Through India`,
+    default: `${siteConfig.name} | Viaggi su misura in India`,
     template: `%s | ${siteConfig.name}`,
   },
   description: siteConfig.seoDescription,
@@ -78,12 +78,13 @@ export const rootMetadata: Metadata = {
   publisher: siteConfig.name,
   category: "travel",
   keywords: [
-    "India travel",
-    "tailor-made India tours",
-    "Rajasthan journeys",
+    "viaggi in India",
+    "viaggi su misura India",
+    "tour Rajasthan",
     "Maragià Express",
-    "Udaipur travel agency",
-    "cultural tours India",
+    "agenzia di viaggi Udaipur",
+    "tour culturali India",
+    "viaggi organizzati India",
   ],
   alternates: {
     canonical: absoluteUrl("/"),
@@ -91,22 +92,22 @@ export const rootMetadata: Metadata = {
   openGraph: {
     type: "website",
     url: siteConfig.url,
-    title: `${siteConfig.name} | Tailor-Made Journeys Through India`,
+    title: `${siteConfig.name} | Viaggi su misura in India`,
     description: siteConfig.seoDescription,
     siteName: siteConfig.name,
-    locale: "en_IN",
+    locale: "it_IT",
     images: [
       {
         url: siteImages.og,
         width: 1200,
         height: 630,
-        alt: `${siteConfig.name} — tailor-made journeys through India`,
+        alt: `${siteConfig.name} — viaggi su misura in India`,
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: `${siteConfig.name} | Tailor-Made Journeys Through India`,
+    title: `${siteConfig.name} | Viaggi su misura in India`,
     description: siteConfig.seoDescription,
     images: [siteImages.og],
   },

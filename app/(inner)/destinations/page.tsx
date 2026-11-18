@@ -27,7 +27,7 @@ export default function Page() {
           }),
           breadcrumbSchema([
             { name: "Home", path: "/" },
-            { name: "Destinations", path: "/destinations" },
+            { name: "Destinazioni", path: "/destinations" },
           ]),
         ]}
       />

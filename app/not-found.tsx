@@ -8,9 +8,9 @@ import {
 import { createPageMetadata } from "@/lib/seo/metadata"
 
 export const metadata: Metadata = createPageMetadata({
-  title: "Page not found",
+  title: "Pagina non trovata",
   description:
-    "This page could not be found. Return to Maragià Express to continue exploring India journeys.",
+    "Questa pagina non è stata trovata. Torna su Maragià Express per continuare a scoprire i viaggi in India.",
   path: "/404",
   noIndex: true,
 })

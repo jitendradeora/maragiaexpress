@@ -2,9 +2,9 @@ export const siteConfig = {
   name: "Maragià Express",
   url: "https://maragiaexpress.com",
   description:
-    "An India-based travel agency creating tailor-made cultural, heritage and adventure journeys.",
+    "Agenzia di viaggi con sede in India che crea viaggi su misura tra cultura, patrimonio storico e avventura.",
   seoDescription:
-    "Discover tailor-made journeys through India's culture, heritage, landscapes and wildlife with Maragià Express in Udaipur, Rajasthan.",
+    "Scopri viaggi su misura tra cultura, patrimonio, paesaggi e natura dell’India con Maragià Express, agenzia con sede a Udaipur, in Rajasthan.",
   email: "mail@maragiaexpress.com",
   phone: "+919784002880",
   phoneHref: "tel:+919784002880",

@@ -3,93 +3,93 @@ import { siteImages } from "./site-images"
 export const staticPages = [
   {
     path: "/",
-    title: "Tailor-Made Journeys Through India",
+    title: "Viaggi su misura in India",
     description:
-      "Discover tailor-made journeys through India's culture, heritage, landscapes and wildlife with Maragià Express in Udaipur, Rajasthan.",
+      "Scopri viaggi su misura tra cultura, patrimonio, paesaggi e natura dell’India con Maragià Express, agenzia con sede a Udaipur, in Rajasthan.",
     image: siteImages.hero,
   },
   {
     path: "/destinations",
-    title: "Destinations",
+    title: "Destinazioni",
     description:
-      "Explore destinations across India and beyond, from Rajasthan and Ladakh to Bhutan, Nepal and Sri Lanka with Maragià Express.",
+      "Esplora le destinazioni in India e oltre, dal Rajasthan al Ladakh fino a Bhutan, Nepal e Sri Lanka, con Maragià Express.",
     image: siteImages.udaipur,
   },
   {
     path: "/tours",
-    title: "Tours of India",
+    title: "Tour dell’India",
     description:
-      "Browse cultural, festival, adventure and heritage tours of India designed with Maragià Express in Udaipur.",
+      "Scopri i tour culturali, dei festival, d’avventura e di lusso in India ideati da Maragià Express a Udaipur.",
     image: siteImages.palace,
   },
   {
     path: "/experiences",
-    title: "Travel experiences",
+    title: "Esperienze di viaggio",
     description:
-      "Discover tailor-made, cultural, adventure, festival and refined travel experiences with Maragià Express.",
+      "Scopri esperienze di viaggio su misura, culturali, d’avventura, legate ai festival e di lusso con Maragià Express.",
     image: siteImages.craft,
   },
   {
     path: "/tailor-made",
-    title: "Tailor-made journeys",
+    title: "Viaggi su misura",
     description:
-      "Plan a personalized India journey around your dates, interests, pace and preferred style of travel.",
+      "Organizza un viaggio personalizzato in India in base alle tue date, ai tuoi interessi, al ritmo e allo stile di viaggio che preferisci.",
     image: siteImages.udaipur,
   },
   {
     path: "/about",
-    title: "About",
+    title: "Chi siamo",
     description:
-      "Learn about Maragià Express, an Udaipur-based travel agency creating thoughtful journeys through India.",
+      "Scopri Maragià Express, agenzia di viaggi con sede a Udaipur che crea viaggi curati in ogni dettaglio attraverso l’India.",
     image: siteImages.udaipur,
   },
   {
     path: "/travel-journal",
-    title: "Travel journal",
+    title: "Diario di viaggio",
     description:
-      "Notes on planning, heritage and slower travel through India from the Maragià Express journal.",
+      "Consigli di pianificazione, patrimonio culturale e viaggi lenti in India dal diario di Maragià Express.",
     image: siteImages.city,
   },
   {
     path: "/contact",
-    title: "Contact",
+    title: "Contatti",
     description:
-      "Contact Maragià Express in Udaipur to discuss destinations, tours and tailor-made India journeys.",
+      "Contatta Maragià Express a Udaipur per parlare di destinazioni, tour e viaggi su misura in India.",
     image: siteImages.udaipur,
   },
   {
     path: "/travel-information",
-    title: "Travel information",
+    title: "Informazioni utili",
     description:
-      "Practical travel information to help you prepare for a journey through India with Maragià Express.",
+      "Informazioni pratiche per prepararti al meglio a un viaggio in India con Maragià Express.",
     image: siteImages.desert,
   },
   {
     path: "/privacy",
-    title: "Privacy notice",
+    title: "Informativa sulla privacy",
     description:
-      "Read the Maragià Express privacy notice covering how enquiry and website information is handled.",
+      "Leggi l’informativa sulla privacy di Maragià Express su come vengono gestite le richieste e i dati del sito.",
     image: siteImages.og,
   },
   {
     path: "/terms",
-    title: "Terms and conditions",
+    title: "Termini e condizioni",
     description:
-      "Review the Maragià Express terms and conditions for journey planning and travel arrangements.",
+      "Consulta i termini e le condizioni di Maragià Express per la pianificazione e l’organizzazione dei viaggi.",
     image: siteImages.og,
   },
   {
     path: "/payment-policy",
-    title: "Payment policy",
+    title: "Condizioni di pagamento",
     description:
-      "Understand Maragià Express payment expectations for confirmed travel proposals and bookings.",
+      "Scopri le condizioni di pagamento di Maragià Express per proposte di viaggio confermate e prenotazioni.",
     image: siteImages.og,
   },
   {
     path: "/cancellation-policy",
-    title: "Cancellation and refunds",
+    title: "Cancellazione e rimborso",
     description:
-      "Review Maragià Express cancellation and refund guidance before confirming travel arrangements.",
+      "Consulta le condizioni di cancellazione e rimborso di Maragià Express prima di confermare il tuo viaggio.",
     image: siteImages.og,
   },
 ] as const

@@ -2,6 +2,7 @@
 
 import { FormEvent, useState } from "react"
 import BackToTop from "./BackToTop"
+import BrandMark from "./BrandMark"
 import { EnquiryReady } from "./EnquiryReady"
 import ProfileLinks from "./ProfileLinks"
 import SiteImage from "./SiteImage"
@@ -12,22 +13,22 @@ import { siteConfig } from "@/lib/site-config"
 const destinations = [
   {
     name: "Rajasthan",
-    kicker: "Palaces · desert · living heritage",
-    copy: "From Udaipur’s lakes to Jodhpur’s blue lanes and the desert landscapes beyond.",
+    kicker: "Palazzi · deserto · patrimonio vivo",
+    copy: "Dai laghi di Udaipur ai vicoli blu di Jodhpur, fino ai paesaggi del deserto.",
     image: images.jodhpur,
     className: "destination-large",
   },
   {
     name: "Ladakh",
-    kicker: "High Himalaya",
-    copy: "Mountain roads, Buddhist monasteries and the expansive landscapes of India’s north.",
+    kicker: "Alto Himalaya",
+    copy: "Strade di montagna, monasteri buddhisti e i vasti paesaggi del nord dell’India.",
     image: images.ladakh,
     className: "destination-tall",
   },
   {
-    name: "Wild India",
-    kicker: "Forest · safari",
-    copy: "Journeys shaped around India’s remarkable reserves and wildlife regions.",
+    name: "India selvaggia",
+    kicker: "Foreste · safari",
+    copy: "Viaggi costruiti attorno alle straordinarie riserve naturali dell’India.",
     image: images.wildlife,
     className: "",
   },
@@ -36,32 +37,30 @@ const destinations = [
 const experiences = [
   {
     number: "01",
-    title: "Tailor-made journeys",
-    copy: "A journey shaped around your dates, interests, preferred pace and style of stay.",
+    title: "Viaggi su misura",
+    copy: "Un viaggio costruito su date, interessi, ritmo preferito e stile di soggiorno.",
   },
   {
     number: "02",
-    title: "Culture & heritage",
-    copy: "Historic cities, sacred places, architecture, crafts and the traditions of daily life.",
+    title: "Cultura e patrimonio",
+    copy: "Città storiche, luoghi sacri, architettura, artigianato e tradizioni della vita quotidiana.",
   },
   {
     number: "03",
-    title: "Adventure & cycling",
-    copy: "Cycling through Rajasthan, Himalayan routes and active ways to explore the landscape.",
+    title: "Avventura e bicicletta",
+    copy: "In bicicletta nel Rajasthan, itinerari himalayani e modi attivi di esplorare il paesaggio.",
   },
   {
     number: "04",
-    title: "Festivals & gatherings",
-    copy: "Travel inspired by Holi, the Pushkar Fair and other festivals featured by Maragià Express.",
+    title: "Festival e celebrazioni",
+    copy: "Viaggi ispirati a Holi, alla Fiera di Pushkar e agli altri festival proposti da Maragià Express.",
   },
 ]
 
-function Brand() {
+function Brand({ priority = false }: { priority?: boolean }) {
   return (
-    <a className="brand" href="/" aria-label="Maragià Express home">
-      <span className="brand-mark" aria-hidden="true">
-        M
-      </span>
+    <a className="brand" href="/" aria-label="Maragià Express, home page">
+      <BrandMark priority={priority} />
       <span>
         <b>MARAGIÀ</b>
         <small>EXPRESS · INDIA</small>
@@ -108,33 +107,31 @@ function SectionHeading({
 function Header() {
   const [open, setOpen] = useState(false)
   const links = [
-    ["Destinations", "/destinations"],
-    ["Tours", "/tours"],
-    ["Experiences", "/experiences"],
-    ["Tailor-made", "/tailor-made"],
-    ["About", "/about"],
-    ["Journal", "/travel-journal"],
-    ["Contact", "/contact"],
+    ["Destinazioni", "/destinations"],
+    ["Tour", "/tours"],
+    ["Esperienze", "/experiences"],
+    ["Su misura", "/tailor-made"],
+    ["Chi siamo", "/about"],
+    ["Diario", "/travel-journal"],
+    ["Contatti", "/contact"],
   ]
 
   return (
     <header className="site-header">
       <div className="header-inner">
-        <Brand />
+        <Brand priority />
         <nav
           className={`nav ${open ? "nav-open" : ""}`}
           id="mobile-navigation"
-          aria-label="Main navigation"
+          aria-label="Navigazione principale"
         >
           <a
             className="mobile-nav-brand brand"
             href="/"
-            aria-label="Maragià Express home"
+            aria-label="Maragià Express, home page"
             onClick={() => setOpen(false)}
           >
-            <span className="brand-mark" aria-hidden="true">
-              M
-            </span>
+            <BrandMark />
             <span>
               <b>MARAGIÀ</b>
               <small>EXPRESS · INDIA</small>
@@ -150,7 +147,7 @@ function Header() {
             href="/tailor-made#enquiry"
             onClick={() => setOpen(false)}
           >
-            Plan your journey
+            Organizza il tuo viaggio
           </a>
         </nav>
         <button
@@ -158,7 +155,7 @@ function Header() {
           type="button"
           aria-expanded={open}
           aria-controls="mobile-navigation"
-          aria-label={open ? "Close navigation" : "Open navigation"}
+          aria-label={open ? "Chiudi il menu" : "Apri il menu"}
           onClick={() => setOpen((value) => !value)}
         >
           <span />
@@ -174,7 +171,7 @@ function Hero() {
     <section className="hero" id="top">
       <SiteImage
         src={images.hero}
-        alt="Historic palace architecture reflected in water in Udaipur, Rajasthan"
+        alt="Architettura di un palazzo storico riflessa nell’acqua a Udaipur, Rajasthan"
         width={2200}
         height={1400}
         priority
@@ -190,29 +187,29 @@ function Hero() {
       <div className="hero-overlay" />
       <div className="hero-content">
         <p className="eyebrow eyebrow-light">
-          Discover India · Travel beyond the ordinary
+          Scopri l’India · Viaggia oltre l’ordinario
         </p>
         <h1>
-          India, experienced
-          <em>your way.</em>
+          L’India, vissuta
+          <em>a modo tuo.</em>
         </h1>
         <p className="hero-copy">
-          Extraordinary landscapes, living traditions and hidden gems—brought
-          together in a journey thoughtfully shaped around you.
+          Paesaggi straordinari, tradizioni vive e tesori nascosti, riuniti in
+          un viaggio pensato con cura attorno a te.
         </p>
         <div className="hero-actions">
           <a className="button button-ivory" href="/destinations">
-            Explore destinations
+            Esplora le destinazioni
           </a>
           <ArrowLink href="/tailor-made" light>
-            Design your journey
+            Progetta il tuo viaggio
           </ArrowLink>
         </div>
       </div>
       <div className="hero-foot">
         <span>Udaipur · Rajasthan · India</span>
         <a href="#about">
-          Scroll to discover <span aria-hidden="true">↓</span>
+          Scorri per scoprire <span aria-hidden="true">↓</span>
         </a>
       </div>
     </section>
@@ -223,33 +220,33 @@ function Introduction() {
   return (
     <section className="intro section" id="about">
       <div className="intro-title">
-        <p className="eyebrow">Our way of travelling</p>
+        <p className="eyebrow">Il nostro modo di viaggiare</p>
         <h2>
-          More than a journey.
-          <em>A deeper connection with India.</em>
+          Più di un viaggio.
+          <em>Un legame più profondo con l’India.</em>
         </h2>
       </div>
       <div className="intro-image">
         <img
           src={images.udaipur}
-          alt="Ornate palace facade beside the lake in Udaipur"
+          alt="Facciata decorata di un palazzo sul lago a Udaipur"
           loading="lazy"
         />
-        <span>Local perspective, thoughtfully planned</span>
+        <span>Sguardo locale, pianificazione accurata</span>
       </div>
       <div className="intro-copy">
         <p className="lead">
-          Maragià Express is an India-based travel specialist in Udaipur,
-          creating personalized journeys through the country’s many landscapes
-          and cultures.
+          Maragià Express è uno specialista di viaggi con sede a Udaipur, in
+          India, che crea viaggi personalizzati attraverso i tanti paesaggi e
+          le tante culture del Paese.
         </p>
         <p>
-          The approach begins with listening: understanding how you like to
-          travel, what draws you to India, and the rhythm you want your journey
-          to have. From heritage cities to Himalayan roads, each route is
-          considered as a whole.
+          Il nostro approccio inizia dall’ascolto: capire come ami viaggiare,
+          cosa ti attrae dell’India e quale ritmo desideri per il tuo viaggio.
+          Dalle città storiche alle strade himalayane, ogni itinerario è
+          pensato nel suo insieme.
         </p>
-        <ArrowLink href="/about">Discover Maragià Express</ArrowLink>
+        <ArrowLink href="/about">Scopri Maragià Express</ArrowLink>
       </div>
     </section>
   )
@@ -260,11 +257,11 @@ function Destinations() {
     <section className="destinations section" id="destinations">
       <div className="heading-row">
         <SectionHeading
-          eyebrow="Places to begin"
-          title="Find the India that speaks to you."
-          copy="A country of many worlds. Begin with a landscape, a story or a feeling."
+          eyebrow="Da dove iniziare"
+          title="Trova l’India che parla di te."
+          copy="Un Paese di tanti mondi. Inizia da un paesaggio, una storia o un’emozione."
         />
-        <ArrowLink href="/destinations">Explore all destinations</ArrowLink>
+        <ArrowLink href="/destinations">Esplora tutte le destinazioni</ArrowLink>
       </div>
       <div className="destination-grid">
         {destinations.map((destination, index) => (
@@ -304,19 +301,19 @@ function Experiences() {
       <div className="experience-image">
         <img
           src={images.craft}
-          alt="Rajasthani musician in traditional dress"
+          alt="Musicista del Rajasthan in abito tradizionale"
           loading="lazy"
         />
         <div className="image-note">
-          <small>The meaningful details</small>
-          <span>People, place, craft and culture</span>
+          <small>I dettagli che contano</small>
+          <span>Persone, luoghi, artigianato e cultura</span>
         </div>
       </div>
       <div className="experience-content">
         <SectionHeading
-          eyebrow="Ways to travel"
-          title="Travel that feels personal."
-          copy="Not a checklist of sights, but an itinerary with space to understand where you are."
+          eyebrow="Modi di viaggiare"
+          title="Viaggi che ti somigliano."
+          copy="Non un elenco di luoghi da spuntare, ma un itinerario che lascia spazio per capire dove ti trovi."
         />
         <div className="experience-list">
           {experiences.map((experience, index) => (
@@ -351,22 +348,23 @@ function RajasthanFeature() {
     <section className="rajasthan">
       <img
         src={images.desert}
-        alt="Camel rider crossing Rajasthan's Thar Desert"
+        alt="Cammelliere che attraversa il deserto del Thar, in Rajasthan"
         loading="lazy"
       />
       <div className="rajasthan-overlay" />
       <div className="rajasthan-content">
-        <p className="eyebrow eyebrow-light">A signature landscape</p>
+        <p className="eyebrow eyebrow-light">Un paesaggio simbolo</p>
         <h2>
           Rajasthan,
-          <em>beyond the postcard.</em>
+          <em>oltre la cartolina.</em>
         </h2>
         <p>
-          Discover the stories, architecture, traditions and encounters that
-          make Rajasthan one of India’s most distinctive travel experiences.
+          Scopri le storie, l’architettura, le tradizioni e gli incontri che
+          rendono il Rajasthan una delle esperienze di viaggio più uniche
+          dell’India.
         </p>
         <a className="button button-ivory" href="/destinations/rajasthan">
-          Explore Rajasthan
+          Esplora il Rajasthan
         </a>
       </div>
       <div className="rajasthan-label">26.9124° N · 75.7873° E</div>
@@ -378,26 +376,26 @@ function TailorMade() {
   const steps = [
     [
       "01",
-      "Share your ideas",
-      "Tell us about your dates, interests, travel style and preferences.",
+      "Condividi le tue idee",
+      "Raccontaci date, interessi, stile di viaggio e preferenze.",
     ],
     [
       "02",
-      "Shape your journey",
-      "Discuss a proposed route and refine it with the travel team.",
+      "Definisci il tuo viaggio",
+      "Valuta l’itinerario proposto e perfezionalo con il team di viaggio.",
     ],
     [
       "03",
-      "Experience India",
-      "Travel with the arrangements and support confirmed for your itinerary.",
+      "Vivi l’India",
+      "Viaggia con i servizi e l’assistenza confermati per il tuo itinerario.",
     ],
   ]
   return (
     <section className="tailor section" id="tailor-made">
       <SectionHeading
-        eyebrow="Designed around you"
-        title="Your interests. Your pace. Your India."
-        copy="Every memorable journey begins with a conversation—not a pre-set package."
+        eyebrow="Pensato per te"
+        title="I tuoi interessi. Il tuo ritmo. La tua India."
+        copy="Ogni viaggio memorabile inizia da una conversazione, non da un pacchetto preconfezionato."
       />
       <div className="steps">
         {steps.map(([number, title, copy]) => (
@@ -409,7 +407,7 @@ function TailorMade() {
         ))}
       </div>
       <a className="button button-green" href="/tailor-made#enquiry">
-        Plan a custom trip
+        Organizza un viaggio su misura
       </a>
     </section>
   )
@@ -417,25 +415,25 @@ function TailorMade() {
 
 function WhyUs() {
   const points = [
-    ["Based in India", "On-the-ground perspective from Udaipur, Rajasthan."],
+    ["Con sede in India", "Conoscenza diretta del territorio, da Udaipur, Rajasthan."],
     [
-      "Made personal",
-      "Routes discussed and shaped around individual preferences.",
+      "Su misura per te",
+      "Itinerari discussi e costruiti sulle preferenze di ciascuno.",
     ],
     [
-      "Many ways to explore",
-      "Cultural, festival, active and wildlife journeys.",
+      "Tanti modi di esplorare",
+      "Viaggi culturali, festival, viaggi attivi e naturalistici.",
     ],
     [
-      "One considered journey",
-      "Travel arrangements brought together around a coherent route.",
+      "Un unico viaggio coerente",
+      "Tutti i servizi riuniti attorno a un itinerario ben costruito.",
     ],
   ]
   return (
     <section className="why section">
       <div className="why-title">
-        <p className="eyebrow">Why Maragià Express</p>
-        <h2>Local knowledge. A journey that is entirely yours.</h2>
+        <p className="eyebrow">Perché Maragià Express</p>
+        <h2>Conoscenza locale. Un viaggio che è soltanto tuo.</h2>
       </div>
       <div className="why-grid">
         {points.map(([title, copy], index) => (
@@ -457,10 +455,10 @@ function Journal() {
     <section className="journal section" id="journal">
       <div className="heading-row">
         <SectionHeading
-          eyebrow="Notes for the curious"
-          title="Stories from the journey."
+          eyebrow="Appunti per curiosi"
+          title="Storie di viaggio."
         />
-        <ArrowLink href="/travel-journal">Explore the travel journal</ArrowLink>
+        <ArrowLink href="/travel-journal">Esplora il diario di viaggio</ArrowLink>
       </div>
       <div className="journal-grid">
         <a
@@ -469,29 +467,29 @@ function Journal() {
         >
           <img
             src={images.city}
-            alt="Intricate balconies and windows on a Rajasthan palace facade"
+            alt="Balconi e finestre finemente lavorati sulla facciata di un palazzo del Rajasthan"
             loading="lazy"
           />
-          <p className="eyebrow">Architecture & heritage</p>
-          <h3>Reading Rajasthan through its heritage cities</h3>
+          <p className="eyebrow">Architettura e patrimonio</p>
+          <h3>Leggere il Rajasthan attraverso le sue città storiche</h3>
           <p>
-            Look beyond the facade and discover how architecture carries
-            centuries of memory.
+            Guarda oltre la facciata e scopri come l’architettura custodisce
+            secoli di memoria.
           </p>
         </a>
         <a href="/travel-journal/planning-first-visit-india">
-          <span className="journal-number">FIELD NOTE · 01</span>
-          <h3>Planning a first journey through India</h3>
+          <span className="journal-number">APPUNTI · 01</span>
+          <h3>Pianificare il primo viaggio in India</h3>
           <p>
-            A thoughtful starting point for pace, season, regions and
-            expectations.
+            Un punto di partenza ragionato su ritmo, stagione, regioni e
+            aspettative.
           </p>
         </a>
         <a href="/travel-journal/travel-at-a-slower-pace">
-          <span className="journal-number">FIELD NOTE · 02</span>
-          <h3>Why a slower journey often reveals more</h3>
+          <span className="journal-number">APPUNTI · 02</span>
+          <h3>Perché un viaggio più lento spesso rivela di più</h3>
           <p>
-            Lakes, havelis and everyday rituals in Maragià Express’s home city.
+            Laghi, haveli e riti quotidiani nella città che ospita Maragià Express.
           </p>
         </a>
       </div>
@@ -504,10 +502,10 @@ function Faq() {
   return (
     <section className="faq section">
       <div className="faq-heading">
-        <SectionHeading eyebrow="Good to know" title="Planning your journey." />
+        <SectionHeading eyebrow="Buono a sapersi" title="Organizzare il tuo viaggio." />
         <p>
-          Need something more specific?{" "}
-          <a href={`mailto:${siteConfig.email}`}>Write to our team.</a>
+          Ti serve qualcosa di più specifico?{" "}
+          <a href={`mailto:${siteConfig.email}`}>Scrivi al nostro team.</a>
         </p>
       </div>
       <div className="faq-list">
@@ -550,23 +548,23 @@ function Planner() {
     const interests = String(data.get("interests") || "")
     const message = String(data.get("message") || "")
     setReady({
-      subject: `Journey enquiry from ${name}`,
-      body: `Name: ${name}\nEmail: ${email}\nCountry: ${country}\nDestination: ${destination}\nApproximate dates: ${dates}\nTravellers: ${travelers}\nInterests: ${interests}\n\nJourney ideas:\n${message}`,
+      subject: `Richiesta di viaggio da ${name}`,
+      body: `Nome: ${name}\nEmail: ${email}\nPaese: ${country}\nDestinazione: ${destination}\nDate indicative: ${dates}\nViaggiatori: ${travelers}\nInteressi: ${interests}\n\nIdee di viaggio:\n${message}`,
     })
   }
 
   return (
     <section className="planner" id="planner">
       <div className="planner-copy">
-        <p className="eyebrow eyebrow-light">Begin a conversation</p>
+        <p className="eyebrow eyebrow-light">Inizia una conversazione</p>
         <h2>
-          Your India story
-          <em>starts here.</em>
+          La tua storia in India
+          <em>inizia qui.</em>
         </h2>
         <p>
-          Tell us where you want to go, when you can travel, and what kind of
-          trip you want. This does not reserve anything. We reply by email
-          after reading your answers.
+          Dicci dove vuoi andare, quando puoi partire e che tipo di viaggio
+          desideri. Questo modulo non costituisce una prenotazione. Ti
+          risponderemo via email dopo aver letto le tue risposte.
         </p>
         <div className="planner-contact">
           <a href={siteConfig.phoneHref}>{siteConfig.phoneDisplay}</a>
@@ -583,59 +581,59 @@ function Planner() {
       <form onSubmit={handleSubmit}>
         <div className="field-row">
           <label>
-            Full name *
+            Nome e cognome *
             <input
               name="name"
               type="text"
               autoComplete="name"
               required
-              placeholder="Your name"
+              placeholder="Il tuo nome"
             />
           </label>
           <label>
-            Email address *
+            Indirizzo email *
             <input
               name="email"
               type="email"
               autoComplete="email"
               required
-              placeholder="you@example.com"
+              placeholder="nome@esempio.it"
             />
           </label>
         </div>
         <div className="field-row">
           <label>
-            Country of residence
+            Paese di residenza
             <input
               name="country"
               type="text"
               autoComplete="country-name"
-              placeholder="Your country"
+              placeholder="Il tuo Paese"
             />
           </label>
           <label>
-            Preferred destination
+            Destinazione preferita
             <select name="destination" defaultValue="">
               <option value="" disabled>
-                Select an area
+                Seleziona un’area
               </option>
               <option>Rajasthan</option>
-              <option>North India</option>
-              <option>Ladakh & Himalaya</option>
-              <option>Wildlife regions</option>
-              <option>Bhutan, Nepal or Sri Lanka</option>
-              <option>I am open to ideas</option>
+              <option>India del Nord</option>
+              <option>Ladakh e Himalaya</option>
+              <option>Riserve naturali</option>
+              <option>Bhutan, Nepal o Sri Lanka</option>
+              <option>Sono aperto a proposte</option>
             </select>
           </label>
         </div>
         <div className="field-row">
           <label>
-            Approximate dates
-            <input name="dates" type="text" placeholder="Month or dates" />
-            <span className="field-hint">A month is enough if your dates are not fixed.</span>
+            Date indicative
+            <input name="dates" type="text" placeholder="Mese o date" />
+            <span className="field-hint">Se le date non sono definite, basta indicare il mese.</span>
           </label>
           <label>
-            Number of travellers
+            Numero di viaggiatori
             <input
               name="travelers"
               type="number"
@@ -646,32 +644,32 @@ function Planner() {
           </label>
         </div>
         <label>
-          Travel interests
+          Interessi di viaggio
           <input
             name="interests"
             type="text"
-            placeholder="Culture, architecture, cycling, wildlife..."
+            placeholder="Cultura, architettura, bicicletta, natura..."
           />
         </label>
         <label>
-          Additional message *
+          Messaggio *
           <textarea
             name="message"
             required
             rows={4}
-            placeholder="Who is travelling, the pace you prefer, and any questions."
+            placeholder="Chi viaggia, il ritmo che preferisci ed eventuali domande."
           />
           <span className="field-hint">
-            Include pace, interests, and anything the team should know before suggesting a route.
+            Indica ritmo, interessi e tutto ciò che il team dovrebbe sapere prima di proporti un itinerario.
           </span>
         </label>
         <div className="form-foot">
           <button className="button button-gold" type="submit">
-            Continue to email
+            Continua con l’email
           </button>
           <p>
-            You will review the message before it is sent. Nothing is stored on
-            this website.
+            Potrai rivedere il messaggio prima di inviarlo. Nessun dato viene
+            salvato su questo sito.
           </p>
         </div>
       </form>
@@ -686,36 +684,36 @@ function Footer() {
       <div className="footer-main">
         <div className="footer-brand">
           <Brand />
-          <p>Maragià Express — discover India, your way.</p>
+          <p>Maragià Express — scopri l’India a modo tuo.</p>
           <span>{siteConfig.location}</span>
           <ProfileLinks />
         </div>
         <div>
-          <h3>Explore</h3>
-          <a href="/destinations">Destinations</a>
-          <a href="/tours">Tours</a>
-          <a href="/experiences">Experiences</a>
-          <a href="/tailor-made">Tailor-made travel</a>
-          <a href="/travel-journal">Travel journal</a>
+          <h3>Esplora</h3>
+          <a href="/destinations">Destinazioni</a>
+          <a href="/tours">Tour</a>
+          <a href="/experiences">Esperienze</a>
+          <a href="/tailor-made">Viaggi su misura</a>
+          <a href="/travel-journal">Diario di viaggio</a>
         </div>
         <div>
-          <h3>Established links</h3>
-          <a href="/tours">Tours of India</a>
-          <a href="/experiences/festivals">Festival tours</a>
-          <a href="/terms">Terms & conditions</a>
-          <a href="/payment-policy">Payment policy</a>
-          <a href="/cancellation-policy">Cancellation & refund</a>
-          <a href="/travel-information">Travel information</a>
+          <h3>Informazioni</h3>
+          <a href="/tours">Tour dell’India</a>
+          <a href="/experiences/festivals">Tour dei festival</a>
+          <a href="/terms">Termini e condizioni</a>
+          <a href="/payment-policy">Condizioni di pagamento</a>
+          <a href="/cancellation-policy">Cancellazione e rimborso</a>
+          <a href="/travel-information">Informazioni utili</a>
         </div>
         <div>
-          <h3>Talk to us</h3>
+          <h3>Parla con noi</h3>
           <a href={siteConfig.phoneHref}>{siteConfig.phoneDisplay}</a>
           <a href={`mailto:${siteConfig.email}`}>{siteConfig.email}</a>
         </div>
       </div>
       <div className="footer-bottom">
         <span>© {new Date().getFullYear()} Maragià Express</span>
-        <span>Travel agency & tour operator · Udaipur, India</span>
+        <span>Agenzia di viaggi e tour operator · Udaipur, India</span>
       </div>
     </footer>
   )

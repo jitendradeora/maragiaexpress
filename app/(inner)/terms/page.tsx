@@ -26,7 +26,7 @@ export default function Page() {
           }),
           breadcrumbSchema([
             { name: "Home", path: "/" },
-            { name: "Terms", path: "/terms" },
+            { name: "Termini e condizioni", path: "/terms" },
           ]),
         ]}
       />

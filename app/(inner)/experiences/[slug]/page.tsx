@@ -21,8 +21,8 @@ export async function generateMetadata({
   const experience = getExperience(slug)
   if (!experience) {
     return createPageMetadata({
-      title: "Experience not found",
-      description: "This experience could not be found.",
+      title: "Esperienza non trovata",
+      description: "Questa esperienza non è stata trovata.",
       path: `/experiences/${slug}`,
       noIndex: true,
     })
@@ -54,7 +54,7 @@ export default async function Page({ params }: PageProps) {
           }),
           breadcrumbSchema([
             { name: "Home", path: "/" },
-            { name: "Experiences", path: "/experiences" },
+            { name: "Esperienze", path: "/experiences" },
             {
               name: experience.name,
               path: `/experiences/${experience.slug}`,

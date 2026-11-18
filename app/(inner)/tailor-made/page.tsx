@@ -26,7 +26,7 @@ export default function Page() {
           }),
           breadcrumbSchema([
             { name: "Home", path: "/" },
-            { name: "Tailor-made", path: "/tailor-made" },
+            { name: "Su misura", path: "/tailor-made" },
           ]),
         ]}
       />

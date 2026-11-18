@@ -20,7 +20,7 @@ export function EnquiryReady({
   const [copyError, setCopyError] = useState(false)
 
   async function copyMessage() {
-    const message = `To: ${siteConfig.email}\nSubject: ${subject}\n\n${body}`
+    const message = `A: ${siteConfig.email}\nOggetto: ${subject}\n\n${body}`
     try {
       await navigator.clipboard.writeText(message)
       setCopied(true)
@@ -33,25 +33,26 @@ export function EnquiryReady({
 
   return (
     <div className="enquiry-ready" role="status">
-      <p className="inner-eyebrow">Next step</p>
-      <h3>Your enquiry is ready. It has not been sent yet.</h3>
+      <p className="inner-eyebrow">Prossimo passo</p>
+      <h3>La tua richiesta è pronta, ma non è ancora stata inviata.</h3>
       <p>
-        This page cannot deliver email on its own. Open your email app and
-        press Send, or copy the message and send it to {siteConfig.email}.
-        Nothing is booked until the team confirms it with you.
+        Questa pagina non può inviare email autonomamente. Apri la tua app di
+        posta e premi Invia, oppure copia il messaggio e invialo a{" "}
+        {siteConfig.email}. Nessuna prenotazione è valida finché il team non
+        la conferma con te.
       </p>
       <pre>{body}</pre>
       <div className="enquiry-ready-actions">
-        <a href={enquiryMailto(subject, body)}>Open email app</a>
+        <a href={enquiryMailto(subject, body)}>Apri l’app di posta</a>
         <button type="button" onClick={copyMessage}>
-          {copied ? "Message copied" : "Copy message"}
+          {copied ? "Messaggio copiato" : "Copia messaggio"}
         </button>
         <button type="button" className="secondary" onClick={onEdit}>
-          Edit answers
+          Modifica le risposte
         </button>
       </div>
       {copyError && (
-        <p>Copy is unavailable in this browser. Use “Open email app” instead.</p>
+        <p>La copia non è disponibile in questo browser. Usa “Apri l’app di posta”.</p>
       )}
     </div>
   )

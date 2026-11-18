@@ -10,7 +10,7 @@ export default function Page() {
       <JsonLd
         data={[
           webPageSchema({
-            title: `${siteConfig.name} | Tailor-Made Journeys Through India`,
+            title: `${siteConfig.name} | Viaggi su misura in India`,
             description: siteConfig.seoDescription,
             path: "/",
           }),

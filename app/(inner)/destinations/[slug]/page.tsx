@@ -24,8 +24,8 @@ export async function generateMetadata({
   const destination = getDestination(slug)
   if (!destination) {
     return createPageMetadata({
-      title: "Destination not found",
-      description: "This destination could not be found.",
+      title: "Destinazione non trovata",
+      description: "Questa destinazione non è stata trovata.",
       path: `/destinations/${slug}`,
       noIndex: true,
     })
@@ -57,7 +57,7 @@ export default async function Page({ params }: PageProps) {
           }),
           breadcrumbSchema([
             { name: "Home", path: "/" },
-            { name: "Destinations", path: "/destinations" },
+            { name: "Destinazioni", path: "/destinations" },
             {
               name: destination.name,
               path: `/destinations/${destination.slug}`,

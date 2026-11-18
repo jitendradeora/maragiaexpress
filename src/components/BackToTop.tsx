@@ -29,7 +29,7 @@ export default function BackToTop() {
       type="button"
       className={visible ? "back-to-top is-visible" : "back-to-top"}
       onClick={goToTop}
-      aria-label="Back to top"
+      aria-label="Torna su"
       tabIndex={visible ? 0 : -1}
       aria-hidden={visible ? undefined : true}
     >

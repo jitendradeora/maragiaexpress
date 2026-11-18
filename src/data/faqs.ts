@@ -1,22 +1,22 @@
 export const homepageFaqs = [
   {
-    question: "Can I request a customized itinerary?",
+    question: "Posso richiedere un itinerario personalizzato?",
     answer:
-      "Yes. Tailor-made planning is a core service. Share your dates, interests, preferred pace and accommodation style so the team can discuss suitable possibilities with you.",
+      "Sì. La progettazione su misura è uno dei nostri servizi principali. Indicaci date, interessi, ritmo preferito e tipo di alloggio, così il team potrà valutare con te le soluzioni più adatte.",
   },
   {
-    question: "Does Maragià Express organize group travel?",
+    question: "Maragià Express organizza viaggi di gruppo?",
     answer:
-      "The official website presents organized and cultural tours. Contact the team with your group size and travel dates to confirm the options currently available.",
+      "Il sito ufficiale presenta tour organizzati e culturali. Contatta il team indicando il numero di partecipanti e le date di viaggio per conoscere le opzioni attualmente disponibili.",
   },
   {
-    question: "Which destinations are currently featured?",
+    question: "Quali destinazioni proponete attualmente?",
     answer:
-      "The official website currently features travel across India, including Rajasthan, North India and Ladakh, as well as selected journeys in Bhutan, Nepal and Sri Lanka.",
+      "Il sito ufficiale propone attualmente viaggi in tutta l’India, tra cui Rajasthan, India del Nord e Ladakh, oltre a una selezione di viaggi in Bhutan, Nepal e Sri Lanka.",
   },
   {
-    question: "How do I request a quotation?",
+    question: "Come posso richiedere un preventivo?",
     answer:
-      "Use the journey planner below, email mail@maragiaexpress.com, or call +91 97840 02880. A quotation is only provided after the team confirms your travel requirements.",
+      "Usa il modulo di richiesta qui sotto, scrivi a mail@maragiaexpress.com oppure chiama il +91 97840 02880. Il preventivo viene fornito solo dopo che il team ha verificato le tue esigenze di viaggio.",
   },
 ] as const

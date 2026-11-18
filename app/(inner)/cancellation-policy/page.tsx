@@ -26,7 +26,7 @@ export default function Page() {
           }),
           breadcrumbSchema([
             { name: "Home", path: "/" },
-            { name: "Cancellation policy", path: "/cancellation-policy" },
+            { name: "Cancellazione e rimborso", path: "/cancellation-policy" },
           ]),
         ]}
       />

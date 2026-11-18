@@ -13,72 +13,72 @@ export type Experience = {
 export const experiences: Experience[] = [
   {
     slug: "tailor-made-journeys",
-    name: "Tailor-made journeys",
-    eyebrow: "Travel designed through conversation",
+    name: "Viaggi su misura",
+    eyebrow: "Un viaggio costruito dialogando",
     intro:
-      "Begin with your interests, dates and preferred pace, then shape a coherent route with the Maragià Express team.",
+      "Parti dai tuoi interessi, dalle date e dal ritmo che preferisci, poi definisci un itinerario coerente insieme al team di Maragià Express.",
     image: siteImages.udaipur,
     bestFor:
-      "Travelers who value flexibility and a journey shaped around personal interests.",
+      "Viaggiatori che apprezzano la flessibilità e un viaggio costruito sui propri interessi.",
     body: [
-      "Tailor-made travel is not about adding more to an itinerary. It is about choosing well: the regions that fit the season, the pace that leaves room to experience them, and arrangements that reflect how you want to travel.",
-      "Share your approximate dates, group size, interests, accommodation preferences and budget context. The team can then discuss what is currently possible and refine a proposed journey with you.",
+      "Viaggiare su misura non significa aggiungere sempre più tappe a un itinerario. Significa scegliere bene: le regioni adatte alla stagione, un ritmo che lasci il tempo di viverle e servizi che rispecchino il tuo modo di viaggiare.",
+      "Indicaci le date approssimative, il numero di persone, gli interessi, le preferenze di alloggio e il budget indicativo. Il team potrà così valutare cosa è attualmente possibile e perfezionare con te una proposta di viaggio.",
     ],
   },
   {
     slug: "culture-heritage",
-    name: "Culture & heritage",
-    eyebrow: "Architecture · sacred places · living traditions",
+    name: "Cultura e patrimonio",
+    eyebrow: "Architettura · luoghi sacri · tradizioni vive",
     intro:
-      "Explore India through the places, histories, crafts and daily rituals that make each region distinctive.",
+      "Scopri l’India attraverso i luoghi, le storie, l’artigianato e i riti quotidiani che rendono unica ogni regione.",
     image: siteImages.palace,
     bestFor:
-      "Curious travelers drawn to architecture, history, local traditions and regional identity.",
+      "Viaggiatori curiosi, attratti da architettura, storia, tradizioni locali e identità regionali.",
     body: [
-      "Cultural travel is most rewarding when monuments are placed in context. A fort, temple, market or workshop becomes more meaningful when there is time to understand the community and landscape around it.",
-      "The official site features cultural routes across North India and Rajasthan. Exact visits and guiding arrangements should be confirmed for each itinerary.",
+      "Il viaggio culturale è più appagante quando i monumenti vengono inseriti nel loro contesto. Un forte, un tempio, un mercato o una bottega acquistano più significato quando c’è il tempo di comprendere la comunità e il paesaggio che li circondano.",
+      "Il sito ufficiale propone itinerari culturali nell’India del Nord e in Rajasthan. Visite precise e servizi di guida vanno confermati per ogni itinerario.",
     ],
   },
   {
     slug: "adventure-cycling",
-    name: "Adventure & cycling",
-    eyebrow: "Active journeys across India",
+    name: "Avventura e bicicletta",
+    eyebrow: "Viaggi attivi attraverso l’India",
     intro:
-      "See the landscape at a different pace through cycling, trekking and selected mountain journeys.",
+      "Osserva il paesaggio con un ritmo diverso, tra cicloturismo, trekking e itinerari di montagna selezionati.",
     image: siteImages.cycle,
     bestFor:
-      "Active travelers prepared to discuss fitness, terrain and comfort expectations in detail.",
+      "Viaggiatori attivi, disposti a parlare nel dettaglio di preparazione fisica, terreno e livello di comfort.",
     body: [
-      "Maragià Express publicly features Rajasthan cycling and Himalayan adventure. Active travel requires careful matching of terrain, distance, season and individual experience.",
-      "Before confirming a route, discuss your activity level, equipment requirements and preferred balance between active days and cultural exploration.",
+      "Maragià Express propone il cicloturismo in Rajasthan e le avventure himalayane. Il viaggio attivo richiede un attento equilibrio tra terreno, distanze, stagione ed esperienza personale.",
+      "Prima di confermare un itinerario, parla con noi del tuo livello di attività, dell’attrezzatura necessaria e dell’equilibrio che preferisci tra giornate attive e scoperta culturale.",
     ],
   },
   {
     slug: "festivals",
-    name: "Festivals & gatherings",
-    eyebrow: "Seasonal journeys with cultural context",
+    name: "Festival e celebrazioni",
+    eyebrow: "Viaggi stagionali nel loro contesto culturale",
     intro:
-      "Plan around the energy of Holi, Pushkar and other festivals currently featured by Maragià Express.",
+      "Organizza il viaggio attorno all’energia di Holi, di Pushkar e degli altri festival attualmente proposti da Maragià Express.",
     image: siteImages.craft,
     bestFor:
-      "Travelers comfortable with crowds, fixed dates and the dynamic nature of public events.",
+      "Viaggiatori a proprio agio con la folla, le date fisse e la natura dinamica degli eventi pubblici.",
     body: [
-      "Festivals can offer a vivid perspective on local traditions, but they also require responsible preparation. Dates, locations and conditions vary, and respectful participation matters.",
-      "The official website features Holi, the Pushkar Fair and the Hemis Festival. Confirm current programs and arrangements directly before making travel plans.",
+      "I festival offrono uno sguardo intenso sulle tradizioni locali, ma richiedono anche una preparazione responsabile. Date, luoghi e condizioni variano, e partecipare con rispetto è fondamentale.",
+      "Il sito ufficiale propone Holi, la Fiera di Pushkar e il Festival di Hemis. Verifica direttamente programmi e servizi attuali prima di organizzare il viaggio.",
     ],
   },
   {
     slug: "luxury-travel",
-    name: "Heritage & refined stays",
-    eyebrow: "Considered comfort · remarkable settings",
+    name: "Dimore storiche e soggiorni raffinati",
+    eyebrow: "Comfort curato · luoghi straordinari",
     intro:
-      "Combine India’s cultural depth with thoughtfully selected accommodation and a well-paced private journey.",
+      "Unisci la profondità culturale dell’India ad alloggi scelti con cura e a un viaggio privato dal ritmo ben calibrato.",
     image: siteImages.desert,
     bestFor:
-      "Travelers seeking a higher level of comfort without losing a sense of place.",
+      "Viaggiatori che cercano un livello di comfort superiore senza perdere il senso del luogo.",
     body: [
-      "The official website presents luxury-oriented travel in India, including heritage settings and personalized arrangements. The meaning of luxury should be established around your own priorities—space, privacy, service, location or historical character.",
-      "No individual hotels or partnerships are promised on this site. Current options and standards are confirmed as part of a specific proposal.",
+      "Il sito ufficiale presenta viaggi di lusso in India, con dimore storiche e servizi personalizzati. Il significato di lusso va definito in base alle tue priorità: spazio, privacy, servizio, posizione o carattere storico.",
+      "Questo sito non promette singoli hotel o partnership. Opzioni e standard attuali vengono confermati all’interno di una proposta specifica.",
     ],
   },
 ]

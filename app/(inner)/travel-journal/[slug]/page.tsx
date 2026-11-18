@@ -21,8 +21,8 @@ export async function generateMetadata({
   const article = getArticle(slug)
   if (!article) {
     return createPageMetadata({
-      title: "Article not found",
-      description: "This journal article could not be found.",
+      title: "Articolo non trovato",
+      description: "Questo articolo del diario non è stato trovato.",
       path: `/travel-journal/${slug}`,
       noIndex: true,
     })
@@ -56,7 +56,7 @@ export default async function Page({ params }: PageProps) {
           }),
           breadcrumbSchema([
             { name: "Home", path: "/" },
-            { name: "Travel journal", path: "/travel-journal" },
+            { name: "Diario di viaggio", path: "/travel-journal" },
             {
               name: article.title,
               path: `/travel-journal/${article.slug}`,

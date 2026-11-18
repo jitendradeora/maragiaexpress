@@ -29,7 +29,7 @@ export function organizationSchema() {
     image: siteImages.og,
     logo: {
       "@type": "ImageObject",
-      url: absoluteUrl("/icons/favicon.svg"),
+      url: absoluteUrl("/mglogo.png"),
     },
     areaServed: [
       { "@type": "Country", name: "India" },
@@ -50,7 +50,7 @@ export function organizationSchema() {
         email: siteConfig.email,
         telephone: siteConfig.phone,
         areaServed: "IN",
-        availableLanguage: ["English", "Italian", "Hindi"],
+        availableLanguage: ["Italian", "English", "Hindi"],
       },
     ],
     sameAs: Object.values(siteConfig.socials),
@@ -66,7 +66,7 @@ export function websiteSchema() {
     name: siteConfig.name,
     description: siteConfig.seoDescription,
     publisher: { "@id": organizationId },
-    inLanguage: "en",
+    inLanguage: "it-IT",
   }
 }
 
@@ -90,7 +90,7 @@ export function webPageSchema({
     description,
     isPartOf: { "@id": websiteId },
     about: { "@id": organizationId },
-    inLanguage: "en",
+    inLanguage: "it-IT",
   }
 }
 
@@ -147,7 +147,7 @@ export function touristTripSchema({
     provider: { "@id": organizationId },
     itinerary: {
       "@type": "ItemList",
-      name: `${name} itinerary`,
+      name: `Itinerario: ${name}`,
     },
   }
 }
@@ -171,7 +171,7 @@ export function touristAttractionSchema({
     description,
     url: absoluteUrl(path),
     image,
-    touristType: "Cultural and experiential travel",
+    touristType: "Viaggi culturali ed esperienziali",
   }
 }
 
@@ -207,12 +207,12 @@ export function articleSchema({
       name: siteConfig.name,
       logo: {
         "@type": "ImageObject",
-        url: absoluteUrl("/icons/favicon.svg"),
+        url: absoluteUrl("/mglogo.png"),
       },
     },
     mainEntityOfPage: absoluteUrl(path),
     articleSection: category,
-    inLanguage: "en",
+    inLanguage: "it-IT",
   }
 }
 
@@ -237,6 +237,6 @@ export function serviceSchema({
     image,
     provider: { "@id": organizationId },
     areaServed: "India",
-    serviceType: "Travel experience",
+    serviceType: "Esperienza di viaggio",
   }
 }

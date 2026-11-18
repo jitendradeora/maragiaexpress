@@ -26,7 +26,7 @@ export default function Page() {
           }),
           breadcrumbSchema([
             { name: "Home", path: "/" },
-            { name: "Payment policy", path: "/payment-policy" },
+            { name: "Condizioni di pagamento", path: "/payment-policy" },
           ]),
         ]}
       />

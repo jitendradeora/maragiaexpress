@@ -21,8 +21,8 @@ export async function generateMetadata({
   const tour = getTour(slug)
   if (!tour) {
     return createPageMetadata({
-      title: "Tour not found",
-      description: "This tour could not be found.",
+      title: "Tour non trovato",
+      description: "Questo tour non è stato trovato.",
       path: `/tours/${slug}`,
       noIndex: true,
     })
