@@ -17,6 +17,7 @@ import {
 import { Experience, experiences, getExperience } from "@/data/experiences"
 import { Tour, tours, getTour } from "@/data/tours"
 import { articles, getArticle } from "@/data/articles"
+import { faqGroups } from "@/data/faqs"
 
 type TourDetails = {
   price: string
@@ -510,6 +511,7 @@ export function PageFooter() {
         <b>Azienda</b>
         <a href="/about">Chi è Maragià Express</a>
         <a href="/contact">Contatti</a>
+        <a href="/faq">Domande frequenti</a>
         <a href="/privacy">Privacy</a>
         <a href="/terms">Termini e condizioni</a>
         <a href="/payment-policy">Condizioni di pagamento</a>
@@ -553,15 +555,21 @@ function InnerHero({
   intro,
   image,
   parent,
+  className,
 }: {
   eyebrow: string
   title: string
   intro: string
   image?: string
   parent?: [string, string]
+  className?: string
 }) {
   return (
-    <section className={`inner-hero ${image ? "inner-hero-image" : ""}`}>
+    <section
+      className={["inner-hero", image ? "inner-hero-image" : "", className]
+        .filter(Boolean)
+        .join(" ")}
+    >
       {image && (
         <SiteImage
           src={image}
@@ -636,7 +644,7 @@ export function DestinationsPage() {
             Express.
           </p>
         </div>
-        <div className="listing-grid">
+        <div className="listing-grid destination-listing">
           {destinations.map((item) => (
             <ListingCard
               key={item.slug}
@@ -804,39 +812,46 @@ export function ToursPage() {
             prenotazione.
           </p>
         </div>
-        {categories.map(([slug, category], categoryIndex) => (
+        {categories.map(([slug, category], categoryIndex) => {
+          const categoryTours = tours.filter((tour) => tour.categorySlug === slug)
+          return (
           <section className="tour-category" id={slug} key={slug}>
             <header>
               <span>{String(categoryIndex + 1).padStart(2, "0")}</span>
               <div>
-                <p className="inner-eyebrow">Collezione</p>
+                <p className="inner-eyebrow">
+                  {categoryTours.length === 1
+                    ? "1 viaggio"
+                    : `${categoryTours.length} viaggi`}
+                </p>
                 <h2>{category}</h2>
               </div>
             </header>
             <div className="tour-card-grid">
-              {tours
-                .filter((tour) => tour.categorySlug === slug)
-                .map((tour) => (
+              {categoryTours.map((tour) => (
                   <a
                     className="tour-card"
                     href={`/tours/${tour.slug}`}
                     key={tour.slug}
                   >
-                    <div>
+                    <div className="tour-card-media">
                       <img src={tour.image} alt={tour.title} loading="lazy" />
-                      <span />
+                      <span className="tour-card-shade" />
+                      <small>{tour.category}</small>
                     </div>
-                    <small>{tour.category}</small>
-                    <h3>{tour.title}</h3>
-                    <p>{tour.summary}</p>
-                    <b>
-                      Scopri il tour <span aria-hidden="true">↗</span>
-                    </b>
+                    <div className="tour-card-body">
+                      <h3>{tour.title}</h3>
+                      <p>{tour.summary}</p>
+                      <b>
+                        Scopri il tour <span aria-hidden="true">↗</span>
+                      </b>
+                    </div>
                   </a>
                 ))}
             </div>
           </section>
-        ))}
+          )
+        })}
       </main>
     </>
   )
@@ -933,7 +948,7 @@ function TourEnquiryForm({ tour }: { tour: Tour }) {
     )
   }
   return (
-    <form className="tour-enquiry-form" onSubmit={submit} id="tour-enquiry">
+    <form className="inner-form tour-enquiry-form" onSubmit={submit} id="tour-enquiry">
       <div className="tour-form-heading">
         <p className="inner-eyebrow">Informazioni su questo viaggio</p>
         <h2>Richiedi informazioni: {tour.title}</h2>
@@ -942,98 +957,111 @@ function TourEnquiryForm({ tour }: { tour: Tour }) {
           prezzo e disponibilità aggiornati. Questa richiesta non prenota il tour.
         </p>
       </div>
-      <label className="tour-field-wide">
-        Tour selezionato
-        <input value={tour.title} readOnly aria-readonly="true" />
-      </label>
-      <div className="tour-form-row">
+      <p className="inner-form-note">I campi con * sono obbligatori.</p>
+      <fieldset>
+        <legend>Questo viaggio</legend>
         <label>
-          Nome e cognome *
-          <input
-            name="name"
-            required
-            autoComplete="name"
-            placeholder="Nome e cognome"
-          />
+          Tour selezionato
+          <input value={tour.title} readOnly aria-readonly="true" />
         </label>
-        <label>
-          Indirizzo email *
-          <input
-            name="email"
-            required
-            type="email"
-            autoComplete="email"
-            placeholder="nome@esempio.it"
-          />
-        </label>
-      </div>
-      <div className="tour-form-row">
-        <label>
-          Telefono o WhatsApp
-          <input
-            name="phone"
-            type="tel"
-            autoComplete="tel"
-            placeholder="+00 000 000 000"
-          />
-        </label>
-        <label>
-          Paese di residenza
-          <input
-            name="country"
-            autoComplete="country-name"
-            placeholder="Il tuo Paese"
-          />
-        </label>
-      </div>
-      <div className="tour-form-row tour-form-three">
-        <label>
-          Date preferite *
-          <input name="dates" required placeholder="Mese o date" />
-          <span className="field-hint">Se le date non sono definite, basta indicare il mese.</span>
-        </label>
-        <label>
-          Viaggiatori *
-          <input
-            name="travelers"
-            required
-            type="number"
-            min="1"
-            placeholder="2"
-          />
-        </label>
+      </fieldset>
+      <fieldset>
+        <legend>Chi viaggia</legend>
+        <div className="inner-field-row">
+          <label>
+            Nome e cognome *
+            <input
+              name="name"
+              required
+              autoComplete="name"
+              placeholder="Nome e cognome"
+            />
+          </label>
+          <label>
+            Indirizzo email *
+            <input
+              name="email"
+              required
+              type="email"
+              autoComplete="email"
+              placeholder="nome@esempio.it"
+            />
+            <span className="field-hint">Ti risponderemo a questo indirizzo.</span>
+          </label>
+        </div>
+        <div className="inner-field-row">
+          <label>
+            Telefono o WhatsApp
+            <input
+              name="phone"
+              type="tel"
+              autoComplete="tel"
+              placeholder="+00 000 000 000"
+            />
+          </label>
+          <label>
+            Paese di residenza
+            <input
+              name="country"
+              autoComplete="country-name"
+              placeholder="Il tuo Paese"
+            />
+          </label>
+        </div>
+      </fieldset>
+      <fieldset>
+        <legend>Il viaggio</legend>
+        <div className="inner-field-row">
+          <label>
+            Date preferite *
+            <input name="dates" required placeholder="Mese o date" />
+            <span className="field-hint">Se le date non sono definite, basta indicare il mese.</span>
+          </label>
+          <label>
+            Viaggiatori *
+            <input
+              name="travelers"
+              required
+              type="number"
+              min="1"
+              inputMode="numeric"
+              placeholder="Es. 2"
+            />
+          </label>
+        </div>
         <label>
           Alloggio
           <select name="accommodation" defaultValue="">
-            <option value="" disabled>
-              Seleziona una preferenza
-            </option>
+            <option value="">Nessuna preferenza</option>
             <option>Confortevole</option>
             <option>Dimora storica</option>
             <option>Lusso</option>
             <option>Aperto a consigli</option>
           </select>
         </label>
-      </div>
-      <label className="tour-field-wide">
-        Cosa dovremmo sapere su questo viaggio? *
-        <textarea
-          name="message"
-          rows={5}
-          required
-          placeholder="Ritmo, interessi, chi viaggia ed eventuali domande."
-        />
-        <span className="field-hint">
-          Segnala esigenze di accessibilità, alimentari o il tipo di soggiorno che preferisci.
-        </span>
-      </label>
-      <label className="tour-consent">
-        <input type="checkbox" required />
-        <span>
-          Ho capito che devo ancora inviare l’email e che questa richiesta non
-          prenota il tour.
-        </span>
-      </label>
+      </fieldset>
+      <fieldset>
+        <legend>Il messaggio</legend>
+        <label>
+          Cosa dovremmo sapere su questo viaggio? *
+          <textarea
+            name="message"
+            rows={5}
+            required
+            placeholder="Ritmo, interessi, chi viaggia ed eventuali domande."
+          />
+          <span className="field-hint">
+            Segnala esigenze di accessibilità, alimentari o il tipo di soggiorno che preferisci.
+          </span>
+        </label>
+        <label className="tour-consent">
+          <input type="checkbox" required />
+          <span>
+            Ho capito che devo ancora inviare l’email e che questa richiesta non
+            prenota il tour.
+          </span>
+        </label>
+      </fieldset>
       <div className="tour-form-submit">
         <button type="submit">
           Continua con l’email <span aria-hidden="true">↗</span>
@@ -1044,6 +1072,17 @@ function TourEnquiryForm({ tour }: { tour: Tour }) {
         </small>
       </div>
     </form>
+  )
+}
+
+function TourPrice({ price }: { price: string }) {
+  const perPerson = price.match(/^(.*)\s+a persona$/i)
+  if (!perPerson) return <p className="tour-price">{price}</p>
+  return (
+    <p className="tour-price">
+      {perPerson[1]}
+      <span>a persona</span>
+    </p>
   )
 }
 
@@ -1079,12 +1118,18 @@ export function TourPage({ tour }: { tour: Tour }) {
       />
       <section className="tour-sheet">
         <div className="tour-facts">
-          <div className="tour-facts-main">
+          <aside className="tour-price-card">
+            <p className="tour-price-kicker">Prezzo indicativo</p>
+            <TourPrice price={details.price} />
+            <p className="tour-price-note">
+              {details.price === "Su richiesta"
+                ? "Il prezzo viene indicato nella proposta, in base a date, gruppo e alloggio."
+                : "Il prezzo definitivo arriva con la proposta, prima di qualsiasi prenotazione."}
+            </p>
+            <a href="#tour-enquiry">Richiedi info</a>
+          </aside>
+          <div className="tour-facts-side">
             <dl>
-              <div>
-                <dt>Prezzo</dt>
-                <dd className="tour-price">{details.price}</dd>
-              </div>
               <div>
                 <dt>Durata</dt>
                 <dd>{details.duration}</dd>
@@ -1106,12 +1151,11 @@ export function TourPage({ tour }: { tour: Tour }) {
                 </dd>
               </div>
             </dl>
-            <a href="#tour-enquiry">Richiedi info</a>
+            <p className="tour-facts-note">
+              Panoramica indicativa. La tua proposta conferma itinerario, prezzo e
+              disponibilità aggiornati prima che tu prenoti i voli.
+            </p>
           </div>
-          <p className="tour-facts-note">
-            Panoramica indicativa. La tua proposta conferma itinerario, prezzo e
-            disponibilità aggiornati prima che tu prenoti i voli.
-          </p>
         </div>
         <div className="tour-program" id="itinerary">
           <div className="tour-program-heading">
@@ -1293,60 +1337,86 @@ function EnquiryForm() {
   }
   return (
     <form className="inner-form" onSubmit={submit} id="enquiry">
-      <div className="inner-field-row">
-        <label>
-          Nome e cognome *
-          <input name="name" required autoComplete="name" placeholder="Nome e cognome" />
-        </label>
-        <label>
-          Indirizzo email *
-          <input
-            name="email"
-            required
-            type="email"
-            autoComplete="email"
-            placeholder="nome@esempio.it"
-          />
-          <span className="field-hint">Ti risponderemo a questo indirizzo.</span>
-        </label>
-      </div>
-      <div className="inner-field-row">
+      <p className="inner-form-note">I campi con * sono obbligatori.</p>
+      <fieldset>
+        <legend>Chi viaggia</legend>
+        <div className="inner-field-row">
+          <label>
+            Nome e cognome *
+            <input name="name" required autoComplete="name" placeholder="Nome e cognome" />
+          </label>
+          <label>
+            Indirizzo email *
+            <input
+              name="email"
+              required
+              type="email"
+              autoComplete="email"
+              placeholder="nome@esempio.it"
+            />
+            <span className="field-hint">Ti risponderemo a questo indirizzo.</span>
+          </label>
+        </div>
         <label>
           Paese di residenza
           <input name="country" autoComplete="country-name" placeholder="Il tuo Paese" />
         </label>
+      </fieldset>
+      <fieldset>
+        <legend>Il viaggio</legend>
+        <div className="inner-field-row">
+          <label>
+            Destinazione preferita
+            <select name="destination" defaultValue="">
+              <option value="">Nessuna preferenza</option>
+              <optgroup label="India">
+                {destinations.map((item) => (
+                  <option key={item.slug} value={item.name}>
+                    {item.name}
+                  </option>
+                ))}
+              </optgroup>
+              <optgroup label="Oltre l’India">
+                {beyondIndiaDestinations.map((item) => (
+                  <option key={item.slug} value={item.name}>
+                    {item.name}
+                  </option>
+                ))}
+              </optgroup>
+            </select>
+          </label>
+          <label>
+            Numero di viaggiatori
+            <input name="travelers" type="number" min="1" inputMode="numeric" placeholder="Es. 2" />
+          </label>
+        </div>
+        <div className="inner-field-row">
+          <label>
+            Date indicative
+            <input name="dates" placeholder="Mese o date" />
+            <span className="field-hint">Se le date non sono definite, basta indicare il mese.</span>
+          </label>
+          <label>
+            Interessi
+            <input
+              name="interests"
+              placeholder="Cultura, natura, bicicletta..."
+            />
+          </label>
+        </div>
+      </fieldset>
+      <fieldset>
+        <legend>Il messaggio</legend>
         <label>
-          Destinazione preferita
-          <input name="destination" placeholder="Rajasthan, Ladakh o non so ancora" />
+          Cosa dovremmo sapere? *
+          <textarea
+            name="message"
+            rows={5}
+            required
+            placeholder="Ritmo, chi viaggia ed eventuali domande."
+          />
         </label>
-      </div>
-      <div className="inner-field-row">
-        <label>
-          Date indicative
-          <input name="dates" placeholder="Mese o date" />
-          <span className="field-hint">Se le date non sono definite, basta indicare il mese.</span>
-        </label>
-        <label>
-          Numero di viaggiatori
-          <input name="travelers" type="number" min="1" placeholder="2" />
-        </label>
-      </div>
-      <label>
-        Interessi di viaggio
-        <input
-          name="interests"
-          placeholder="Cultura, natura, bicicletta, architettura..."
-        />
-      </label>
-      <label>
-        Cosa dovremmo sapere? *
-        <textarea
-          name="message"
-          rows={5}
-          required
-          placeholder="Ritmo, chi viaggia ed eventuali domande."
-        />
-      </label>
+      </fieldset>
       <button type="submit">
         Continua con l’email <span aria-hidden="true">↗</span>
       </button>
@@ -1522,6 +1592,7 @@ export function ArticlePage({ article }: { article: typeof articles[number] }) {
   return (
     <>
       <InnerHero
+        className="inner-hero-article"
         eyebrow={article.category}
         title={article.title}
         intro={article.excerpt}
@@ -1569,6 +1640,70 @@ export function ArticlePage({ article }: { article: typeof articles[number] }) {
   )
 }
 
+export function FaqPage() {
+  const [active, setActive] = useState(0)
+  const items = faqGroups.flatMap((group) =>
+    group.items.map((item) => ({ ...item, group: group.title })),
+  )
+
+  return (
+    <>
+      <InnerHero
+        eyebrow="Domande frequenti"
+        title="Prima di scrivere, leggi qui."
+        intro="Risposte brevi su itinerari, prezzi, pagamenti e su come inviare una richiesta. Per il tuo viaggio, il team conferma tutto per iscritto."
+      />
+      <main className="faq-page">
+        {faqGroups.map((group) => (
+          <section key={group.title}>
+            <h2>{group.title}</h2>
+            <div className="faq-list">
+              {group.items.map((item) => {
+                const index = items.findIndex(
+                  (entry) => entry.question === item.question,
+                )
+                const open = active === index
+                return (
+                  <article
+                    className={open ? "faq-open" : ""}
+                    key={item.question}
+                  >
+                    <button
+                      type="button"
+                      aria-expanded={open}
+                      onClick={() => setActive(open ? -1 : index)}
+                    >
+                      <span>{item.question}</span>
+                      <b aria-hidden="true">{open ? "−" : "+"}</b>
+                    </button>
+                    <div className="faq-answer">
+                      <p>
+                        {item.answer}
+                        {"href" in item && item.href ? (
+                          <>
+                            {" "}
+                            <a href={item.href}>{item.linkLabel}</a>
+                          </>
+                        ) : null}
+                      </p>
+                    </div>
+                  </article>
+                )
+              })}
+            </div>
+          </section>
+        ))}
+        <p className="faq-page-note">
+          Non trovi la risposta? Scrivi a{" "}
+          <a href={`mailto:${siteConfig.email}`}>{siteConfig.email}</a>
+          {" "}o chiama il{" "}
+          <a href={siteConfig.phoneHref}>{siteConfig.phoneDisplay}</a>.
+        </p>
+      </main>
+    </>
+  )
+}
+
 export function ContactPage() {
   return (
     <>
@@ -1582,12 +1717,25 @@ export function ContactPage() {
         <section>
           <p className="inner-eyebrow">Contatto diretto</p>
           <h2>Ci trovi a Udaipur, in Rajasthan.</h2>
-          <a href={siteConfig.phoneHref}>{siteConfig.phoneDisplay}</a>
-          <a href={`mailto:${siteConfig.email}`}>{siteConfig.email}</a>
-          <p>{siteConfig.location}</p>
-          <small>
-            Scrivici o chiamaci: ti risponderemo il prima possibile.
-          </small>
+          <p>
+            Scegli il modo più comodo. Il modulo prepara un’email: il team la
+            riceve solo quando la invii.
+          </p>
+          <ul className="contact-list">
+            <li>
+              <span>Telefono</span>
+              <a href={siteConfig.phoneHref}>{siteConfig.phoneDisplay}</a>
+            </li>
+            <li>
+              <span>Email</span>
+              <a href={`mailto:${siteConfig.email}`}>{siteConfig.email}</a>
+            </li>
+            <li>
+              <span>Sede</span>
+              <p>{siteConfig.location}</p>
+            </li>
+          </ul>
+          <small>Ti rispondiamo dopo aver letto la richiesta.</small>
         </section>
         <EnquiryForm />
       </main>

@@ -58,6 +58,13 @@ export const staticPages = [
     image: siteImages.udaipur,
   },
   {
+    path: "/faq",
+    title: "Domande frequenti",
+    description:
+      "Risposte su itinerari su misura, prezzi, pagamenti e come inviare una richiesta a Maragià Express.",
+    image: siteImages.og,
+  },
+  {
     path: "/travel-information",
     title: "Informazioni utili",
     description:

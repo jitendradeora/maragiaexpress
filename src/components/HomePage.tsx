@@ -3,11 +3,12 @@
 import { FormEvent, useState } from "react"
 import BackToTop from "./BackToTop"
 import BrandMark from "./BrandMark"
-import { EnquiryReady } from "./EnquiryReady"
+import { enquiryMailto } from "./EnquiryReady"
 import ProfileLinks from "./ProfileLinks"
 import SiteImage from "./SiteImage"
 import { homepageFaqs as faqs } from "@/data/faqs"
 import { siteImages as images } from "@/data/site-images"
+import { tours } from "@/data/tours"
 import { siteConfig } from "@/lib/site-config"
 
 const destinations = [
@@ -295,6 +296,52 @@ function Destinations() {
   )
 }
 
+const featuredTourSlugs = [
+  "tour-of-india",
+  "maharajas-tour",
+  "rajasthan-on-bicycle",
+  "indian-festival-of-colors",
+  "introduction-to-india",
+  "three-cats-of-india",
+]
+
+function HomeTours() {
+  const featured = featuredTourSlugs
+    .map((slug) => tours.find((tour) => tour.slug === slug))
+    .filter((tour): tour is (typeof tours)[number] => Boolean(tour))
+
+  return (
+    <section className="section home-tours" id="tours">
+      <div className="heading-row">
+        <SectionHeading
+          eyebrow="La collezione"
+          title="Tour da cui partire."
+          copy="Sei itinerari della collezione Maragià Express. Date, ritmo e servizi si definiscono insieme, prima di prenotare."
+        />
+        <ArrowLink href="/tours">Vedi tutti i tour</ArrowLink>
+      </div>
+      <div className="tour-card-grid">
+        {featured.map((tour) => (
+          <a className="tour-card" href={`/tours/${tour.slug}`} key={tour.slug}>
+            <div className="tour-card-media">
+              <img src={tour.image} alt={tour.title} loading="lazy" />
+              <span className="tour-card-shade" />
+              <small>{tour.category}</small>
+            </div>
+            <div className="tour-card-body">
+              <h3>{tour.title}</h3>
+              <p>{tour.summary}</p>
+              <b>
+                Scopri il tour <span aria-hidden="true">↗</span>
+              </b>
+            </div>
+          </a>
+        ))}
+      </div>
+    </section>
+  )
+}
+
 function Experiences() {
   return (
     <section className="experiences section" id="experiences">
@@ -504,8 +551,9 @@ function Faq() {
       <div className="faq-heading">
         <SectionHeading eyebrow="Buono a sapersi" title="Organizzare il tuo viaggio." />
         <p>
-          Ti serve qualcosa di più specifico?{" "}
-          <a href={`mailto:${siteConfig.email}`}>Scrivi al nostro team.</a>
+          <a href="/faq">Leggi tutte le domande frequenti</a>
+          {" "}oppure{" "}
+          <a href={`mailto:${siteConfig.email}`}>scrivi al nostro team.</a>
         </p>
       </div>
       <div className="faq-list">
@@ -532,66 +580,52 @@ function Faq() {
   )
 }
 
-function Planner() {
-  const [ready, setReady] = useState<{ subject: string; body: string } | null>(
-    null,
-  )
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+function Newsletter() {
+  const [email, setEmail] = useState<string | null>(null)
+
+  function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
     const data = new FormData(event.currentTarget)
-    const name = String(data.get("name") || "")
-    const email = String(data.get("email") || "")
-    const country = String(data.get("country") || "")
-    const destination = String(data.get("destination") || "")
-    const dates = String(data.get("dates") || "")
-    const travelers = String(data.get("travelers") || "")
-    const interests = String(data.get("interests") || "")
-    const message = String(data.get("message") || "")
-    setReady({
-      subject: `Richiesta di viaggio da ${name}`,
-      body: `Nome: ${name}\nEmail: ${email}\nPaese: ${country}\nDestinazione: ${destination}\nDate indicative: ${dates}\nViaggiatori: ${travelers}\nInteressi: ${interests}\n\nIdee di viaggio:\n${message}`,
-    })
+    setEmail(String(data.get("email") || ""))
   }
 
+  const subject = "Iscrizione alla newsletter"
+  const body = email
+    ? `Vorrei iscrivermi alla newsletter di Maragià Express.\n\nEmail: ${email}`
+    : ""
+
   return (
-    <section className="planner" id="planner">
-      <div className="planner-copy">
-        <p className="eyebrow eyebrow-light">Inizia una conversazione</p>
-        <h2>
-          La tua storia in India
-          <em>inizia qui.</em>
+    <section className="newsletter" aria-labelledby="newsletter-title">
+      <div className="newsletter-copy">
+        <p className="eyebrow eyebrow-light">Lettere dall’India</p>
+        <h2 id="newsletter-title">
+          Notizie di viaggio,
+          <em>con calma.</em>
         </h2>
         <p>
-          Dicci dove vuoi andare, quando puoi partire e che tipo di viaggio
-          desideri. Questo modulo non costituisce una prenotazione. Ti
-          risponderemo via email dopo aver letto le tue risposte.
+          Festival, itinerari e appunti dal Rajasthan. Qualche messaggio
+          all’anno, niente rumore.
         </p>
-        <div className="planner-contact">
-          <a href={siteConfig.phoneHref}>{siteConfig.phoneDisplay}</a>
-          <a href={`mailto:${siteConfig.email}`}>{siteConfig.email}</a>
-        </div>
       </div>
-      {ready ? (
-        <EnquiryReady
-          subject={ready.subject}
-          body={ready.body}
-          onEdit={() => setReady(null)}
-        />
+      {email ? (
+        <div className="newsletter-ready" role="status">
+          <p>
+            L’iscrizione di <strong>{email}</strong> non è ancora partita. Apri
+            la posta e invia il messaggio a {siteConfig.email}.
+          </p>
+          <div className="newsletter-actions">
+            <a className="button button-gold" href={enquiryMailto(subject, body)}>
+              Apri l’app di posta
+            </a>
+            <button type="button" onClick={() => setEmail(null)}>
+              Cambia email
+            </button>
+          </div>
+        </div>
       ) : (
-      <form onSubmit={handleSubmit}>
-        <div className="field-row">
+        <form className="newsletter-form" onSubmit={handleSubmit}>
           <label>
-            Nome e cognome *
-            <input
-              name="name"
-              type="text"
-              autoComplete="name"
-              required
-              placeholder="Il tuo nome"
-            />
-          </label>
-          <label>
-            Indirizzo email *
+            Indirizzo email
             <input
               name="email"
               type="email"
@@ -600,79 +634,14 @@ function Planner() {
               placeholder="nome@esempio.it"
             />
           </label>
-        </div>
-        <div className="field-row">
-          <label>
-            Paese di residenza
-            <input
-              name="country"
-              type="text"
-              autoComplete="country-name"
-              placeholder="Il tuo Paese"
-            />
-          </label>
-          <label>
-            Destinazione preferita
-            <select name="destination" defaultValue="">
-              <option value="" disabled>
-                Seleziona un’area
-              </option>
-              <option>Rajasthan</option>
-              <option>India del Nord</option>
-              <option>Ladakh e Himalaya</option>
-              <option>Riserve naturali</option>
-              <option>Bhutan, Nepal o Sri Lanka</option>
-              <option>Sono aperto a proposte</option>
-            </select>
-          </label>
-        </div>
-        <div className="field-row">
-          <label>
-            Date indicative
-            <input name="dates" type="text" placeholder="Mese o date" />
-            <span className="field-hint">Se le date non sono definite, basta indicare il mese.</span>
-          </label>
-          <label>
-            Numero di viaggiatori
-            <input
-              name="travelers"
-              type="number"
-              min="1"
-              inputMode="numeric"
-              placeholder="2"
-            />
-          </label>
-        </div>
-        <label>
-          Interessi di viaggio
-          <input
-            name="interests"
-            type="text"
-            placeholder="Cultura, architettura, bicicletta, natura..."
-          />
-        </label>
-        <label>
-          Messaggio *
-          <textarea
-            name="message"
-            required
-            rows={4}
-            placeholder="Chi viaggia, il ritmo che preferisci ed eventuali domande."
-          />
-          <span className="field-hint">
-            Indica ritmo, interessi e tutto ciò che il team dovrebbe sapere prima di proporti un itinerario.
-          </span>
-        </label>
-        <div className="form-foot">
           <button className="button button-gold" type="submit">
-            Continua con l’email
+            Iscriviti
           </button>
           <p>
-            Potrai rivedere il messaggio prima di inviarlo. Nessun dato viene
-            salvato su questo sito.
+            Nessun dato viene salvato su questo sito. L’iscrizione parte solo
+            quando invii l’email.
           </p>
-        </div>
-      </form>
+        </form>
       )}
     </section>
   )
@@ -703,6 +672,7 @@ function Footer() {
           <a href="/terms">Termini e condizioni</a>
           <a href="/payment-policy">Condizioni di pagamento</a>
           <a href="/cancellation-policy">Cancellazione e rimborso</a>
+          <a href="/faq">Domande frequenti</a>
           <a href="/travel-information">Informazioni utili</a>
         </div>
         <div>
@@ -727,13 +697,14 @@ export default function HomePage() {
         <Hero />
         <Introduction />
         <Destinations />
+        <HomeTours />
         <Experiences />
         <RajasthanFeature />
         <TailorMade />
         <WhyUs />
         <Journal />
         <Faq />
-        <Planner />
+        <Newsletter />
       </main>
       <Footer />
       <BackToTop />
