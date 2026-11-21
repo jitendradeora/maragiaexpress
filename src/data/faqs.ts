@@ -1,4 +1,16 @@
-export const homepageFaqs = [
+export type FaqItem = {
+  question: string
+  answer: string
+  href?: string
+  linkLabel?: string
+}
+
+export type FaqGroup = {
+  title: string
+  items: readonly FaqItem[]
+}
+
+export const homepageFaqs: readonly FaqItem[] = [
   {
     question: "Posso richiedere un itinerario personalizzato?",
     answer:
@@ -19,9 +31,9 @@ export const homepageFaqs = [
     answer:
       "Scrivi a mail@maragiaexpress.com, chiama il +91 97840 02880 oppure usa la pagina Su misura. Il preventivo viene fornito solo dopo che il team ha verificato le tue esigenze di viaggio.",
   },
-] as const
+]
 
-export const faqGroups = [
+export const faqGroups: readonly FaqGroup[] = [
   {
     title: "Il viaggio",
     items: [
@@ -72,6 +84,8 @@ export const faqGroups = [
       },
     ],
   },
-] as const
+]
 
-export const faqPageItems = faqGroups.flatMap((group) => group.items)
+export const faqPageItems: readonly FaqItem[] = faqGroups.flatMap(
+  (group) => group.items,
+)

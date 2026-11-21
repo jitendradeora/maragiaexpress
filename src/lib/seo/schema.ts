@@ -1,3 +1,4 @@
+import type { FaqItem } from "@/data/faqs"
 import { siteConfig } from "@/lib/site-config"
 import { siteImages } from "@/data/site-images"
 import { absoluteUrl } from "./metadata"
@@ -8,11 +9,6 @@ const websiteId = `${siteConfig.url}/#website`
 type BreadcrumbItem = {
   name: string
   path: string
-}
-
-type FaqItem = {
-  question: string
-  answer: string
 }
 
 export function organizationSchema() {
@@ -107,7 +103,7 @@ export function breadcrumbSchema(items: BreadcrumbItem[]) {
   }
 }
 
-export function faqPageSchema(faqs: FaqItem[]) {
+export function faqPageSchema(faqs: readonly FaqItem[]) {
   return {
     "@context": "https://schema.org",
     "@type": "FAQPage",
