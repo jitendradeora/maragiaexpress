@@ -3,7 +3,6 @@ import JsonLd from "@/components/seo/JsonLd"
 import { homepageFaqs } from "@/data/faqs"
 import { faqPageSchema, webPageSchema } from "@/lib/seo/schema"
 import { siteConfig } from "@/lib/site-config"
-
 export default function Page() {
   return (
     <>
