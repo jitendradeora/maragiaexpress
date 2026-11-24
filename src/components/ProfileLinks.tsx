@@ -1,37 +1,26 @@
 "use client"
 
 import { socialIcons } from "./icons"
+import type { SiteSocials } from "@/lib/content"
 import { siteConfig } from "@/lib/site-config"
 
-const profiles = [
-  {
-    name: "Instagram",
-    href: siteConfig.socials.instagram,
-    Icon: socialIcons.Instagram,
-  },
-  {
-    name: "Facebook",
-    href: siteConfig.socials.facebook,
-    Icon: socialIcons.Facebook,
-  },
-  {
-    name: "YouTube",
-    href: siteConfig.socials.youtube,
-    Icon: socialIcons.YouTube,
-  },
-  {
-    name: "Trustpilot",
-    href: siteConfig.socials.trustpilot,
-    Icon: socialIcons.Trustpilot,
-  },
-  {
-    name: "Google",
-    href: siteConfig.socials.google,
-    Icon: socialIcons.Google,
-  },
-] as const
+const icons = {
+  Instagram: socialIcons.Instagram,
+  Facebook: socialIcons.Facebook,
+  YouTube: socialIcons.YouTube,
+  Trustpilot: socialIcons.Trustpilot,
+  Google: socialIcons.Google,
+}
 
-export default function ProfileLinks() {
+export default function ProfileLinks({ socials }: { socials?: SiteSocials }) {
+  const links = socials ?? siteConfig.socials
+  const profiles = [
+    { name: "Instagram", href: links.instagram, Icon: icons.Instagram },
+    { name: "Facebook", href: links.facebook, Icon: icons.Facebook },
+    { name: "YouTube", href: links.youtube, Icon: icons.YouTube },
+    { name: "Trustpilot", href: links.trustpilot, Icon: icons.Trustpilot },
+    { name: "Google", href: links.google, Icon: icons.Google },
+  ]
   return (
     <div className="social-icons">
       {profiles.map(({ name, href, Icon }) => (

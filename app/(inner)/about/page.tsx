@@ -1,20 +1,31 @@
 import type { Metadata } from "next"
+import { notFound } from "next/navigation"
 import { AboutPage } from "@/components/InnerPages"
 import JsonLd from "@/components/seo/JsonLd"
 import { getStaticPage } from "@/data/pages"
-import { createPageMetadata } from "@/lib/seo/metadata"
+import { applyYoastSeo, createPageMetadata } from "@/lib/seo/metadata"
 import { breadcrumbSchema, webPageSchema } from "@/lib/seo/schema"
+import { getCmsPage } from "@/lib/wp/content"
 
-const page = getStaticPage("/about")!
+const fallback = getStaticPage("/about")!
 
-export const metadata: Metadata = createPageMetadata({
-  title: page.title,
-  description: page.description,
-  path: page.path,
-  image: page.image,
-})
+export const revalidate = 60
 
-export default function Page() {
+export async function generateMetadata(): Promise<Metadata> {
+  const page = await getCmsPage("about")
+  const metadata = createPageMetadata({
+    title: page?.title ?? fallback.title,
+    description: page?.description ?? fallback.description,
+    path: "/about",
+    image: page?.image || fallback.image,
+    imageAlt: page?.imageAlt || page?.title,
+  })
+  return applyYoastSeo(metadata, page)
+}
+
+export default async function Page() {
+  const page = await getCmsPage("about")
+  if (!page) notFound()
   return (
     <>
       <JsonLd
@@ -22,16 +33,16 @@ export default function Page() {
           webPageSchema({
             title: page.title,
             description: page.description,
-            path: page.path,
+            path: "/about",
             type: "AboutPage",
           }),
           breadcrumbSchema([
             { name: "Home", path: "/" },
-            { name: "Chi siamo", path: "/about" },
+            { name: page.title, path: "/about" },
           ]),
         ]}
       />
-      <AboutPage />
+      <AboutPage page={page} />
     </>
   )
 }
