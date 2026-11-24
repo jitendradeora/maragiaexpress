@@ -1,11 +1,8 @@
 import type { Metadata } from "next"
 import BackToTop from "@/components/BackToTop"
-import {
-  NotFoundPage,
-  PageFooter,
-  PageHeader,
-} from "@/components/InnerPages"
+import { NotFoundPage, PageFooter, PageHeader } from "@/components/InnerPages"
 import { createPageMetadata } from "@/lib/seo/metadata"
+import { getCatalog } from "@/lib/wp/content"
 
 export const metadata: Metadata = createPageMetadata({
   title: "Pagina non trovata",
@@ -15,14 +12,17 @@ export const metadata: Metadata = createPageMetadata({
   noIndex: true,
 })
 
-export default function NotFound() {
+export const revalidate = 60
+
+export default async function NotFound() {
+  const { menus, site } = await getCatalog()
   return (
     <div className="inner-site">
-      <PageHeader />
+      <PageHeader links={menus.primary} site={site} />
       <div id="main-content">
         <NotFoundPage />
       </div>
-      <PageFooter />
+      <PageFooter columns={menus.footer} site={site} />
       <BackToTop />
     </div>
   )

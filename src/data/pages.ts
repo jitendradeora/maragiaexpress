@@ -9,21 +9,21 @@ export const staticPages = [
     image: siteImages.hero,
   },
   {
-    path: "/destinations",
+    path: "/destinazioni",
     title: "Destinazioni",
     description:
       "Esplora le destinazioni in India e oltre, dal Rajasthan al Ladakh fino a Bhutan, Nepal e Sri Lanka, con Maragià Express.",
     image: siteImages.udaipur,
   },
   {
-    path: "/tours",
+    path: "/tour",
     title: "Tour dell’India",
     description:
       "Scopri i tour culturali, dei festival, d’avventura e di lusso in India ideati da Maragià Express a Udaipur.",
     image: siteImages.palace,
   },
   {
-    path: "/experiences",
+    path: "/esperienze",
     title: "Esperienze di viaggio",
     description:
       "Scopri esperienze di viaggio su misura, culturali, d’avventura, legate ai festival e di lusso con Maragià Express.",
@@ -44,7 +44,7 @@ export const staticPages = [
     image: siteImages.udaipur,
   },
   {
-    path: "/travel-journal",
+    path: "/diario",
     title: "Diario di viaggio",
     description:
       "Consigli di pianificazione, patrimonio culturale e viaggi lenti in India dal diario di Maragià Express.",

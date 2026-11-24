@@ -1,6 +1,6 @@
 export const siteConfig = {
   name: "Maragià Express",
-  url: "https://maragiaexpress.com",
+  url: process.env.NEXT_PUBLIC_SITE_URL || "https://maragiaexpress.com",
   description:
     "Agenzia di viaggi con sede in India che crea viaggi su misura tra cultura, patrimonio storico e avventura.",
   seoDescription:

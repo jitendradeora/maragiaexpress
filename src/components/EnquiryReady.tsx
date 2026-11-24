@@ -3,24 +3,26 @@
 import { useState } from "react"
 import { siteConfig } from "@/lib/site-config"
 
-export function enquiryMailto(subject: string, body: string) {
-  return `mailto:${siteConfig.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`
+export function enquiryMailto(subject: string, body: string, email: string = siteConfig.email) {
+  return `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`
 }
 
 export function EnquiryReady({
   subject,
   body,
+  email = siteConfig.email,
   onEdit,
 }: {
   subject: string
   body: string
+  email?: string
   onEdit: () => void
 }) {
   const [copied, setCopied] = useState(false)
   const [copyError, setCopyError] = useState(false)
 
   async function copyMessage() {
-    const message = `A: ${siteConfig.email}\nOggetto: ${subject}\n\n${body}`
+    const message = `A: ${email}\nOggetto: ${subject}\n\n${body}`
     try {
       await navigator.clipboard.writeText(message)
       setCopied(true)
@@ -38,12 +40,12 @@ export function EnquiryReady({
       <p>
         Questa pagina non può inviare email autonomamente. Apri la tua app di
         posta e premi Invia, oppure copia il messaggio e invialo a{" "}
-        {siteConfig.email}. Nessuna prenotazione è valida finché il team non
+        {email}. Nessuna prenotazione è valida finché il team non
         la conferma con te.
       </p>
       <pre>{body}</pre>
       <div className="enquiry-ready-actions">
-        <a href={enquiryMailto(subject, body)}>Apri l’app di posta</a>
+        <a href={enquiryMailto(subject, body, email)}>Apri l’app di posta</a>
         <button type="button" onClick={copyMessage}>
           {copied ? "Messaggio copiato" : "Copia messaggio"}
         </button>

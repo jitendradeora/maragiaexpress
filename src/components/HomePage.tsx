@@ -1,70 +1,42 @@
 "use client"
 
 import { FormEvent, useState } from "react"
+import { FooterLinks, SiteNav, useHeaderDismiss } from "./navigation/SiteNav"
 import BackToTop from "./BackToTop"
 import BrandMark from "./BrandMark"
 import { enquiryMailto } from "./EnquiryReady"
 import ProfileLinks from "./ProfileLinks"
 import SiteImage from "./SiteImage"
-import { homepageFaqs as faqs } from "@/data/faqs"
-import { siteImages as images } from "@/data/site-images"
-import { tours } from "@/data/tours"
-import { siteConfig } from "@/lib/site-config"
+import type {
+  Article,
+  Destination,
+  Experience,
+  FaqItem,
+  HomeExperiencesSection,
+  HomeFaqSection,
+  HomeHero,
+  HomeIntroduction,
+  HomeJournalSection,
+  HomeLinkSection,
+  HomeNewsletter,
+  HomePageContent,
+  HomeProcess,
+  HomePromo,
+  HomeWhy,
+  MenuColumn,
+  MenuLink,
+  SiteProfile,
+  Tour,
+} from "@/lib/content"
+import { routes } from "@/lib/routes"
 
-const destinations = [
-  {
-    name: "Rajasthan",
-    kicker: "Palazzi · deserto · patrimonio vivo",
-    copy: "Dai laghi di Udaipur ai vicoli blu di Jodhpur, fino ai paesaggi del deserto.",
-    image: images.jodhpur,
-    className: "destination-large",
-  },
-  {
-    name: "Ladakh",
-    kicker: "Alto Himalaya",
-    copy: "Strade di montagna, monasteri buddhisti e i vasti paesaggi del nord dell’India.",
-    image: images.ladakh,
-    className: "destination-tall",
-  },
-  {
-    name: "India selvaggia",
-    kicker: "Foreste · safari",
-    copy: "Viaggi costruiti attorno alle straordinarie riserve naturali dell’India.",
-    image: images.wildlife,
-    className: "",
-  },
-]
-
-const experiences = [
-  {
-    number: "01",
-    title: "Viaggi su misura",
-    copy: "Un viaggio costruito su date, interessi, ritmo preferito e stile di soggiorno.",
-  },
-  {
-    number: "02",
-    title: "Cultura e patrimonio",
-    copy: "Città storiche, luoghi sacri, architettura, artigianato e tradizioni della vita quotidiana.",
-  },
-  {
-    number: "03",
-    title: "Avventura e bicicletta",
-    copy: "In bicicletta nel Rajasthan, itinerari himalayani e modi attivi di esplorare il paesaggio.",
-  },
-  {
-    number: "04",
-    title: "Festival e celebrazioni",
-    copy: "Viaggi ispirati a Holi, alla Fiera di Pushkar e agli altri festival proposti da Maragià Express.",
-  },
-]
-
-function Brand({ priority = false }: { priority?: boolean }) {
+function Brand({ site, priority = false }: { site: SiteProfile; priority?: boolean }) {
   return (
-    <a className="brand" href="/" aria-label="Maragià Express, home page">
+    <a className="brand" href="/" aria-label={`${site.name}, home page`}>
       <BrandMark priority={priority} />
       <span>
-        <b>MARAGIÀ</b>
-        <small>EXPRESS · INDIA</small>
+        <b>{site.shortName}</b>
+        <small>{site.brandSuffix}</small>
       </span>
     </a>
   )
@@ -105,22 +77,14 @@ function SectionHeading({
   )
 }
 
-function Header() {
+function Header({ links, site }: { links: MenuLink[]; site: SiteProfile }) {
   const [open, setOpen] = useState(false)
-  const links = [
-    ["Destinazioni", "/destinations"],
-    ["Tour", "/tours"],
-    ["Esperienze", "/experiences"],
-    ["Su misura", "/tailor-made"],
-    ["Chi siamo", "/about"],
-    ["Diario", "/travel-journal"],
-    ["Contatti", "/contact"],
-  ]
+  const headerRef = useHeaderDismiss(open, () => setOpen(false))
 
   return (
-    <header className="site-header">
+    <header className="site-header" ref={headerRef}>
       <div className="header-inner">
-        <Brand priority />
+        <Brand site={site} priority />
         <nav
           className={`nav ${open ? "nav-open" : ""}`}
           id="mobile-navigation"
@@ -129,26 +93,22 @@ function Header() {
           <a
             className="mobile-nav-brand brand"
             href="/"
-            aria-label="Maragià Express, home page"
+            aria-label={`${site.name}, home page`}
             onClick={() => setOpen(false)}
           >
             <BrandMark />
             <span>
-              <b>MARAGIÀ</b>
-              <small>EXPRESS · INDIA</small>
+              <b>{site.shortName}</b>
+              <small>{site.brandSuffix}</small>
             </span>
           </a>
-          {links.map(([label, href]) => (
-            <a href={href} key={label} onClick={() => setOpen(false)}>
-              {label}
-            </a>
-          ))}
+          <SiteNav items={links} onNavigate={() => setOpen(false)} />
           <a
             className="nav-cta"
-            href="/tailor-made#enquiry"
+            href={site.headerCta.href}
             onClick={() => setOpen(false)}
           >
-            Organizza il tuo viaggio
+            {site.headerCta.label}
           </a>
         </nav>
         <button
@@ -167,12 +127,13 @@ function Header() {
   )
 }
 
-function Hero() {
+function Hero({ hero }: { hero: HomeHero }) {
+  if (!hero.visible) return null
   return (
     <section className="hero" id="top">
       <SiteImage
-        src={images.hero}
-        alt="Architettura di un palazzo storico riflessa nell’acqua a Udaipur, Rajasthan"
+        src={hero.image}
+        alt={hero.imageAlt}
         width={2200}
         height={1400}
         priority
@@ -187,106 +148,103 @@ function Hero() {
       />
       <div className="hero-overlay" />
       <div className="hero-content">
-        <p className="eyebrow eyebrow-light">
-          Scopri l’India · Viaggia oltre l’ordinario
-        </p>
-        <h1>
-          L’India, vissuta
-          <em>a modo tuo.</em>
-        </h1>
-        <p className="hero-copy">
-          Paesaggi straordinari, tradizioni vive e tesori nascosti, riuniti in
-          un viaggio pensato con cura attorno a te.
-        </p>
-        <div className="hero-actions">
-          <a className="button button-ivory" href="/destinations">
-            Esplora le destinazioni
-          </a>
-          <ArrowLink href="/tailor-made" light>
-            Progetta il tuo viaggio
-          </ArrowLink>
+        {hero.eyebrow && <p className="eyebrow eyebrow-light">{hero.eyebrow}</p>}
+        {(hero.title || hero.titleEmphasis) && (
+          <h1>
+            {hero.title}
+            {hero.titleEmphasis && <em>{hero.titleEmphasis}</em>}
+          </h1>
+        )}
+        {hero.copy && <p className="hero-copy">{hero.copy}</p>}
+        {(hero.primaryCta || hero.secondaryCta) && (
+          <div className="hero-actions">
+            {hero.primaryCta && (
+              <a className="button button-ivory" href={hero.primaryCta.href}>
+                {hero.primaryCta.label}
+              </a>
+            )}
+            {hero.secondaryCta && (
+              <ArrowLink href={hero.secondaryCta.href} light>
+                {hero.secondaryCta.label}
+              </ArrowLink>
+            )}
+          </div>
+        )}
+      </div>
+      {(hero.locationLabel || hero.scrollLabel) && (
+        <div className="hero-foot">
+          {hero.locationLabel && <span>{hero.locationLabel}</span>}
+          {hero.scrollLabel && (
+            <a href="#about">
+              {hero.scrollLabel} <span aria-hidden="true">↓</span>
+            </a>
+          )}
         </div>
-      </div>
-      <div className="hero-foot">
-        <span>Udaipur · Rajasthan · India</span>
-        <a href="#about">
-          Scorri per scoprire <span aria-hidden="true">↓</span>
-        </a>
-      </div>
+      )}
     </section>
   )
 }
 
-function Introduction() {
+function Introduction({ section }: { section: HomeIntroduction }) {
+  if (!section.visible) return null
   return (
     <section className="intro section" id="about">
       <div className="intro-title">
-        <p className="eyebrow">Il nostro modo di viaggiare</p>
-        <h2>
-          Più di un viaggio.
-          <em>Un legame più profondo con l’India.</em>
-        </h2>
+        {section.eyebrow && <p className="eyebrow">{section.eyebrow}</p>}
+        {(section.title || section.titleEmphasis) && (
+          <h2>
+            {section.title}
+            {section.titleEmphasis && <em>{section.titleEmphasis}</em>}
+          </h2>
+        )}
       </div>
       <div className="intro-image">
-        <img
-          src={images.udaipur}
-          alt="Facciata decorata di un palazzo sul lago a Udaipur"
-          loading="lazy"
-        />
-        <span>Sguardo locale, pianificazione accurata</span>
+        <img src={section.image} alt={section.imageAlt} loading="lazy" />
+        {section.imageCaption && <span>{section.imageCaption}</span>}
       </div>
       <div className="intro-copy">
-        <p className="lead">
-          Maragià Express è uno specialista di viaggi con sede a Udaipur, in
-          India, che crea viaggi personalizzati attraverso i tanti paesaggi e
-          le tante culture del Paese.
-        </p>
-        <p>
-          Il nostro approccio inizia dall’ascolto: capire come ami viaggiare,
-          cosa ti attrae dell’India e quale ritmo desideri per il tuo viaggio.
-          Dalle città storiche alle strade himalayane, ogni itinerario è
-          pensato nel suo insieme.
-        </p>
-        <ArrowLink href="/about">Scopri Maragià Express</ArrowLink>
+        {section.lead && <p className="lead">{section.lead}</p>}
+        {section.body && <p>{section.body}</p>}
+        {section.link && <ArrowLink href={section.link.href}>{section.link.label}</ArrowLink>}
       </div>
     </section>
   )
 }
 
-function Destinations() {
+function Destinations({
+  section,
+  destinations,
+}: {
+  section: HomeLinkSection
+  destinations: Destination[]
+}) {
+  if (!section.visible) return null
+  const frames = ["destination-large", "destination-tall", ""]
   return (
     <section className="destinations section" id="destinations">
       <div className="heading-row">
-        <SectionHeading
-          eyebrow="Da dove iniziare"
-          title="Trova l’India che parla di te."
-          copy="Un Paese di tanti mondi. Inizia da un paesaggio, una storia o un’emozione."
-        />
-        <ArrowLink href="/destinations">Esplora tutte le destinazioni</ArrowLink>
+        <SectionHeading eyebrow={section.eyebrow} title={section.title} copy={section.copy} />
+        {section.linkLabel && section.linkHref && (
+          <ArrowLink href={section.linkHref}>{section.linkLabel}</ArrowLink>
+        )}
       </div>
       <div className="destination-grid">
         {destinations.map((destination, index) => (
           <a
-            className={`destination-card ${destination.className}`}
-            href={
-              [
-                "/destinations/rajasthan",
-                "/destinations/ladakh",
-                "/destinations/wildlife-india",
-              ][index]
-            }
-            key={destination.name}
+            className={`destination-card ${frames[index] ?? ""}`}
+            href={routes.destination(destination.slug)}
+            key={destination.slug}
           >
             <img
               src={destination.image}
-              alt={`${destination.name} — ${destination.kicker}`}
+              alt={destination.imageAlt || destination.name}
               loading="lazy"
             />
             <span className="image-shade" />
             <span className="destination-content">
-              <small>{destination.kicker}</small>
+              <small>{destination.eyebrow}</small>
               <strong>{destination.name}</strong>
-              <span>{destination.copy}</span>
+              <span>{destination.intro}</span>
               <b aria-hidden="true">↗</b>
             </span>
           </a>
@@ -296,35 +254,21 @@ function Destinations() {
   )
 }
 
-const featuredTourSlugs = [
-  "tour-of-india",
-  "maharajas-tour",
-  "rajasthan-on-bicycle",
-  "indian-festival-of-colors",
-  "introduction-to-india",
-  "three-cats-of-india",
-]
-
-function HomeTours() {
-  const featured = featuredTourSlugs
-    .map((slug) => tours.find((tour) => tour.slug === slug))
-    .filter((tour): tour is (typeof tours)[number] => Boolean(tour))
-
+function HomeTours({ section, tours }: { section: HomeLinkSection; tours: Tour[] }) {
+  if (!section.visible) return null
   return (
     <section className="section home-tours" id="tours">
       <div className="heading-row">
-        <SectionHeading
-          eyebrow="La collezione"
-          title="Tour da cui partire."
-          copy="Sei itinerari della collezione Maragià Express. Date, ritmo e servizi si definiscono insieme, prima di prenotare."
-        />
-        <ArrowLink href="/tours">Vedi tutti i tour</ArrowLink>
+        <SectionHeading eyebrow={section.eyebrow} title={section.title} copy={section.copy} />
+        {section.linkLabel && section.linkHref && (
+          <ArrowLink href={section.linkHref}>{section.linkLabel}</ArrowLink>
+        )}
       </div>
       <div className="tour-card-grid">
-        {featured.map((tour) => (
-          <a className="tour-card" href={`/tours/${tour.slug}`} key={tour.slug}>
+        {tours.map((tour) => (
+          <a className="tour-card" href={routes.tour(tour.slug)} key={tour.slug}>
             <div className="tour-card-media">
-              <img src={tour.image} alt={tour.title} loading="lazy" />
+              <img src={tour.image} alt={tour.imageAlt || tour.title} loading="lazy" />
               <span className="tour-card-shade" />
               <small>{tour.category}</small>
             </div>
@@ -342,44 +286,38 @@ function HomeTours() {
   )
 }
 
-function Experiences() {
+function Experiences({
+  section,
+  experiences,
+}: {
+  section: HomeExperiencesSection
+  experiences: Experience[]
+}) {
+  if (!section.visible) return null
   return (
     <section className="experiences section" id="experiences">
       <div className="experience-image">
-        <img
-          src={images.craft}
-          alt="Musicista del Rajasthan in abito tradizionale"
-          loading="lazy"
-        />
-        <div className="image-note">
-          <small>I dettagli che contano</small>
-          <span>Persone, luoghi, artigianato e cultura</span>
-        </div>
+        <img src={section.image} alt={section.imageAlt} loading="lazy" />
+        {(section.noteSmall || section.note) && (
+          <div className="image-note">
+            {section.noteSmall && <small>{section.noteSmall}</small>}
+            {section.note && <span>{section.note}</span>}
+          </div>
+        )}
       </div>
       <div className="experience-content">
-        <SectionHeading
-          eyebrow="Modi di viaggiare"
-          title="Viaggi che ti somigliano."
-          copy="Non un elenco di luoghi da spuntare, ma un itinerario che lascia spazio per capire dove ti trovi."
-        />
+        <SectionHeading eyebrow={section.eyebrow} title={section.title} copy={section.copy} />
         <div className="experience-list">
           {experiences.map((experience, index) => (
             <a
-              href={
-                [
-                  "/experiences/tailor-made-journeys",
-                  "/experiences/culture-heritage",
-                  "/experiences/adventure-cycling",
-                  "/experiences/festivals",
-                ][index]
-              }
+              href={routes.experience(experience.slug)}
               className="experience-row"
-              key={experience.title}
+              key={experience.slug}
             >
-              <span>{experience.number}</span>
+              <span>{String(index + 1).padStart(2, "0")}</span>
               <div>
-                <h3>{experience.title}</h3>
-                <p>{experience.copy}</p>
+                <h3>{experience.name}</h3>
+                <p>{experience.intro}</p>
               </div>
               <b aria-hidden="true">↗</b>
             </a>
@@ -390,106 +328,71 @@ function Experiences() {
   )
 }
 
-function RajasthanFeature() {
+function RajasthanFeature({ section }: { section: HomePromo }) {
+  if (!section.visible) return null
   return (
     <section className="rajasthan">
-      <img
-        src={images.desert}
-        alt="Cammelliere che attraversa il deserto del Thar, in Rajasthan"
-        loading="lazy"
-      />
+      <img src={section.image} alt={section.imageAlt} loading="lazy" />
       <div className="rajasthan-overlay" />
       <div className="rajasthan-content">
-        <p className="eyebrow eyebrow-light">Un paesaggio simbolo</p>
-        <h2>
-          Rajasthan,
-          <em>oltre la cartolina.</em>
-        </h2>
-        <p>
-          Scopri le storie, l’architettura, le tradizioni e gli incontri che
-          rendono il Rajasthan una delle esperienze di viaggio più uniche
-          dell’India.
-        </p>
-        <a className="button button-ivory" href="/destinations/rajasthan">
-          Esplora il Rajasthan
-        </a>
+        {section.eyebrow && <p className="eyebrow eyebrow-light">{section.eyebrow}</p>}
+        {(section.title || section.titleEmphasis) && (
+          <h2>
+            {section.title}
+            {section.titleEmphasis && <em>{section.titleEmphasis}</em>}
+          </h2>
+        )}
+        {section.copy && <p>{section.copy}</p>}
+        {section.button && (
+          <a className="button button-ivory" href={section.button.href}>
+            {section.button.label}
+          </a>
+        )}
       </div>
-      <div className="rajasthan-label">26.9124° N · 75.7873° E</div>
+      {section.label && <div className="rajasthan-label">{section.label}</div>}
     </section>
   )
 }
 
-function TailorMade() {
-  const steps = [
-    [
-      "01",
-      "Condividi le tue idee",
-      "Raccontaci date, interessi, stile di viaggio e preferenze.",
-    ],
-    [
-      "02",
-      "Definisci il tuo viaggio",
-      "Valuta l’itinerario proposto e perfezionalo con il team di viaggio.",
-    ],
-    [
-      "03",
-      "Vivi l’India",
-      "Viaggia con i servizi e l’assistenza confermati per il tuo itinerario.",
-    ],
-  ]
+function TailorMade({ section }: { section: HomeProcess }) {
+  if (!section.visible) return null
   return (
     <section className="tailor section" id="tailor-made">
-      <SectionHeading
-        eyebrow="Pensato per te"
-        title="I tuoi interessi. Il tuo ritmo. La tua India."
-        copy="Ogni viaggio memorabile inizia da una conversazione, non da un pacchetto preconfezionato."
-      />
+      <SectionHeading eyebrow={section.eyebrow} title={section.title} copy={section.copy} />
       <div className="steps">
-        {steps.map(([number, title, copy]) => (
-          <article key={number}>
-            <span>{number}</span>
-            <h3>{title}</h3>
-            <p>{copy}</p>
+        {section.steps.map((step) => (
+          <article key={`${step.number}-${step.title}`}>
+            <span>{step.number}</span>
+            <h3>{step.title}</h3>
+            <p>{step.copy}</p>
           </article>
         ))}
       </div>
-      <a className="button button-green" href="/tailor-made#enquiry">
-        Organizza un viaggio su misura
-      </a>
+      {section.cta && (
+        <a className="button button-green" href={section.cta.href}>
+          {section.cta.label}
+        </a>
+      )}
     </section>
   )
 }
 
-function WhyUs() {
-  const points = [
-    ["Con sede in India", "Conoscenza diretta del territorio, da Udaipur, Rajasthan."],
-    [
-      "Su misura per te",
-      "Itinerari discussi e costruiti sulle preferenze di ciascuno.",
-    ],
-    [
-      "Tanti modi di esplorare",
-      "Viaggi culturali, festival, viaggi attivi e naturalistici.",
-    ],
-    [
-      "Un unico viaggio coerente",
-      "Tutti i servizi riuniti attorno a un itinerario ben costruito.",
-    ],
-  ]
+function WhyUs({ section }: { section: HomeWhy }) {
+  if (!section.visible) return null
   return (
     <section className="why section">
       <div className="why-title">
-        <p className="eyebrow">Perché Maragià Express</p>
-        <h2>Conoscenza locale. Un viaggio che è soltanto tuo.</h2>
+        {section.eyebrow && <p className="eyebrow">{section.eyebrow}</p>}
+        {section.title && <h2>{section.title}</h2>}
       </div>
       <div className="why-grid">
-        {points.map(([title, copy], index) => (
-          <article key={title}>
+        {section.points.map((point, index) => (
+          <article key={point.title}>
             <span className="why-icon" aria-hidden="true">
               {String(index + 1).padStart(2, "0")}
             </span>
-            <h3>{title}</h3>
-            <p>{copy}</p>
+            <h3>{point.title}</h3>
+            <p>{point.copy}</p>
           </article>
         ))}
       </div>
@@ -497,63 +400,70 @@ function WhyUs() {
   )
 }
 
-function Journal() {
+function Journal({
+  section,
+  articles,
+}: {
+  section: HomeJournalSection
+  articles: Article[]
+}) {
+  if (!section.visible) return null
+  const feature =
+    articles.find((article) => article.slug === section.featuredSlug) ?? articles[0]
+  const notes = articles.filter((article) => article.slug !== feature?.slug).slice(0, 2)
+  if (!feature) return null
   return (
     <section className="journal section" id="journal">
       <div className="heading-row">
-        <SectionHeading
-          eyebrow="Appunti per curiosi"
-          title="Storie di viaggio."
-        />
-        <ArrowLink href="/travel-journal">Esplora il diario di viaggio</ArrowLink>
+        <SectionHeading eyebrow={section.eyebrow} title={section.title} />
+        {section.linkLabel && section.linkHref && (
+          <ArrowLink href={section.linkHref}>{section.linkLabel}</ArrowLink>
+        )}
       </div>
       <div className="journal-grid">
-        <a
-          className="journal-feature"
-          href="/travel-journal/rajasthan-heritage-cities"
-        >
+        <a className="journal-feature" href={routes.article(feature.slug)}>
           <img
-            src={images.city}
-            alt="Balconi e finestre finemente lavorati sulla facciata di un palazzo del Rajasthan"
+            src={feature.image}
+            alt={feature.imageAlt || feature.title}
             loading="lazy"
           />
-          <p className="eyebrow">Architettura e patrimonio</p>
-          <h3>Leggere il Rajasthan attraverso le sue città storiche</h3>
-          <p>
-            Guarda oltre la facciata e scopri come l’architettura custodisce
-            secoli di memoria.
-          </p>
+          <p className="eyebrow">{feature.category}</p>
+          <h3>{feature.title}</h3>
+          <p>{feature.excerpt}</p>
         </a>
-        <a href="/travel-journal/planning-first-visit-india">
-          <span className="journal-number">APPUNTI · 01</span>
-          <h3>Pianificare il primo viaggio in India</h3>
-          <p>
-            Un punto di partenza ragionato su ritmo, stagione, regioni e
-            aspettative.
-          </p>
-        </a>
-        <a href="/travel-journal/travel-at-a-slower-pace">
-          <span className="journal-number">APPUNTI · 02</span>
-          <h3>Perché un viaggio più lento spesso rivela di più</h3>
-          <p>
-            Laghi, haveli e riti quotidiani nella città che ospita Maragià Express.
-          </p>
-        </a>
+        {notes.map((article, index) => (
+          <a href={routes.article(article.slug)} key={article.slug}>
+            <span className="journal-number">APPUNTI · {String(index + 1).padStart(2, "0")}</span>
+            <h3>{article.title}</h3>
+            <p>{article.excerpt}</p>
+          </a>
+        ))}
       </div>
     </section>
   )
 }
 
-function Faq() {
+function Faq({
+  section,
+  faqs,
+  email,
+}: {
+  section: HomeFaqSection
+  faqs: FaqItem[]
+  email: string
+}) {
   const [active, setActive] = useState(0)
+  if (!section.visible) return null
   return (
     <section className="faq section">
       <div className="faq-heading">
-        <SectionHeading eyebrow="Buono a sapersi" title="Organizzare il tuo viaggio." />
+        <SectionHeading eyebrow={section.eyebrow} title={section.title} />
         <p>
-          <a href="/faq">Leggi tutte le domande frequenti</a>
-          {" "}oppure{" "}
-          <a href={`mailto:${siteConfig.email}`}>scrivi al nostro team.</a>
+          {section.linkLabel && section.linkHref && (
+            <a href={section.linkHref}>{section.linkLabel}</a>
+          )}
+          {section.linkLabel && " oppure "}
+          <a href={`mailto:${email}`}>scrivi al nostro team.</a>
         </p>
       </div>
       <div className="faq-list">
@@ -580,7 +490,7 @@ function Faq() {
   )
 }
 
-function Newsletter() {
+function Newsletter({ section, email: contactEmail }: { section: HomeNewsletter; email: string }) {
   const [email, setEmail] = useState<string | null>(null)
 
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
@@ -594,27 +504,28 @@ function Newsletter() {
     ? `Vorrei iscrivermi alla newsletter di Maragià Express.\n\nEmail: ${email}`
     : ""
 
+  if (!section.visible) return null
+
   return (
     <section className="newsletter" aria-labelledby="newsletter-title">
       <div className="newsletter-copy">
-        <p className="eyebrow eyebrow-light">Lettere dall’India</p>
-        <h2 id="newsletter-title">
-          Notizie di viaggio,
-          <em>con calma.</em>
-        </h2>
-        <p>
-          Festival, itinerari e appunti dal Rajasthan. Qualche messaggio
-          all’anno, niente rumore.
-        </p>
+        {section.eyebrow && <p className="eyebrow eyebrow-light">{section.eyebrow}</p>}
+        {(section.title || section.titleEmphasis) && (
+          <h2 id="newsletter-title">
+            {section.title}
+            {section.titleEmphasis && <em>{section.titleEmphasis}</em>}
+          </h2>
+        )}
+        {section.copy && <p>{section.copy}</p>}
       </div>
       {email ? (
         <div className="newsletter-ready" role="status">
           <p>
             L’iscrizione di <strong>{email}</strong> non è ancora partita. Apri
-            la posta e invia il messaggio a {siteConfig.email}.
+            la posta e invia il messaggio a {contactEmail}.
           </p>
           <div className="newsletter-actions">
-            <a className="button button-gold" href={enquiryMailto(subject, body)}>
+            <a className="button button-gold" href={enquiryMailto(subject, body, contactEmail)}>
               Apri l’app di posta
             </a>
             <button type="button" onClick={() => setEmail(null)}>
@@ -647,66 +558,88 @@ function Newsletter() {
   )
 }
 
-function Footer() {
+function Footer({ columns, site }: { columns: MenuColumn[]; site: SiteProfile }) {
   return (
     <footer className="footer" id="contact">
       <div className="footer-main">
         <div className="footer-brand">
-          <Brand />
-          <p>Maragià Express — scopri l’India a modo tuo.</p>
-          <span>{siteConfig.location}</span>
-          <ProfileLinks />
+          <Brand site={site} />
+          <p>{site.tagline}</p>
+          <span>{site.location}</span>
+          <ProfileLinks socials={site.socials} />
         </div>
-        <div>
-          <h3>Esplora</h3>
-          <a href="/destinations">Destinazioni</a>
-          <a href="/tours">Tour</a>
-          <a href="/experiences">Esperienze</a>
-          <a href="/tailor-made">Viaggi su misura</a>
-          <a href="/travel-journal">Diario di viaggio</a>
-        </div>
-        <div>
-          <h3>Informazioni</h3>
-          <a href="/tours">Tour dell’India</a>
-          <a href="/experiences/festivals">Tour dei festival</a>
-          <a href="/terms">Termini e condizioni</a>
-          <a href="/payment-policy">Condizioni di pagamento</a>
-          <a href="/cancellation-policy">Cancellazione e rimborso</a>
-          <a href="/faq">Domande frequenti</a>
-          <a href="/travel-information">Informazioni utili</a>
-        </div>
+        {columns.map((column) => (
+          <div key={column.title}>
+            <h3>
+              {column.href ? (
+                <a
+                  href={column.href}
+                  target={column.external ? "_blank" : undefined}
+                  rel={column.external ? "noopener noreferrer" : undefined}
+                >
+                  {column.title}
+                </a>
+              ) : (
+                column.title
+              )}
+            </h3>
+            <FooterLinks links={column.links} />
+          </div>
+        ))}
         <div>
           <h3>Parla con noi</h3>
-          <a href={siteConfig.phoneHref}>{siteConfig.phoneDisplay}</a>
-          <a href={`mailto:${siteConfig.email}`}>{siteConfig.email}</a>
+          <a href={site.phoneHref}>{site.phoneDisplay}</a>
+          <a href={`mailto:${site.email}`}>{site.email}</a>
         </div>
       </div>
       <div className="footer-bottom">
-        <span>© {new Date().getFullYear()} Maragià Express</span>
-        <span>Agenzia di viaggi e tour operator · Udaipur, India</span>
+        <span>© {new Date().getFullYear()} {site.name}</span>
+        <span>{site.copyrightNote}</span>
       </div>
     </footer>
   )
 }
 
-export default function HomePage() {
+type HomePageProps = {
+  links: MenuLink[]
+  footer: MenuColumn[]
+  site: SiteProfile
+  home: HomePageContent
+  destinations: Destination[]
+  tours: Tour[]
+  experiences: Experience[]
+  articles: Article[]
+  faqs: FaqItem[]
+}
+
+export default function HomePage({
+  links,
+  footer,
+  site,
+  home,
+  destinations,
+  tours,
+  experiences,
+  articles,
+  faqs,
+}: HomePageProps) {
   return (
     <>
-      <Header />
+      <Header links={links} site={site} />
       <main id="main-content">
-        <Hero />
-        <Introduction />
-        <Destinations />
-        <HomeTours />
-        <Experiences />
-        <RajasthanFeature />
-        <TailorMade />
-        <WhyUs />
-        <Journal />
-        <Faq />
-        <Newsletter />
+        <Hero hero={home.hero} />
+        <Introduction section={home.introduction} />
+        <Destinations section={home.destinations} destinations={destinations} />
+        <HomeTours section={home.tours} tours={tours} />
+        <Experiences section={home.experiences} experiences={experiences} />
+        <RajasthanFeature section={home.promo} />
+        <TailorMade section={home.process} />
+        <WhyUs section={home.why} />
+        <Journal section={home.journal} articles={articles} />
+        <Faq section={home.faq} faqs={faqs} email={site.email} />
+        <Newsletter section={home.newsletter} email={site.email} />
       </main>
-      <Footer />
+      <Footer columns={footer} site={site} />
       <BackToTop />
     </>
   )

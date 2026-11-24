@@ -8,6 +8,8 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       { protocol: "https", hostname: "images.unsplash.com" },
       { protocol: "https", hostname: "maragiaexpress.com" },
+      { protocol: "https", hostname: "www.maragiaexpress.com" },
+      { protocol: "http", hostname: "localhost" },
     ],
   },
   async headers() {
@@ -39,72 +41,72 @@ const nextConfig: NextConfig = {
     return [
       {
         source: "/tour-dellindia",
-        destination: "/tours",
+        destination: "/tour",
         permanent: true,
       },
       {
         source: "/viaggi-di-lusso-in-india",
-        destination: "/tours",
+        destination: "/tour",
         permanent: true,
       },
       {
         source: "/tour-culturali-dell-india",
-        destination: "/tours",
+        destination: "/tour",
         permanent: true,
       },
       {
         source: "/avventure-nel-mondo-india",
-        destination: "/tours",
+        destination: "/tour",
         permanent: true,
       },
       {
         source: "/tour-dei-festival-indiani",
-        destination: "/tours",
+        destination: "/tour",
         permanent: true,
       },
       {
         source: "/festa-dei-colori-india",
-        destination: "/tours/indian-festival-of-colors",
+        destination: "/tour/indian-festival-of-colors",
         permanent: true,
       },
       {
         source: "/fiera-di-pushkar",
-        destination: "/tours/camel-fair",
+        destination: "/tour/camel-fair",
         permanent: true,
       },
       {
         source: "/viaggio-in-bicicletta-in-rajasthan",
-        destination: "/tours/rajasthan-on-bicycle",
+        destination: "/tour/rajasthan-on-bicycle",
         permanent: true,
       },
       {
         source: "/viaggio-organizzato-in-bhutan",
-        destination: "/destinations/bhutan",
+        destination: "/destinazioni/bhutan",
         permanent: true,
       },
       {
         source: "/viaggio-organizzato-in-nepal",
-        destination: "/destinations/nepal",
+        destination: "/destinazioni/nepal",
         permanent: true,
       },
       {
         source: "/viaggio-organizzato-in-sri-lanka",
-        destination: "/destinations/sri-lanka",
+        destination: "/destinazioni/sri-lanka",
         permanent: true,
       },
       {
         source: "/oltre-lindia",
-        destination: "/destinations",
+        destination: "/destinazioni",
         permanent: true,
       },
       {
         source: "/viaggio-di-lusso-in-india-2",
-        destination: "/tours/maharajas-tour",
+        destination: "/tour/maharajas-tour",
         permanent: true,
       },
       {
         source: "/holi-colorato-2023-fd",
-        destination: "/tours/indian-festival-of-colors",
+        destination: "/tour/indian-festival-of-colors",
         permanent: true,
       },
       {
@@ -114,7 +116,52 @@ const nextConfig: NextConfig = {
       },
       {
         source: "/blog",
-        destination: "/travel-journal",
+        destination: "/diario",
+        permanent: true,
+      },
+      {
+        source: "/blog/:slug",
+        destination: "/diario/:slug",
+        permanent: true,
+      },
+      {
+        source: "/destinations",
+        destination: "/destinazioni",
+        permanent: true,
+      },
+      {
+        source: "/destinations/:slug",
+        destination: "/destinazioni/:slug",
+        permanent: true,
+      },
+      {
+        source: "/tours",
+        destination: "/tour",
+        permanent: true,
+      },
+      {
+        source: "/tours/:slug",
+        destination: "/tour/:slug",
+        permanent: true,
+      },
+      {
+        source: "/experiences",
+        destination: "/esperienze",
+        permanent: true,
+      },
+      {
+        source: "/experiences/:slug",
+        destination: "/esperienze/:slug",
+        permanent: true,
+      },
+      {
+        source: "/travel-journal",
+        destination: "/diario",
+        permanent: true,
+      },
+      {
+        source: "/travel-journal/:slug",
+        destination: "/diario/:slug",
         permanent: true,
       },
       {

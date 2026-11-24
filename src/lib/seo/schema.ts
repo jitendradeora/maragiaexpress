@@ -1,4 +1,4 @@
-import type { FaqItem } from "@/data/faqs"
+import type { FaqItem } from "@/lib/content"
 import { siteConfig } from "@/lib/site-config"
 import { siteImages } from "@/data/site-images"
 import { absoluteUrl } from "./metadata"
@@ -90,6 +90,22 @@ export function webPageSchema({
   }
 }
 
+export function parseYoastSchema(raw?: string) {
+  const value = raw?.trim()
+  if (!value) return null
+  try {
+    const parsed = JSON.parse(value) as unknown
+    if (!parsed || typeof parsed !== "object" || Array.isArray(parsed)) return null
+    const record = parsed as Record<string, unknown>
+    const graph = record["@graph"]
+    if (Array.isArray(graph) && graph.length === 0) return null
+    if (!record["@type"] && !Array.isArray(graph)) return null
+    return record
+  } catch {
+    return null
+  }
+}
+
 export function breadcrumbSchema(items: BreadcrumbItem[]) {
   return {
     "@context": "https://schema.org",
@@ -177,12 +193,16 @@ export function articleSchema({
   path,
   image,
   category,
+  authorName,
+  datePublished,
 }: {
   title: string
   description: string
   path: string
   image: string
   category?: string
+  authorName?: string
+  datePublished?: string
 }) {
   return {
     "@context": "https://schema.org",
@@ -192,11 +212,14 @@ export function articleSchema({
     description,
     image,
     url: absoluteUrl(path),
-    author: {
-      "@type": "Organization",
-      "@id": organizationId,
-      name: siteConfig.name,
-    },
+    datePublished: datePublished || undefined,
+    author: authorName
+      ? { "@type": "Person", name: authorName }
+      : {
+          "@type": "Organization",
+          "@id": organizationId,
+          name: siteConfig.name,
+        },
     publisher: {
       "@type": "Organization",
       "@id": organizationId,

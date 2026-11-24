@@ -1,0 +1,15 @@
+export const routes = {
+  destinations: "/destinazioni",
+  tours: "/tour",
+  experiences: "/esperienze",
+  journal: "/diario",
+  faq: "/faq",
+  destination: (slug: string) => `/destinazioni/${slug}`,
+  tour: (slug: string) => `/tour/${slug}`,
+  experience: (slug: string) => `/esperienze/${slug}`,
+  article: (slug: string) => `/diario/${slug}`,
+  category: (slug: string) => `/category/${slug}`,
+  area: (slug: string) => `/area/${slug}`,
+  tourCategory: (slug: string) => `/categoria-tour/${slug}`,
+  faqGroup: (slug: string) => `/gruppo-faq/${slug}`,
+} as const

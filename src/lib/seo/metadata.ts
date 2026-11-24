@@ -65,6 +65,68 @@ export function createPageMetadata({
   }
 }
 
+export type YoastMetadata = {
+  seoTitle?: string
+  focusKeyword?: string
+  keywords?: string
+  canonical?: string
+  noIndex?: boolean
+  noFollow?: boolean
+  ogTitle?: string
+  ogDescription?: string
+  ogImage?: string
+  ogImageAlt?: string
+  schemaRaw?: string
+}
+
+function robotFlag(robots: Metadata["robots"], key: "index" | "follow") {
+  if (!robots || typeof robots === "string") return true
+  const value = robots[key]
+  return value !== false
+}
+
+export function applyYoastSeo(metadata: Metadata, seo?: YoastMetadata | null) {
+  if (!seo) return metadata
+  const title = seo.seoTitle?.trim()
+  const socialTitle = seo.ogTitle?.trim() || title
+  if (title) metadata.title = { absolute: title }
+  if (socialTitle) {
+    if (metadata.openGraph) metadata.openGraph.title = socialTitle
+    if (metadata.twitter) metadata.twitter.title = socialTitle
+  }
+  const socialDescription = seo.ogDescription?.trim()
+  if (socialDescription) {
+    if (metadata.openGraph) metadata.openGraph.description = socialDescription
+    if (metadata.twitter) metadata.twitter.description = socialDescription
+  }
+  if (seo.ogImage) {
+    if (metadata.openGraph) {
+      metadata.openGraph.images = [{ url: seo.ogImage, alt: seo.ogImageAlt || socialTitle || "" }]
+    }
+    if (metadata.twitter) metadata.twitter.images = [seo.ogImage]
+  }
+  if (seo.canonical) {
+    metadata.alternates = { ...metadata.alternates, canonical: seo.canonical }
+    if (metadata.openGraph) metadata.openGraph.url = seo.canonical
+  }
+  const keywords = [seo.focusKeyword, seo.keywords]
+    .flatMap((value) => (value ?? "").split(","))
+    .map((value) => value.trim())
+    .filter(Boolean)
+  if (keywords.length > 0) metadata.keywords = [...new Set(keywords)]
+  if (seo.noIndex || seo.noFollow) {
+    metadata.robots = {
+      index: robotFlag(metadata.robots, "index") && !seo.noIndex,
+      follow: robotFlag(metadata.robots, "follow") && !seo.noFollow,
+    }
+  }
+  return metadata
+}
+
+export function applySeoTitle(metadata: Metadata, seoTitle?: string) {
+  return applyYoastSeo(metadata, { seoTitle })
+}
+
 export const rootMetadata: Metadata = {
   metadataBase: new URL(siteConfig.url),
   title: {

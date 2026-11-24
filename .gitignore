@@ -4,7 +4,9 @@ out/
 dist/
 build/
 .cache/
-.env*
+.env
+.env.local
+.env.*.local
 *.tsbuildinfo
 *-debug.log*
 logs/
