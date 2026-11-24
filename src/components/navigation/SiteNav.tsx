@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState, type RefObject } from "react"
 import { usePathname } from "next/navigation"
+import AppLink from "@/components/AppLink"
 import type { MenuLink } from "@/lib/content"
 
 export function useDismiss(
@@ -54,7 +55,7 @@ export function MenuAnchor({
 }) {
   if (!item.href) return <span>{item.label}</span>
   return (
-    <a
+    <AppLink
       href={item.href}
       aria-current={current ? "page" : undefined}
       target={item.external ? "_blank" : undefined}
@@ -62,7 +63,7 @@ export function MenuAnchor({
       onClick={onNavigate}
     >
       {item.label}
-    </a>
+    </AppLink>
   )
 }
 

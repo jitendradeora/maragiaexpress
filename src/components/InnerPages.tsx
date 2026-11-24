@@ -5,6 +5,7 @@ import { FooterLinks, SiteNav, useHeaderDismiss } from "./navigation/SiteNav"
 import BrandMark from "./BrandMark"
 import { EnquiryReady } from "./EnquiryReady"
 import ProfileLinks from "./ProfileLinks"
+import AppLink from "./AppLink"
 import SiteImage from "./SiteImage"
 import { ArrowOutIcon } from "./icons"
 import type {
@@ -125,17 +126,17 @@ export function PageHeader({ links, site }: { links: MenuLink[]; site: SiteProfi
   const headerRef = useHeaderDismiss(open, () => setOpen(false))
   return (
     <header className="inner-header" ref={headerRef}>
-      <a className="inner-brand" href="/" aria-label={`${site.name}, home page`}>
+      <AppLink className="inner-brand" href="/" aria-label={`${site.name}, home page`}>
         <BrandMark priority />
         <b>
           {site.shortName} <small>{site.brandSuffix}</small>
         </b>
-      </a>
+      </AppLink>
       <nav
         className={open ? "inner-nav inner-nav-open" : "inner-nav"}
         aria-label="Navigazione principale"
       >
-        <a
+        <AppLink
           className="mobile-nav-brand inner-brand"
           href="/"
           aria-label={`${site.name}, home page`}
@@ -145,11 +146,11 @@ export function PageHeader({ links, site }: { links: MenuLink[]; site: SiteProfi
           <b>
             {site.shortName} <small>{site.brandSuffix}</small>
           </b>
-        </a>
+        </AppLink>
         <SiteNav items={links} onNavigate={() => setOpen(false)} />
-        <a className="inner-nav-cta" href={site.headerCta.href}>
+        <AppLink className="inner-nav-cta" href={site.headerCta.href}>
           {site.headerCta.label}
-        </a>
+        </AppLink>
       </nav>
       <button
         className="inner-menu"
@@ -175,12 +176,12 @@ export function PageFooter({
   return (
     <footer className="inner-footer">
       <div>
-        <a className="inner-brand" href="/" aria-label={`${site.name}, home page`}>
+        <AppLink className="inner-brand" href="/" aria-label={`${site.name}, home page`}>
           <BrandMark />
           <b>
             {site.shortName} <small>{site.brandSuffix}</small>
           </b>
-        </a>
+        </AppLink>
         <p>{site.tagline}</p>
         <ProfileLinks socials={site.socials} />
       </div>
@@ -188,13 +189,13 @@ export function PageFooter({
         <div key={column.title}>
           <b>
             {column.href ? (
-              <a
+              <AppLink
                 href={column.href}
                 target={column.external ? "_blank" : undefined}
                 rel={column.external ? "noopener noreferrer" : undefined}
               >
                 {column.title}
-              </a>
+              </AppLink>
             ) : (
               column.title
             )}
@@ -204,8 +205,8 @@ export function PageFooter({
       ))}
       <div>
         <b>Parla con noi</b>
-        <a href={site.phoneHref}>{site.phoneDisplay}</a>
-        <a href={`mailto:${site.email}`}>{site.email}</a>
+        <AppLink href={site.phoneHref}>{site.phoneDisplay}</AppLink>
+        <AppLink href={`mailto:${site.email}`}>{site.email}</AppLink>
         <span>{site.location}</span>
       </div>
     </footer>
@@ -224,11 +225,11 @@ function Breadcrumbs({
   const crumbs = trail ?? (parent ? [{ name: parent[0], href: parent[1] }] : [])
   return (
     <nav className="breadcrumbs" aria-label="Percorso di navigazione">
-      <a href="/">Home</a>
+      <AppLink href="/">Home</AppLink>
       {crumbs.map((crumb) => (
         <Fragment key={`${crumb.href}-${crumb.name}`}>
           <span>/</span>
-          <a href={crumb.href}>{crumb.name}</a>
+          <AppLink href={crumb.href}>{crumb.name}</AppLink>
         </Fragment>
       ))}
       <span>/</span>
@@ -303,7 +304,7 @@ function ListingCard({
   copy: string
 }) {
   return (
-    <a className="listing-card" href={href}>
+    <AppLink className="listing-card" href={href}>
       <div>
         <img src={image} alt={title} loading="lazy" />
         <span />
@@ -314,7 +315,7 @@ function ListingCard({
       <b>
         Scopri <i aria-hidden="true"><ArrowOutIcon /></i>
       </b>
-    </a>
+    </AppLink>
   )
 }
 
@@ -391,20 +392,20 @@ export function DestinationsPage({
         )}
         {regions.length > 0 && (
           <nav className="listing-filters" aria-label="Filtra per area">
-            <a
+            <AppLink
               href={routes.destinations}
               aria-current={activeRegion ? undefined : "page"}
             >
               Tutte
-            </a>
+            </AppLink>
             {regions.map((region) => (
-              <a
+              <AppLink
                 href={routes.area(region.slug)}
                 aria-current={activeRegion === region.slug ? "page" : undefined}
                 key={region.slug}
               >
                 {region.name}
-              </a>
+              </AppLink>
             ))}
           </nav>
         )}
@@ -455,7 +456,7 @@ export function DestinationsPage({
         {totalPages > 1 && (
           <nav className="listing-pager" aria-label="Pagine delle destinazioni">
             {page > 1 ? (
-              <a href={listingHref(activeRegion, page - 1)}>Precedente</a>
+              <AppLink href={listingHref(activeRegion, page - 1)}>Precedente</AppLink>
             ) : (
               <span>Precedente</span>
             )}
@@ -463,7 +464,7 @@ export function DestinationsPage({
               Pagina {page} di {totalPages}
             </span>
             {page < totalPages ? (
-              <a href={listingHref(activeRegion, page + 1)}>Successiva</a>
+              <AppLink href={listingHref(activeRegion, page + 1)}>Successiva</AppLink>
             ) : (
               <span>Successiva</span>
             )}
@@ -567,10 +568,10 @@ function RelatedLinks({
       </div>
       <div>
         {links.map((link) => (
-          <a href={link.href} key={link.href}>
+          <AppLink href={link.href} key={link.href}>
             <span>{link.label}</span>
             <b aria-hidden="true">↗</b>
-          </a>
+          </AppLink>
         ))}
       </div>
     </section>
@@ -614,9 +615,9 @@ export function ExperiencesPage({
         {totalPages > 1 && (
           <nav className="listing-pager" aria-label="Pagine delle esperienze">
             {page > 1 ? (
-              <a href={page > 2 ? `${routes.experiences}?page=${page - 1}` : routes.experiences}>
+              <AppLink href={page > 2 ? `${routes.experiences}?page=${page - 1}` : routes.experiences}>
                 Precedente
-              </a>
+              </AppLink>
             ) : (
               <span>Precedente</span>
             )}
@@ -624,7 +625,7 @@ export function ExperiencesPage({
               Pagina {page} di {totalPages}
             </span>
             {page < totalPages ? (
-              <a href={`${routes.experiences}?page=${page + 1}`}>Successiva</a>
+              <AppLink href={`${routes.experiences}?page=${page + 1}`}>Successiva</AppLink>
             ) : (
               <span>Successiva</span>
             )}
@@ -722,17 +723,17 @@ export function ToursPage({
         </div>
         {categories.length > 0 && (
           <nav className="tour-filters" aria-label="Filtra per categoria">
-            <a href={routes.tours} aria-current={activeCategory ? undefined : "page"}>
+            <AppLink href={routes.tours} aria-current={activeCategory ? undefined : "page"}>
               Tutte
-            </a>
+            </AppLink>
             {categories.map((category) => (
-              <a
+              <AppLink
                 href={routes.tourCategory(category.slug)}
                 aria-current={activeCategory === category.slug ? "page" : undefined}
                 key={category.slug}
               >
                 {category.name}
-              </a>
+              </AppLink>
             ))}
           </nav>
         )}
@@ -757,7 +758,7 @@ export function ToursPage({
               </header>
               <div className="tour-card-grid">
                 {categoryTours.map((tour) => (
-                  <a className="tour-card" href={routes.tour(tour.slug)} key={tour.slug}>
+                  <AppLink className="tour-card" href={routes.tour(tour.slug)} key={tour.slug}>
                     <div className="tour-card-media">
                       <img src={tour.image} alt={tour.title} loading="lazy" />
                       <span className="tour-card-shade" />
@@ -775,7 +776,7 @@ export function ToursPage({
                         Scopri il tour <span aria-hidden="true">↗</span>
                       </b>
                     </div>
-                  </a>
+                  </AppLink>
                 ))}
               </div>
             </section>
@@ -784,7 +785,7 @@ export function ToursPage({
         {totalPages > 1 && (
           <nav className="listing-pager" aria-label="Pagine dei tour">
             {page > 1 ? (
-              <a href={tourPageHref(activeCategory, page - 1)}>Precedente</a>
+              <AppLink href={tourPageHref(activeCategory, page - 1)}>Precedente</AppLink>
             ) : (
               <span>Precedente</span>
             )}
@@ -792,7 +793,7 @@ export function ToursPage({
               Pagina {page} di {totalPages}
             </span>
             {page < totalPages ? (
-              <a href={tourPageHref(activeCategory, page + 1)}>Successiva</a>
+              <AppLink href={tourPageHref(activeCategory, page + 1)}>Successiva</AppLink>
             ) : (
               <span>Successiva</span>
             )}
@@ -1019,7 +1020,7 @@ function TourEnquiryForm({ tour, site }: { tour: Tour; site: SiteProfile }) {
         </button>
         <small>
           Preferisci parlarci direttamente?{" "}
-          <a href={site.phoneHref}>{site.phoneDisplay}</a>
+          <AppLink href={site.phoneHref}>{site.phoneDisplay}</AppLink>
         </small>
       </div>
     </form>
@@ -1076,7 +1077,7 @@ export function TourPage({
                 ? "Il prezzo viene indicato nella proposta, in base a date, gruppo e alloggio."
                 : "Il prezzo definitivo arriva con la proposta, prima di qualsiasi prenotazione."}
             </p>
-            <a href="#tour-enquiry">Richiedi info</a>
+            <AppLink href="#tour-enquiry">Richiedi info</AppLink>
           </aside>
           <div className="tour-facts-side">
             <dl>
@@ -1221,18 +1222,18 @@ export function TourPage({
         </p>
       </section>
       <nav className="tour-policy-links pt-4" aria-label="Condizioni del tour">
-        <a href="/terms">
+        <AppLink href="/terms">
           <span>Termini e condizioni</span>
           <b aria-hidden="true">↗</b>
-        </a>
-        <a href="/payment-policy">
+        </AppLink>
+        <AppLink href="/payment-policy">
           <span>Condizioni di pagamento</span>
           <b aria-hidden="true">↗</b>
-        </a>
-        <a href="/cancellation-policy">
+        </AppLink>
+        <AppLink href="/cancellation-policy">
           <span>Cancellazione e rimborso</span>
           <b aria-hidden="true">↗</b>
-        </a>
+        </AppLink>
       </nav>
       <section className="tour-enquiry-section">
         <TourEnquiryForm tour={tour} site={site} />
@@ -1244,10 +1245,10 @@ export function TourPage({
             <h2>Il viaggio parte da qui.</h2>
           </div>
           <div>
-            <a href={routes.destination(relatedDestination.slug)}>
+            <AppLink href={routes.destination(relatedDestination.slug)}>
               <span>{relatedDestination.name}</span>
               <b aria-hidden="true">↗</b>
-            </a>
+            </AppLink>
           </div>
         </section>
       )}
@@ -1259,10 +1260,10 @@ export function TourPage({
           </div>
           <div>
             {relatedTours.map((item) => (
-              <a href={routes.tour(item.slug)} key={item.slug}>
+              <AppLink href={routes.tour(item.slug)} key={item.slug}>
                 <span>{item.title}</span>
                 <b aria-hidden="true">↗</b>
-              </a>
+              </AppLink>
             ))}
           </div>
         </section>
@@ -1290,9 +1291,9 @@ function RelatedCallout({
         Condividi qualche idea con il team di Maragià Express e inizia a parlare
         di ciò che è possibile realizzare.
       </p>
-      <a href={href}>
+      <AppLink href={href}>
         {label} <span aria-hidden="true">↗</span>
-      </a>
+      </AppLink>
     </section>
   )
 }
@@ -1629,17 +1630,17 @@ export function JournalPage({
       <main className="inner-main">
         {categories.length > 0 && (
           <nav className="journal-filters" aria-label="Filtra per categoria">
-            <a href={routes.journal} aria-current={activeCategory ? undefined : "page"}>
+            <AppLink href={routes.journal} aria-current={activeCategory ? undefined : "page"}>
               Tutti
-            </a>
+            </AppLink>
             {categories.map((category) => (
-              <a
+              <AppLink
                 href={routes.category(category.slug)}
                 aria-current={activeCategory === category.slug ? "page" : undefined}
                 key={category.slug}
               >
                 {category.name}
-              </a>
+              </AppLink>
             ))}
           </nav>
         )}
@@ -1662,7 +1663,7 @@ export function JournalPage({
         {totalPages > 1 && (
           <nav className="listing-pager" aria-label="Pagine del diario">
             {page > 1 ? (
-              <a href={journalPageHref(activeCategory, page - 1)}>Precedente</a>
+              <AppLink href={journalPageHref(activeCategory, page - 1)}>Precedente</AppLink>
             ) : (
               <span>Precedente</span>
             )}
@@ -1670,7 +1671,7 @@ export function JournalPage({
               Pagina {page} di {totalPages}
             </span>
             {page < totalPages ? (
-              <a href={journalPageHref(activeCategory, page + 1)}>Successiva</a>
+              <AppLink href={journalPageHref(activeCategory, page + 1)}>Successiva</AppLink>
             ) : (
               <span>Successiva</span>
             )}
@@ -1763,17 +1764,17 @@ export function FaqPage({
       <main className="faq-page">
         {groups.length > 0 && (
           <nav className="faq-filters" aria-label="Filtra per gruppo">
-            <a href="/faq" aria-current={activeGroup ? undefined : "page"}>
+            <AppLink href="/faq" aria-current={activeGroup ? undefined : "page"}>
               Tutte
-            </a>
+            </AppLink>
             {groups.map((group) => (
-              <a
+              <AppLink
                 href={routes.faqGroup(group.slug)}
                 aria-current={activeGroup === group.slug ? "page" : undefined}
                 key={group.slug}
               >
                 {group.title}
-              </a>
+              </AppLink>
             ))}
           </nav>
         )}
@@ -1806,7 +1807,7 @@ export function FaqPage({
                         {item.href ? (
                           <>
                             {" "}
-                            <a href={item.href}>{item.linkLabel || "Approfondisci"}</a>
+                            <AppLink href={item.href}>{item.linkLabel || "Approfondisci"}</AppLink>
                           </>
                         ) : null}
                       </p>
@@ -1819,9 +1820,9 @@ export function FaqPage({
         ))}
         <p className="faq-page-note">
           Non trovi la risposta? Scrivi a{" "}
-          <a href={`mailto:${site.email}`}>{site.email}</a>
+          <AppLink href={`mailto:${site.email}`}>{site.email}</AppLink>
           {" "}o chiama il{" "}
-          <a href={site.phoneHref}>{site.phoneDisplay}</a>.
+          <AppLink href={site.phoneHref}>{site.phoneDisplay}</AppLink>.
         </p>
       </main>
     </>
@@ -1867,11 +1868,11 @@ export function ContactPage({
           <ul className="contact-list">
             <li>
               <span>Telefono</span>
-              <a href={site.phoneHref}>{site.phoneDisplay}</a>
+              <AppLink href={site.phoneHref}>{site.phoneDisplay}</AppLink>
             </li>
             <li>
               <span>Email</span>
-              <a href={`mailto:${site.email}`}>{site.email}</a>
+              <AppLink href={`mailto:${site.email}`}>{site.email}</AppLink>
             </li>
             <li>
               <span>Sede</span>
@@ -1914,7 +1915,7 @@ export function PolicyPage({ page, site }: { page: CmsPage; site: SiteProfile })
         {!page.html.includes("mailto:") && (
           <p>
             Per chiarimenti, scrivi a{" "}
-            <a href={`mailto:${site.email}`}>{site.email}</a>.
+            <AppLink href={`mailto:${site.email}`}>{site.email}</AppLink>.
           </p>
         )}
       </main>
@@ -1953,7 +1954,7 @@ export function CmsDocumentPage({ page }: { page: CmsPage }) {
         )}
         {page.cta && (
           <p>
-            <a href={page.cta.href}>{page.cta.label}</a>
+            <AppLink href={page.cta.href}>{page.cta.label}</AppLink>
           </p>
         )}
       </main>
@@ -1970,7 +1971,7 @@ export function NotFoundPage() {
         Torna alla home page o continua a esplorare le destinazioni proposte da
         Maragià Express.
       </p>
-      <a href="/">Torna alla home</a>
+      <AppLink href="/">Torna alla home</AppLink>
     </main>
   )
 }

@@ -1,4 +1,4 @@
-import Image from "next/image"
+import { withBasePath } from "@/lib/base-path"
 
 export default function BrandMark({
   priority = false,
@@ -6,13 +6,14 @@ export default function BrandMark({
   priority?: boolean
 }) {
   return (
-    <Image
+    <img
       className="brand-logo"
-      src="/mglogo.png"
+      src={withBasePath("/mglogo.png")}
       alt=""
       width={200}
       height={200}
-      priority={priority}
+      decoding="async"
+      fetchPriority={priority ? "high" : "auto"}
     />
   )
 }
