@@ -1,4 +1,5 @@
 import type { ContentSection } from "@/lib/content"
+import { withBasePath } from "@/lib/base-path"
 
 const allowedTags = new Set([
   "p",
@@ -75,7 +76,8 @@ export function sanitizeHtml(html: string) {
       const external = href.startsWith("http")
       const rel = external ? ' rel="noopener noreferrer"' : ""
       const target = external ? ' target="_blank"' : ""
-      return `<a href="${href.replace(/"/g, "&quot;")}"${target}${rel}>`
+      const path = external ? href : withBasePath(href)
+      return `<a href="${path.replace(/"/g, "&quot;")}"${target}${rel}>`
     })
     .trim()
 }

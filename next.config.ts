@@ -1,6 +1,13 @@
 import type { NextConfig } from "next"
 
+const basePath = "/maragiaexpress"
+
 const nextConfig: NextConfig = {
+  output: "standalone",
+  basePath,
+  env: {
+    NEXT_PUBLIC_BASE_PATH: basePath,
+  },
   poweredByHeader: false,
   compress: true,
   images: {

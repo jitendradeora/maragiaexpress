@@ -6,6 +6,7 @@ import BackToTop from "./BackToTop"
 import BrandMark from "./BrandMark"
 import { enquiryMailto } from "./EnquiryReady"
 import ProfileLinks from "./ProfileLinks"
+import AppLink from "./AppLink"
 import SiteImage from "./SiteImage"
 import type {
   Article,
@@ -32,13 +33,13 @@ import { routes } from "@/lib/routes"
 
 function Brand({ site, priority = false }: { site: SiteProfile; priority?: boolean }) {
   return (
-    <a className="brand" href="/" aria-label={`${site.name}, home page`}>
+    <AppLink className="brand" href="/" aria-label={`${site.name}, home page`}>
       <BrandMark priority={priority} />
       <span>
         <b>{site.shortName}</b>
         <small>{site.brandSuffix}</small>
       </span>
-    </a>
+    </AppLink>
   )
 }
 
@@ -52,10 +53,10 @@ function ArrowLink({
   light?: boolean
 }) {
   return (
-    <a className={`arrow-link ${light ? "arrow-link-light" : ""}`} href={href}>
+    <AppLink className={`arrow-link ${light ? "arrow-link-light" : ""}`} href={href}>
       <span>{children}</span>
       <span aria-hidden="true">↗</span>
-    </a>
+    </AppLink>
   )
 }
 
@@ -90,7 +91,7 @@ function Header({ links, site }: { links: MenuLink[]; site: SiteProfile }) {
           id="mobile-navigation"
           aria-label="Navigazione principale"
         >
-          <a
+          <AppLink
             className="mobile-nav-brand brand"
             href="/"
             aria-label={`${site.name}, home page`}
@@ -101,15 +102,15 @@ function Header({ links, site }: { links: MenuLink[]; site: SiteProfile }) {
               <b>{site.shortName}</b>
               <small>{site.brandSuffix}</small>
             </span>
-          </a>
+          </AppLink>
           <SiteNav items={links} onNavigate={() => setOpen(false)} />
-          <a
+          <AppLink
             className="nav-cta"
             href={site.headerCta.href}
             onClick={() => setOpen(false)}
           >
             {site.headerCta.label}
-          </a>
+          </AppLink>
         </nav>
         <button
           className="menu-button"
@@ -159,9 +160,9 @@ function Hero({ hero }: { hero: HomeHero }) {
         {(hero.primaryCta || hero.secondaryCta) && (
           <div className="hero-actions">
             {hero.primaryCta && (
-              <a className="button button-ivory" href={hero.primaryCta.href}>
+              <AppLink className="button button-ivory" href={hero.primaryCta.href}>
                 {hero.primaryCta.label}
-              </a>
+              </AppLink>
             )}
             {hero.secondaryCta && (
               <ArrowLink href={hero.secondaryCta.href} light>
@@ -175,9 +176,9 @@ function Hero({ hero }: { hero: HomeHero }) {
         <div className="hero-foot">
           {hero.locationLabel && <span>{hero.locationLabel}</span>}
           {hero.scrollLabel && (
-            <a href="#about">
+            <AppLink href="#about">
               {hero.scrollLabel} <span aria-hidden="true">↓</span>
-            </a>
+            </AppLink>
           )}
         </div>
       )}
@@ -230,7 +231,7 @@ function Destinations({
       </div>
       <div className="destination-grid">
         {destinations.map((destination, index) => (
-          <a
+          <AppLink
             className={`destination-card ${frames[index] ?? ""}`}
             href={routes.destination(destination.slug)}
             key={destination.slug}
@@ -247,7 +248,7 @@ function Destinations({
               <span>{destination.intro}</span>
               <b aria-hidden="true">↗</b>
             </span>
-          </a>
+          </AppLink>
         ))}
       </div>
     </section>
@@ -266,7 +267,7 @@ function HomeTours({ section, tours }: { section: HomeLinkSection; tours: Tour[]
       </div>
       <div className="tour-card-grid">
         {tours.map((tour) => (
-          <a className="tour-card" href={routes.tour(tour.slug)} key={tour.slug}>
+          <AppLink className="tour-card" href={routes.tour(tour.slug)} key={tour.slug}>
             <div className="tour-card-media">
               <img src={tour.image} alt={tour.imageAlt || tour.title} loading="lazy" />
               <span className="tour-card-shade" />
@@ -279,7 +280,7 @@ function HomeTours({ section, tours }: { section: HomeLinkSection; tours: Tour[]
                 Scopri il tour <span aria-hidden="true">↗</span>
               </b>
             </div>
-          </a>
+          </AppLink>
         ))}
       </div>
     </section>
@@ -309,7 +310,7 @@ function Experiences({
         <SectionHeading eyebrow={section.eyebrow} title={section.title} copy={section.copy} />
         <div className="experience-list">
           {experiences.map((experience, index) => (
-            <a
+            <AppLink
               href={routes.experience(experience.slug)}
               className="experience-row"
               key={experience.slug}
@@ -320,7 +321,7 @@ function Experiences({
                 <p>{experience.intro}</p>
               </div>
               <b aria-hidden="true">↗</b>
-            </a>
+            </AppLink>
           ))}
         </div>
       </div>
@@ -344,9 +345,9 @@ function RajasthanFeature({ section }: { section: HomePromo }) {
         )}
         {section.copy && <p>{section.copy}</p>}
         {section.button && (
-          <a className="button button-ivory" href={section.button.href}>
+          <AppLink className="button button-ivory" href={section.button.href}>
             {section.button.label}
-          </a>
+          </AppLink>
         )}
       </div>
       {section.label && <div className="rajasthan-label">{section.label}</div>}
@@ -369,9 +370,9 @@ function TailorMade({ section }: { section: HomeProcess }) {
         ))}
       </div>
       {section.cta && (
-        <a className="button button-green" href={section.cta.href}>
+        <AppLink className="button button-green" href={section.cta.href}>
           {section.cta.label}
-        </a>
+        </AppLink>
       )}
     </section>
   )
@@ -421,7 +422,7 @@ function Journal({
         )}
       </div>
       <div className="journal-grid">
-        <a className="journal-feature" href={routes.article(feature.slug)}>
+        <AppLink className="journal-feature" href={routes.article(feature.slug)}>
           <img
             src={feature.image}
             alt={feature.imageAlt || feature.title}
@@ -430,13 +431,13 @@ function Journal({
           <p className="eyebrow">{feature.category}</p>
           <h3>{feature.title}</h3>
           <p>{feature.excerpt}</p>
-        </a>
+        </AppLink>
         {notes.map((article, index) => (
-          <a href={routes.article(article.slug)} key={article.slug}>
+          <AppLink href={routes.article(article.slug)} key={article.slug}>
             <span className="journal-number">APPUNTI · {String(index + 1).padStart(2, "0")}</span>
             <h3>{article.title}</h3>
             <p>{article.excerpt}</p>
-          </a>
+          </AppLink>
         ))}
       </div>
     </section>
@@ -460,10 +461,10 @@ function Faq({
         <SectionHeading eyebrow={section.eyebrow} title={section.title} />
         <p>
           {section.linkLabel && section.linkHref && (
-            <a href={section.linkHref}>{section.linkLabel}</a>
+            <AppLink href={section.linkHref}>{section.linkLabel}</AppLink>
           )}
           {section.linkLabel && " oppure "}
-          <a href={`mailto:${email}`}>scrivi al nostro team.</a>
+          <AppLink href={`mailto:${email}`}>scrivi al nostro team.</AppLink>
         </p>
       </div>
       <div className="faq-list">
@@ -525,9 +526,9 @@ function Newsletter({ section, email: contactEmail }: { section: HomeNewsletter;
             la posta e invia il messaggio a {contactEmail}.
           </p>
           <div className="newsletter-actions">
-            <a className="button button-gold" href={enquiryMailto(subject, body, contactEmail)}>
+            <AppLink className="button button-gold" href={enquiryMailto(subject, body, contactEmail)}>
               Apri l’app di posta
-            </a>
+            </AppLink>
             <button type="button" onClick={() => setEmail(null)}>
               Cambia email
             </button>
@@ -572,13 +573,13 @@ function Footer({ columns, site }: { columns: MenuColumn[]; site: SiteProfile })
           <div key={column.title}>
             <h3>
               {column.href ? (
-                <a
+                <AppLink
                   href={column.href}
                   target={column.external ? "_blank" : undefined}
                   rel={column.external ? "noopener noreferrer" : undefined}
                 >
                   {column.title}
-                </a>
+                </AppLink>
               ) : (
                 column.title
               )}
@@ -588,8 +589,8 @@ function Footer({ columns, site }: { columns: MenuColumn[]; site: SiteProfile })
         ))}
         <div>
           <h3>Parla con noi</h3>
-          <a href={site.phoneHref}>{site.phoneDisplay}</a>
-          <a href={`mailto:${site.email}`}>{site.email}</a>
+          <AppLink href={site.phoneHref}>{site.phoneDisplay}</AppLink>
+          <AppLink href={`mailto:${site.email}`}>{site.email}</AppLink>
         </div>
       </div>
       <div className="footer-bottom">
